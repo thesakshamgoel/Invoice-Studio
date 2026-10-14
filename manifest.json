@@ -1,0 +1,34 @@
+{
+  "name": "Invoice Studio - Invoice & Agreement Generator",
+  "short_name": "InvoiceStudio",
+  "description": "Professional Material 3 Invoice and Agreement Generator with real-time live preview and high-resolution PDF export.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#121316",
+  "theme_color": "#17181c",
+  "categories": ["business", "finance", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "776x776",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Invoice",
+      "short_name": "New Invoice",
+      "description": "Generate a new invoice",
+      "url": "./index.html#new",
+      "icons": [{ "src": "favicon.png", "sizes": "776x776" }]
+    }
+  ]
+}
