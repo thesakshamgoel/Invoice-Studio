@@ -26,7 +26,7 @@ Now fully optimized as an **App-like Progressive Web App (PWA)** with native mob
   - Floating Action Button (FAB) for seamless 1-tap switching between forms and live preview.
   - Print overlay protection: all mobile sheets, backdrops, and navigation bars are strictly hidden during export and print.
 - 👁️ **Live Interactive Canvas**: Real-time rendering with zoom, pan, and direct-on-canvas editing.
-- 💼 **Multi-Profile Management**: Save and switch business profiles, creator contact info, custom brand logos, and UPI/Payment QR codes.
+- 💼 **Multi-Profile Management & PIN Security**: Clean Guest ID loaded by default with zero personal details, personal PAN, or bank credentials visible. TSG Studio profile is locked with a dedicated security passcode (PIN: 2686) required on every access.
 - 📊 **Dynamic Itemized Billing**: Automated calculations for discounts, subtotals, taxes (GST/VAT), advance deposits, and balances.
 - 🚀 **Zero External Server Dependencies**: Runs completely in the browser as a standalone, offline-ready web application.
 
