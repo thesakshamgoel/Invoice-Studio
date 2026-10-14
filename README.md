@@ -9,12 +9,12 @@ Now fully optimized as an **App-like Progressive Web App (PWA)** with native mob
 ## 🌟 Key Features
 
 - ⬇️ **Clean PDF Export Engine**: Dedicated client-side PDF export engine powered by `html2pdf.js` that downloads unbranded, pixel-perfect A4 PDFs directly without browser print headers, file URLs, or page titles.
-- 🎨 **5 Professional Design Templates**:
-  1. **Pro (Default)**: Modern agency slate and Material 3 design tokens.
-  2. **Simple**: Minimalist editorial aesthetics with refined hairline rules and uncluttered typography.
-  3. **Advanced**: Creative studio luxury styling with vibrant accent gradient bars, carded modules, and dark table headers.
-  4. **Terms invoice**: Hybrid SOW agreement and commercial tax invoice featuring executive statement-of-work undertakngs and dual signatures.
-  5. **Quick Sheet**: Compact freelance billing voucher with prominent instant UPI QR scan-and-pay card.
+- 🎨 **5 Radically Distinct Design Themes**:
+  1. **Studio Onyx (Default)**: Dark luxury obsidian slate with gold foil metallic accents, tinted executive cards, and dark midnight table headers.
+  2. **Swiss Minimal**: Stark high-contrast monochromatic black & white inspired by Massimo Vignelli and the Zurich grid, featuring heavy architectural rules, bold grotest typography, and an inverted solid black grand total block.
+  3. **Cyber Cobalt**: Neo-tech electric blue and cyan styling with rounded glass cards, glowing gradient top accent bar, and modern tech badge chips.
+  4. **Editorial Vogue**: Warm ivory and classical Georgia serif typography, refined double-line borders, and heritage ledger tables.
+  5. **Nordic Mint**: Fresh organic sage green and emerald Scandi design with soft eucalyptus cards, rounded organic containers, and emerald table headers.
 - 🧠 **Dynamic & Sensible Terms & Conditions**:
   - Automatically derives clauses based on active selected services (cinematography shoot hours, video editing master codecs, DI color grading Rec.709/P3 calibration, 3D motion graphics, photography retouching).
   - Calculates exact rupee figures and milestone schedules from payment terms (e.g. 50% advance / balance, full upfront, Net 15/30).

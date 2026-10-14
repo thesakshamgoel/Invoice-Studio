@@ -1652,15 +1652,22 @@
     }
 
     /* ==========================================================================
-       5 DESIGN TEMPLATES FOR INVOICE STUDIO
+       5 RADICALLY DISTINCT INVOICE DESIGN TEMPLATES
+       1. Studio Onyx (Dark Luxury / Obsidian & Gold)
+       2. Swiss Minimal (Stark Monochromatic / International Grid)
+       3. Cyber Cobalt (Electric Blue & Neon Cyan / Neo-Tech Silicon)
+       4. Editorial Vogue (Warm Ivory & Classical Serif / Heritage Luxury)
+       5. Nordic Mint (Fresh Organic Sage & Emerald Scandi)
        ========================================================================== */
+
+    /* Template Picker Card in Sidebar */
     .template-picker-card {
       background: var(--g-surface-card);
       border: 1px solid var(--g-border);
       border-radius: 12px;
       padding: 10px 12px;
       margin: 8px 12px 12px 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
     .template-picker-header {
       display: flex;
@@ -1696,7 +1703,7 @@
       color: var(--g-text-secondary);
       border-radius: 8px;
       padding: 6px 3px;
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -1716,79 +1723,497 @@
       border-color: var(--g-blue);
       background: rgba(26, 115, 232, 0.2);
       color: #ffffff;
-      box-shadow: 0 0 0 1px var(--g-blue);
+      box-shadow: 0 0 0 1.5px var(--g-blue);
     }
     .tpl-btn .tpl-icon {
       font-size: 14px;
     }
 
-    /* Template 1: Pro (Default) */
-    .tpl-pro .a4-page {
-      /* Baseline agency design */
+    /* --------------------------------------------------------------------------
+       DESIGN 1: STUDIO ONYX (Midnight Slate, Gold Foil, Luxury Film House)
+       -------------------------------------------------------------------------- */
+    .tpl-onyx .a4-page {
+      position: relative;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      color: #0f172a !important;
+    }
+    .tpl-onyx .a4-page::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 7px;
+      background: linear-gradient(90deg, #0f172a 0%, #1e293b 45%, #d97706 80%, #f59e0b 100%);
+      z-index: 10;
+    }
+    .tpl-onyx .invoice-big-title {
+      color: #0f172a !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.15em !important;
+    }
+    .tpl-onyx .invoice-number-tag {
+      background: #fef3c7 !important;
+      color: #92400e !important;
+      border: 1.5px solid #f59e0b !important;
+      border-radius: 6px !important;
+      font-weight: 800 !important;
+      padding: 2px 10px !important;
+    }
+    .tpl-onyx .header-right .meta-table {
+      background: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
+      border-left: 4px solid #0f172a !important;
+      border-radius: 8px !important;
+      padding: 6px 10px !important;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.04) !important;
+    }
+    .tpl-onyx .registration-pill {
+      background: #ffffff !important;
+      border: 1.5px solid #0f172a !important;
+      border-radius: 6px !important;
+      color: #0f172a !important;
+      font-weight: 600 !important;
+    }
+    .tpl-onyx .items-table {
+      border: 1px solid #0f172a !important;
+      border-collapse: collapse !important;
+    }
+    .tpl-onyx .items-table th {
+      background: #0f172a !important;
+      color: #ffffff !important;
+      font-size: 9.5px !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      border: 1px solid #0f172a !important;
+      padding: 9px 8px !important;
+    }
+    .tpl-onyx .items-table td {
+      border: 1px solid #e2e8f0 !important;
+      padding: 10px 8px !important;
+    }
+    .tpl-onyx .items-table tbody tr:nth-child(even) {
+      background-color: #f8fafc !important;
+    }
+    .tpl-onyx .total-row {
+      background: #f8fafc !important;
+      border-top: 2px solid #0f172a !important;
+    }
+    .tpl-onyx .total-amount-cell {
+      color: #0f172a !important;
+      font-size: 15px !important;
+      font-weight: 900 !important;
+      border-bottom: 2px solid #f59e0b !important;
+    }
+    .tpl-onyx .banking-header-title {
+      background: #0f172a !important;
+      color: #ffffff !important;
+      border-radius: 4px !important;
+      padding: 3px 10px !important;
+      display: inline-block !important;
+    }
+    .tpl-onyx .bank-info-table {
+      background: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 8px !important;
+    }
+    .tpl-onyx .roles-badges-table td {
+      background: #fffbeb !important;
+      color: #92400e !important;
+      border: 1px solid #fde68a !important;
+      border-radius: 6px !important;
+      font-weight: 700 !important;
+    }
+    .tpl-onyx .terms-sec-title {
+      border-left: 4px solid #f59e0b !important;
+      padding-left: 8px !important;
+      color: #0f172a !important;
+      font-weight: 800 !important;
     }
 
-    /* Template 2: Simple - Minimalist, modern hairline rules */
-    .tpl-simple .tax-invoice-banner {
-      background: transparent !important;
-      border-top: none !important;
-      border-bottom: 2px solid #111827 !important;
-      color: #111827 !important;
-      padding: 10px 0 !important;
-      margin-bottom: 16px !important;
-      justify-content: flex-start !important;
+    /* --------------------------------------------------------------------------
+       DESIGN 2: SWISS MINIMAL (Massimo Vignelli / Stark Monochromatic Grid)
+       -------------------------------------------------------------------------- */
+    .tpl-swiss .a4-page {
+      font-family: 'Inter', Helvetica, Arial, sans-serif !important;
+      color: #000000 !important;
+      background: #ffffff !important;
     }
-    .tpl-simple .tax-invoice-title {
-      font-size: 18px !important;
+    .tpl-swiss .a4-page * {
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+    .tpl-swiss .invoice-big-title {
+      font-size: 34px !important;
+      font-weight: 900 !important;
+      letter-spacing: -0.05em !important;
+      text-transform: uppercase !important;
+      color: #000000 !important;
+      line-height: 0.85 !important;
+      margin-bottom: 4px !important;
+    }
+    .tpl-swiss .invoice-number-tag {
+      font-family: monospace, Courier, monospace !important;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      color: #000000 !important;
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      letter-spacing: 0.05em !important;
+    }
+    .tpl-swiss .invoice-header-grid {
+      border-bottom: 4px solid #000000 !important;
+      padding-bottom: 14px !important;
+      margin-bottom: 16px !important;
+    }
+    .tpl-swiss .meta-table {
+      border: none !important;
+      background: transparent !important;
+      border-collapse: collapse !important;
+    }
+    .tpl-swiss .meta-label {
+      font-weight: 800 !important;
+      color: #000000 !important;
+      text-transform: uppercase !important;
+      font-size: 9px !important;
+      letter-spacing: 0.05em !important;
+    }
+    .tpl-swiss .meta-value {
+      color: #000000 !important;
+      font-weight: 600 !important;
+      font-family: monospace, Courier, monospace !important;
+    }
+    .tpl-swiss .registration-pill {
+      border: 2.5px solid #000000 !important;
+      background: transparent !important;
+      color: #000000 !important;
+      font-weight: 800 !important;
+      text-transform: uppercase !important;
+      font-size: 10px !important;
+      letter-spacing: 0.05em !important;
+      padding: 8px 12px !important;
+    }
+    .tpl-swiss .items-table {
+      border: none !important;
+      border-top: 3.5px solid #000000 !important;
+      border-bottom: 2px solid #000000 !important;
+      border-collapse: collapse !important;
+    }
+    .tpl-swiss .items-table th {
+      background: transparent !important;
+      color: #000000 !important;
+      font-size: 9.5px !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase !important;
+      border: none !important;
+      border-bottom: 2px solid #000000 !important;
+      padding: 10px 4px !important;
+    }
+    .tpl-swiss .items-table td {
+      border: none !important;
+      border-bottom: 1px solid #000000 !important;
+      padding: 12px 4px !important;
+      font-size: 11.5px !important;
+      background: transparent !important;
+    }
+    .tpl-swiss .total-row {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border: 2px solid #000000 !important;
+    }
+    .tpl-swiss .total-label {
+      color: #ffffff !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.08em !important;
+    }
+    .tpl-swiss .total-amount-cell {
+      color: #ffffff !important;
+      font-size: 16px !important;
+      font-weight: 900 !important;
+      background: #000000 !important;
+    }
+    .tpl-swiss .words-cell {
+      border: none !important;
+      border-bottom: 1px solid #000000 !important;
+      font-style: italic !important;
+      padding: 8px 4px !important;
+    }
+    .tpl-swiss .banking-header-title {
+      border-bottom: 2px solid #000000 !important;
+      text-transform: uppercase !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.08em !important;
+      color: #000000 !important;
+      display: inline-block !important;
+      padding-bottom: 2px !important;
+    }
+    .tpl-swiss .bank-info-table {
+      border: 2px solid #000000 !important;
+      background: transparent !important;
+    }
+    .tpl-swiss .roles-badges-table td {
+      border: 2px solid #000000 !important;
+      background: #ffffff !important;
+      color: #000000 !important;
+      font-weight: 800 !important;
+      text-transform: uppercase !important;
+      font-size: 9.5px !important;
+      padding: 4px 8px !important;
+    }
+    .tpl-swiss .terms-sec-title {
+      border-bottom: 2px solid #000000 !important;
+      color: #000000 !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.08em !important;
+      padding-bottom: 3px !important;
+    }
+
+    /* --------------------------------------------------------------------------
+       DESIGN 3: CYBER COBALT (Electric Blue & Cyan, Modern Neo-Tech Silicon)
+       -------------------------------------------------------------------------- */
+    .tpl-cobalt .a4-page {
+      position: relative;
+      font-family: 'Inter', system-ui, sans-serif !important;
+      color: #0f172a !important;
+    }
+    .tpl-cobalt .a4-page::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 7px;
+      background: linear-gradient(90deg, #1e40af 0%, #2563eb 35%, #06b6d4 75%, #38bdf8 100%);
+      z-index: 10;
+    }
+    .tpl-cobalt .invoice-big-title {
+      color: #1d4ed8 !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.08em !important;
+    }
+    .tpl-cobalt .invoice-number-tag {
+      background: #eff6ff !important;
+      color: #1d4ed8 !important;
+      border: 2px solid #3b82f6 !important;
+      border-radius: 20px !important;
+      font-weight: 800 !important;
+      padding: 3px 12px !important;
+    }
+    .tpl-cobalt .header-left,
+    .tpl-cobalt .header-right {
+      background: #f8fbff !important;
+      border: 1.5px solid #bfdbfe !important;
+      border-radius: 12px !important;
+      padding: 12px !important;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.06) !important;
+    }
+    .tpl-cobalt .registration-pill {
+      background: linear-gradient(135deg, #eff6ff 0%, #ecfeff 100%) !important;
+      border: 1.5px solid #67e8f9 !important;
+      border-radius: 10px !important;
+      color: #0e7490 !important;
+      font-weight: 700 !important;
+      padding: 8px 14px !important;
+    }
+    .tpl-cobalt .items-table {
+      border: 2px solid #2563eb !important;
+      border-radius: 10px !important;
+      overflow: hidden !important;
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+    }
+    .tpl-cobalt .items-table th {
+      background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%) !important;
+      color: #ffffff !important;
+      font-size: 10px !important;
       font-weight: 800 !important;
       letter-spacing: 0.08em !important;
-      color: #111827 !important;
+      text-transform: uppercase !important;
+      border: none !important;
+      padding: 11px 8px !important;
     }
-    .tpl-simple .items-table {
+    .tpl-cobalt .items-table td {
+      border: none !important;
+      border-bottom: 1px solid #dbeafe !important;
+      border-right: 1px solid #eff6ff !important;
+      padding: 10px 8px !important;
+    }
+    .tpl-cobalt .items-table tbody tr:nth-child(even) {
+      background-color: #f8fbff !important;
+    }
+    .tpl-cobalt .total-row {
+      background: #eff6ff !important;
+      border-top: 2px solid #2563eb !important;
+    }
+    .tpl-cobalt .total-amount-cell {
+      color: #1d4ed8 !important;
+      font-size: 15.5px !important;
+      font-weight: 900 !important;
+    }
+    .tpl-cobalt .banking-header-title {
+      background: linear-gradient(135deg, #1e40af, #2563eb) !important;
+      color: #ffffff !important;
+      border-radius: 20px !important;
+      padding: 4px 14px !important;
+      font-weight: 800 !important;
+      display: inline-block !important;
+    }
+    .tpl-cobalt .bank-info-table {
+      background: #f8fbff !important;
+      border: 1.5px solid #bfdbfe !important;
+      border-radius: 12px !important;
+    }
+    .tpl-cobalt .roles-badges-table td {
+      background: #eff6ff !important;
+      color: #1d4ed8 !important;
+      border: 1.5px solid #93c5fd !important;
+      border-radius: 20px !important;
+      font-weight: 700 !important;
+      padding: 4px 12px !important;
+    }
+    .tpl-cobalt .terms-sec-title {
+      border-left: 4px solid #2563eb !important;
+      padding-left: 8px !important;
+      color: #1e40af !important;
+      font-weight: 800 !important;
+    }
+
+    /* --------------------------------------------------------------------------
+       DESIGN 4: EDITORIAL VOGUE (Bespoke Classical Serif, Warm Ivory & Sand)
+       -------------------------------------------------------------------------- */
+    .tpl-vogue .a4-page {
+      font-family: "Georgia", "Playfair Display", "Times New Roman", serif !important;
+      color: #292524 !important;
+      background: #fafaf9 !important;
+    }
+    .tpl-vogue .invoice-big-title {
+      font-family: Georgia, serif !important;
+      font-weight: 400 !important;
+      font-size: 28px !important;
+      letter-spacing: 0.22em !important;
+      text-transform: uppercase !important;
+      color: #1c1917 !important;
+      border-bottom: 2px solid #44403c !important;
+      padding-bottom: 8px !important;
+      margin-bottom: 12px !important;
+    }
+    .tpl-vogue .invoice-number-tag {
+      font-family: Georgia, serif !important;
+      font-style: italic !important;
+      color: #78716c !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      background: transparent !important;
+      border: none !important;
+    }
+    .tpl-vogue .invoice-header-grid {
+      border-top: 2px solid #44403c !important;
+      border-bottom: 1px solid #78716c !important;
+      padding: 12px 0 !important;
+      margin-bottom: 16px !important;
+    }
+    .tpl-vogue .creator-name {
+      font-family: Georgia, serif !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.12em !important;
+      color: #1c1917 !important;
+    }
+    .tpl-vogue .meta-label {
+      font-family: Georgia, serif !important;
+      font-style: italic !important;
+      color: #78716c !important;
+      font-size: 11px !important;
+    }
+    .tpl-vogue .registration-pill {
+      border: 3px double #78716c !important;
+      background: #fafaf9 !important;
+      border-radius: 0 !important;
+      font-family: Georgia, serif !important;
+      font-style: italic !important;
+      color: #292524 !important;
+      padding: 8px 12px !important;
+    }
+    .tpl-vogue .items-table {
       border: none !important;
       border-collapse: collapse !important;
     }
-    .tpl-simple .items-table th {
-      background: transparent !important;
-      color: #64748b !important;
+    .tpl-vogue .items-table th {
+      background: #f5f5f4 !important;
+      color: #292524 !important;
+      border-top: 2px solid #44403c !important;
+      border-bottom: 1.5px solid #44403c !important;
+      font-family: Georgia, serif !important;
       font-size: 9.5px !important;
-      font-weight: 700 !important;
+      letter-spacing: 0.15em !important;
       text-transform: uppercase !important;
-      letter-spacing: 0.08em !important;
-      border: none !important;
-      border-bottom: 1.5px solid #111827 !important;
+      font-weight: 700 !important;
       padding: 10px 6px !important;
     }
-    .tpl-simple .items-table td {
+    .tpl-vogue .items-table td {
       border: none !important;
-      border-bottom: 1px solid #f1f5f9 !important;
+      border-bottom: 1px solid #e7e5e4 !important;
+      font-family: Georgia, serif !important;
+      font-size: 11px !important;
       padding: 11px 6px !important;
-      font-size: 11.5px !important;
-    }
-    .tpl-simple .bank-info-table {
       background: transparent !important;
-      border: none !important;
-      border-left: 2px solid #e2e8f0 !important;
+    }
+    .tpl-vogue .total-row {
+      border-bottom: 3px double #44403c !important;
+      border-top: 1.5px solid #44403c !important;
+      font-family: Georgia, serif !important;
+      font-weight: 700 !important;
+      background: #f5f5f4 !important;
+    }
+    .tpl-vogue .total-amount-cell {
+      color: #1c1917 !important;
+      font-family: Georgia, serif !important;
+      font-size: 15px !important;
+      font-weight: 700 !important;
+    }
+    .tpl-vogue .banking-header-title {
+      font-family: Georgia, serif !important;
+      font-style: italic !important;
+      font-size: 13px !important;
+      color: #44403c !important;
+      border-bottom: 1px solid #a8a29e !important;
+      padding-bottom: 2px !important;
+    }
+    .tpl-vogue .bank-info-table {
+      background: #fafaf9 !important;
+      border: 1px solid #d6d3d1 !important;
       border-radius: 0 !important;
-      padding-left: 12px !important;
     }
-    .tpl-simple .registration-pill {
-      background: #f8fafc !important;
-      border: 1px solid #e2e8f0 !important;
-      border-radius: 4px !important;
+    .tpl-vogue .roles-badges-table td {
+      background: #f5f5f4 !important;
+      border: 1px solid #d6d3d1 !important;
+      color: #44403c !important;
+      font-family: Georgia, serif !important;
+      font-style: italic !important;
+      border-radius: 0 !important;
     }
-    .tpl-simple .roles-badges-table td {
-      background: #f8fafc !important;
-      color: #1e293b !important;
-      border: 1px solid #e2e8f0 !important;
-      border-radius: 4px !important;
-      font-weight: 500 !important;
+    .tpl-vogue .terms-sec-title {
+      font-family: Georgia, serif !important;
+      font-weight: 700 !important;
+      color: #292524 !important;
+      border-bottom: 1px solid #d6d3d1 !important;
+      padding-bottom: 3px !important;
     }
 
-    /* Template 3: Advanced - Luxury Agency & Creative Studio */
-    .tpl-advanced .a4-page {
+    /* --------------------------------------------------------------------------
+       DESIGN 5: NORDIC MINT (Fresh Organic Sage & Emerald Scandi)
+       -------------------------------------------------------------------------- */
+    .tpl-mint .a4-page {
       position: relative;
+      font-family: 'Inter', system-ui, sans-serif !important;
+      color: #064e3b !important;
     }
-    .tpl-advanced .a4-page::before {
+    .tpl-mint .a4-page::before {
       content: '';
       display: block;
       position: absolute;
@@ -1796,110 +2221,101 @@
       left: 0;
       right: 0;
       height: 6px;
-      background: linear-gradient(90deg, #4f46e5 0%, #3b82f6 35%, #06b6d4 70%, #10b981 100%);
+      background: linear-gradient(90deg, #10b981 0%, #059669 50%, #047857 100%);
       z-index: 10;
     }
-    .tpl-advanced .tax-invoice-banner {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
-      color: #ffffff !important;
-      border-radius: 8px !important;
-      border: none !important;
-      padding: 10px 16px !important;
-      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12) !important;
+    .tpl-mint .invoice-big-title {
+      color: #065f46 !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.1em !important;
     }
-    .tpl-advanced .tax-invoice-title {
-      color: #ffffff !important;
-      letter-spacing: 0.15em !important;
-      font-size: 14px !important;
+    .tpl-mint .invoice-number-tag {
+      background: #ecfdf5 !important;
+      color: #047857 !important;
+      border: 1.5px solid #a7f3d0 !important;
+      border-radius: 16px !important;
+      font-weight: 800 !important;
+      padding: 3px 12px !important;
     }
-    .tpl-advanced .items-table th {
-      background: #1e293b !important;
+    .tpl-mint .header-left,
+    .tpl-mint .header-right {
+      background: #f0fdf4 !important;
+      border: 1.5px solid #bbf7d0 !important;
+      border-radius: 14px !important;
+      padding: 12px !important;
+      box-shadow: 0 2px 8px rgba(6,95,70,0.04) !important;
+    }
+    .tpl-mint .registration-pill {
+      background: #ecfdf5 !important;
+      border: 1.5px solid #86efac !important;
+      border-radius: 12px !important;
+      color: #065f46 !important;
+      font-weight: 600 !important;
+      padding: 8px 14px !important;
+    }
+    .tpl-mint .items-table {
+      border: 1.5px solid #059669 !important;
+      border-radius: 10px !important;
+      overflow: hidden !important;
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+    }
+    .tpl-mint .items-table th {
+      background: #047857 !important;
       color: #ffffff !important;
-      border: 1px solid #1e293b !important;
-      font-size: 9.5px !important;
-      letter-spacing: 0.05em !important;
+      font-size: 10px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.06em !important;
       text-transform: uppercase !important;
+      border: none !important;
+      padding: 11px 8px !important;
     }
-    .tpl-advanced .items-table td {
-      border-color: #e2e8f0 !important;
+    .tpl-mint .items-table td {
+      border: none !important;
+      border-bottom: 1px solid #d1fae5 !important;
+      border-right: 1px solid #f0fdf4 !important;
       padding: 10px 8px !important;
     }
-    .tpl-advanced .items-table tbody tr:nth-child(even) {
-      background-color: #f8fafc !important;
+    .tpl-mint .items-table tbody tr:nth-child(even) {
+      background-color: #f0fdf4 !important;
     }
-    .tpl-advanced .bank-info-table {
-      background: #f8fafc !important;
-      border: 1px solid #cbd5e1 !important;
-      border-radius: 8px !important;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;
+    .tpl-mint .total-row {
+      background: #ecfdf5 !important;
+      color: #065f46 !important;
+      border-top: 2px solid #059669 !important;
     }
-    .tpl-advanced .roles-badges-table td {
-      background: #eff6ff !important;
-      color: #1d4ed8 !important;
-      border: 1px solid #bfdbfe !important;
-      border-radius: 14px !important;
-      font-weight: 600 !important;
-      font-size: 10px !important;
-      padding: 3px 10px !important;
+    .tpl-mint .total-amount-cell {
+      color: #047857 !important;
+      font-size: 15px !important;
+      font-weight: 900 !important;
     }
-
-    /* Template 4: Terms Invoice - Hybrid SOW Agreement & Commercial Invoice */
-    .tpl-terms-invoice .tax-invoice-banner {
-      background: #1e3a5f !important;
+    .tpl-mint .banking-header-title {
+      background: #047857 !important;
       color: #ffffff !important;
-      border-radius: 4px !important;
-      padding: 8px 12px !important;
+      border-radius: 20px !important;
+      padding: 4px 14px !important;
+      font-weight: 800 !important;
+      display: inline-block !important;
     }
-    .tpl-terms-invoice .tax-invoice-title::after {
-      content: ' & SERVICE AGREEMENT';
-      font-size: 11px;
-      font-weight: 600;
-      opacity: 0.9;
+    .tpl-mint .bank-info-table {
+      background: #f0fdf4 !important;
+      border: 1.5px solid #bbf7d0 !important;
+      border-radius: 12px !important;
     }
-    .tpl-terms-invoice .items-table th {
-      background: #203a43 !important;
-      color: #ffffff !important;
-      border-color: #203a43 !important;
+    .tpl-mint .roles-badges-table td {
+      background: #ecfdf5 !important;
+      color: #065f46 !important;
+      border: 1.5px solid #a7f3d0 !important;
+      border-radius: 16px !important;
+      font-weight: 700 !important;
+      padding: 4px 12px !important;
     }
-    .tpl-terms-invoice .terms-agreement-callout {
-      display: block !important;
+    .tpl-mint .terms-sec-title {
+      border-left: 4px solid #10b981 !important;
+      padding-left: 8px !important;
+      color: #065f46 !important;
+      font-weight: 800 !important;
     }
-    .tpl-terms-invoice .dual-signature-grid {
-      display: grid !important;
-    }
-
-    /* Template 5: Quick Sheet - Compact Freelance Billing Voucher */
-    .tpl-quicksheet .tax-invoice-banner {
-      background: #111827 !important;
-      border: none !important;
-      border-radius: 6px !important;
-      padding: 6px 14px !important;
-    }
-    .tpl-quicksheet .tax-invoice-title {
-      font-size: 13px !important;
-      letter-spacing: 0.12em !important;
-    }
-    .tpl-quicksheet .items-table th {
-      background: #374151 !important;
-      color: #f9fafb !important;
-      padding: 6px 6px !important;
-      font-size: 9px !important;
-    }
-    .tpl-quicksheet .items-table td {
-      padding: 6px 6px !important;
-      font-size: 10.5px !important;
-    }
-    .tpl-quicksheet .bank-info-table {
-      border: 1px solid #d1d5db !important;
-      background: #f9fafb !important;
-      padding: 6px !important;
-    }
-    .tpl-quicksheet .qr-code-img {
-      border: 2px solid #111827 !important;
-      border-radius: 6px !important;
-    }
-    
-    
 
     /* ==========================================================================
        MOBILE & PWA APP-LIKE RESPONSIVE DESIGN SYSTEM
@@ -2511,32 +2927,32 @@
       <!-- TEMPLATE PICKER WIDGET -->
       <div class="template-picker-card">
         <div class="template-picker-header">
-          <span class="template-picker-title">🎨 Invoice Design Template</span>
-          <span class="tpl-active-badge" id="lblActiveTemplate">Pro (Default)</span>
+          <span class="template-picker-title">🎨 Invoice Design Theme</span>
+          <span class="tpl-active-badge" id="lblActiveTemplate">Studio Onyx</span>
         </div>
         <div class="template-picker-grid">
-          <button type="button" class="tpl-btn active" data-tpl="pro" onclick="setInvoiceTemplate('pro')" title="Pro (Default) - Agency Standard">
-            <span class="tpl-icon">💼</span>
-            <span>Pro</span>
+          <button type="button" class="tpl-btn active" data-tpl="onyx" onclick="setInvoiceTemplate('onyx')" title="Studio Onyx - Dark Obsidian & Gold Luxury">
+            <span class="tpl-icon">🖤</span>
+            <span>Onyx</span>
           </button>
-          <button type="button" class="tpl-btn" data-tpl="simple" onclick="setInvoiceTemplate('simple')" title="Simple - Clean Hairline Minimalist">
-            <span class="tpl-icon">✨</span>
-            <span>Simple</span>
+          <button type="button" class="tpl-btn" data-tpl="swiss" onclick="setInvoiceTemplate('swiss')" title="Swiss Minimal - Massimo Vignelli Stark Black & White Grid">
+            <span class="tpl-icon">⬛</span>
+            <span>Swiss</span>
           </button>
-          <button type="button" class="tpl-btn" data-tpl="advanced" onclick="setInvoiceTemplate('advanced')" title="Advanced - Studio Gradient Luxury">
-            <span class="tpl-icon">🚀</span>
-            <span>Advanced</span>
+          <button type="button" class="tpl-btn" data-tpl="cobalt" onclick="setInvoiceTemplate('cobalt')" title="Cyber Cobalt - Electric Blue & Cyan Neo-Tech">
+            <span class="tpl-icon">💎</span>
+            <span>Cobalt</span>
           </button>
-          <button type="button" class="tpl-btn" data-tpl="terms-invoice" onclick="setInvoiceTemplate('terms-invoice')" title="Terms invoice - Legal SOW & Agreement">
-            <span class="tpl-icon">📜</span>
-            <span>Terms</span>
+          <button type="button" class="tpl-btn" data-tpl="vogue" onclick="setInvoiceTemplate('vogue')" title="Editorial Vogue - Bespoke Classical Serif & Warm Sand">
+            <span class="tpl-icon">🏛️</span>
+            <span>Vogue</span>
           </button>
-          <button type="button" class="tpl-btn" data-tpl="quicksheet" onclick="setInvoiceTemplate('quicksheet')" title="Quick Sheet - Fast Freelance Voucher">
-            <span class="tpl-icon">⚡</span>
-            <span>Quick</span>
+          <button type="button" class="tpl-btn" data-tpl="mint" onclick="setInvoiceTemplate('mint')" title="Nordic Mint - Fresh Organic Sage & Emerald Scandi">
+            <span class="tpl-icon">🌿</span>
+            <span>Mint</span>
           </button>
         </div>
-      </div>
+      </div></div>
 
       <div class="sidebar-scroll-body">
 
@@ -3347,7 +3763,7 @@
 
     <!-- RIGHT CANVAS PREVIEW PANE: LIVE A4 VIEWER -->
     <main class="app-canvas-pane">
-      <div class="canvas-scroll-stage" id="a4Stage">
+      <div class="canvas-scroll-stage tpl-onyx" data-template="onyx" id="a4Stage">
 
         <!-- ====================================================================
              PAGE 1: A4 INVOICE SHEET (EXACT PIXEL-PERFECT REPLICA)
@@ -3843,6 +4259,37 @@
       <span>Invoice Design & Pages</span>
       <button type="button" onclick="closeMobilePagesSheet()" style="background:none; border:none; color:var(--g-text-secondary); font-size:20px; cursor:pointer;">&times;</button>
     </div>
+    
+    <!-- Mobile Template Selector -->
+    <div style="padding: 10px 14px 4px 14px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <span style="font-size:11.5px; font-weight:700; color:var(--g-text-secondary);">Select Design Theme</span>
+        <span class="tpl-active-badge" id="lblActiveTemplateMobile" style="font-size:9.5px;">Studio Onyx</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:5px;">
+        <button type="button" class="tpl-btn active" data-tpl="onyx" onclick="setInvoiceTemplate('onyx')">
+          <span class="tpl-icon">🖤</span>
+          <span>Onyx</span>
+        </button>
+        <button type="button" class="tpl-btn" data-tpl="swiss" onclick="setInvoiceTemplate('swiss')">
+          <span class="tpl-icon">⬛</span>
+          <span>Swiss</span>
+        </button>
+        <button type="button" class="tpl-btn" data-tpl="cobalt" onclick="setInvoiceTemplate('cobalt')">
+          <span class="tpl-icon">💎</span>
+          <span>Cobalt</span>
+        </button>
+        <button type="button" class="tpl-btn" data-tpl="vogue" onclick="setInvoiceTemplate('vogue')">
+          <span class="tpl-icon">🏛️</span>
+          <span>Vogue</span>
+        </button>
+        <button type="button" class="tpl-btn" data-tpl="mint" onclick="setInvoiceTemplate('mint')">
+          <span class="tpl-icon">🌿</span>
+          <span>Mint</span>
+        </button>
+      </div>
+    </div>
+
     <div class="mobile-sheet-pages-list">
       <button type="button" class="mobile-sheet-page-btn active" id="mSheetPage1" onclick="selectMobilePage(1)">
         <span>📄 Page 1: Tax Invoice</span>
@@ -6758,25 +7205,24 @@
   
 
     // ==========================================================================
-    // 5 DESIGN TEMPLATES ENGINE
-    // ==========================================================================
+    // 5 RADICALLY DISTINCT DESIGN TEMPLATES ENGINE
     const INVOICE_TEMPLATES = {
-      'pro': 'Pro (Default)',
-      'simple': 'Simple',
-      'advanced': 'Advanced',
-      'terms-invoice': 'Terms invoice',
-      'quicksheet': 'Quick Sheet'
+      'onyx': 'Studio Onyx',
+      'swiss': 'Swiss Minimal',
+      'cobalt': 'Cyber Cobalt',
+      'vogue': 'Editorial Vogue',
+      'mint': 'Nordic Mint'
     };
 
-    let activeInvoiceTemplate = 'pro';
+    let activeInvoiceTemplate = 'onyx';
 
     function setInvoiceTemplate(tplKey) {
-      if (!INVOICE_TEMPLATES[tplKey]) tplKey = 'pro';
+      if (!INVOICE_TEMPLATES[tplKey]) tplKey = 'onyx';
       activeInvoiceTemplate = tplKey;
 
       const stage = document.getElementById('a4Stage');
       if (stage) {
-        stage.classList.remove('tpl-pro', 'tpl-simple', 'tpl-advanced', 'tpl-terms-invoice', 'tpl-quicksheet');
+        stage.classList.remove('tpl-onyx', 'tpl-swiss', 'tpl-cobalt', 'tpl-vogue', 'tpl-mint', 'tpl-pro', 'tpl-simple', 'tpl-advanced', 'tpl-terms-invoice', 'tpl-quicksheet');
         stage.classList.add('tpl-' + tplKey);
         stage.setAttribute('data-template', tplKey);
       }
@@ -6784,37 +7230,32 @@
       // Update badge label in sidebar and mobile sheet
       const badge = document.getElementById('lblActiveTemplate');
       if (badge) badge.textContent = INVOICE_TEMPLATES[tplKey];
+      const badgeMob = document.getElementById('lblActiveTemplateMobile');
+      if (badgeMob) badgeMob.textContent = INVOICE_TEMPLATES[tplKey];
 
       // Update button active states everywhere
       document.querySelectorAll('.tpl-btn').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-tpl') === tplKey);
       });
 
-      // Special handling for Terms Invoice template callout
-      const termsCallout = document.querySelector('.terms-agreement-callout');
-      if (termsCallout) {
-        termsCallout.style.display = tplKey === 'terms-invoice' ? 'block' : 'none';
-      }
-
       try {
-        localStorage.setItem('selected_invoice_template_v1', tplKey);
+        localStorage.setItem('selected_invoice_template_v2', tplKey);
       } catch (e) {}
 
-      showToast('🎨 Invoice template: ' + INVOICE_TEMPLATES[tplKey], 2000);
+      showToast('🎨 Invoice Theme: ' + INVOICE_TEMPLATES[tplKey], 2000);
     }
 
     function initInvoiceTemplate() {
       try {
-        const saved = localStorage.getItem('selected_invoice_template_v1');
+        const saved = localStorage.getItem('selected_invoice_template_v2');
         if (saved && INVOICE_TEMPLATES[saved]) {
           setInvoiceTemplate(saved);
           return;
         }
       } catch (e) {}
-      setInvoiceTemplate('pro');
+      setInvoiceTemplate('onyx');
     }
 
-    // ==========================================================================
     // CLEAN PDF EXPORT ENGINE (NO PAGE TITLES OR URL HEADERS)
     // ==========================================================================
     function triggerBrowserPrint() {
