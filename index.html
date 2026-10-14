@@ -1588,7 +1588,9 @@
 
       .app-workspace,
       .app-canvas-pane,
-      .canvas-scroll-stage {
+      .canvas-scroll-stage,
+      #containerOfficialTerms,
+      #containerPdfUploadTerms {
         padding: 0 !important;
         margin: 0 !important;
         background: transparent !important;
@@ -1597,6 +1599,7 @@
         width: 210mm !important;
         display: block !important;
         transform: none !important;
+        gap: 0 !important;
       }
 
       /* Wrapper card: break only if explicitly marked as needing break before another active page */
@@ -7417,6 +7420,12 @@
       for (let i = 0; i < visibleWrappers.length - 1; i++) {
         visibleWrappers[i].classList.add('print-break-after');
       }
+
+      // Explicitly collapse gap between terms pages to guarantee zero 4th blank page
+      const cot = document.getElementById('containerOfficialTerms');
+      if (cot) cot.style.gap = '0px';
+      const cpu = document.getElementById('containerPdfUploadTerms');
+      if (cpu) cpu.style.gap = '0px';
     }
 
     function triggerBrowserPrint() {
@@ -7437,6 +7446,10 @@
           if (stage) {
             stage.querySelectorAll('.print-break-after').forEach(w => w.classList.remove('print-break-after'));
           }
+          const cot = document.getElementById('containerOfficialTerms');
+          if (cot) cot.style.gap = '30px';
+          const cpu = document.getElementById('containerPdfUploadTerms');
+          if (cpu) cpu.style.gap = '30px';
         }, 1500);
       }, 200);
     }
@@ -7477,10 +7490,10 @@
         return;
       }
 
-      // Create isolated temporary off-screen container matching active template
+      // Create isolated in-flow container matching active template (fixes 794x0 blank canvas)
       const exportContainer = document.createElement('div');
       exportContainer.className = 'pdf-clean-export-container ' + (stage.className || '');
-      exportContainer.style.cssText = 'position:fixed; top:-99999px; left:-99999px; width:210mm; background:#ffffff; margin:0; padding:0; z-index:-99999;';
+      exportContainer.style.cssText = 'position: static !important; display: block !important; width: 210mm !important; background: #ffffff !important; margin: 0 !important; padding: 0 !important;';
 
       activePages.forEach((page, idx) => {
         const pageClone = page.cloneNode(true);
@@ -7492,22 +7505,11 @@
           el.style.outline = 'none';
         });
 
-        // Set strict A4 page dimensions
-        pageClone.style.width = '210mm';
-        pageClone.style.minHeight = '296.8mm';
-        pageClone.style.maxHeight = '296.8mm';
-        pageClone.style.margin = '0';
-        pageClone.style.boxShadow = 'none';
-        pageClone.style.border = 'none';
-        pageClone.style.boxSizing = 'border-box';
-        pageClone.style.overflow = 'hidden';
+        // Set strict in-flow A4 page dimensions
+        pageClone.style.cssText = 'position: relative !important; display: block !important; width: 210mm !important; height: 296.5mm !important; min-height: 296.5mm !important; max-height: 296.5mm !important; margin: 0 !important; padding: 16mm 20mm 15mm 20mm !important; box-sizing: border-box !important; overflow: hidden !important; background: #ffffff !important; border: none !important; box-shadow: none !important;';
 
         if (idx < activePages.length - 1) {
-          pageClone.style.pageBreakAfter = 'always';
-          pageClone.style.breakAfter = 'page';
-        } else {
-          pageClone.style.pageBreakAfter = 'auto';
-          pageClone.style.breakAfter = 'auto';
+          pageClone.classList.add('html2pdf__page-break');
         }
         exportContainer.appendChild(pageClone);
       });
@@ -7527,8 +7529,7 @@
           useCORS: true,
           logging: false,
           scrollY: 0,
-          scrollX: 0,
-          windowWidth: 794
+          scrollX: 0
         },
         jsPDF: {
           unit: 'mm',
