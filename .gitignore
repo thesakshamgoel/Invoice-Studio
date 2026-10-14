@@ -1,0 +1,28 @@
+# Node and build artifacts
+node_modules/
+package-lock.json
+
+# Video & large media exports
+*.mp4
+*.mov
+*.avi
+*.zip
+
+# Subprojects and scratch scripts
+duona_mograph/
+Add/
+build_*.js
+update_*.js
+check_*.js
+apply_*.js
+fix_*.js
+test_*.js
+generate_*.js
+create_*.js
+builder_*.js
+assets_base64.js
+
+# OS & IDE files
+.DS_Store
+Thumbs.db
+*.log
