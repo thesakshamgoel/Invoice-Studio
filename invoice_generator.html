@@ -1452,6 +1452,77 @@
       padding-top: 2px;
     }
 
+    /* Dynamic Acceptance Relocation Page Styling */
+    .has-page1-acceptance .banking-block {
+      margin-top: 5px !important;
+      padding: 5px 8px !important;
+    }
+    .has-page1-acceptance .banking-block table td {
+      padding: 2px 5px !important;
+    }
+    .has-page1-acceptance .terms-page3-footer-grid {
+      margin-top: 6px !important;
+      border-top: 1.5px solid var(--pdf-slate) !important;
+      padding-top: 4px !important;
+    }
+    .has-page1-acceptance .acceptance-table {
+      margin-top: 3px !important;
+      font-size: 10px !important;
+    }
+    .has-page1-acceptance .acceptance-table td {
+      padding: 3px 6px !important;
+    }
+    .has-page1-acceptance .client-sig-box {
+      height: 42px !important;
+    }
+    .has-page1-acceptance .signoff-block {
+      display: none !important;
+    }
+
+    .has-page2-acceptance .terms-page3-footer-grid {
+      margin-top: 8px !important;
+      padding-top: 6px !important;
+    }
+    .has-page2-acceptance .terms-sec-title {
+      margin-top: 4px !important;
+      margin-bottom: 2px !important;
+    }
+    .has-page2-acceptance .terms-bullet-list li {
+      margin-bottom: 2px !important;
+      font-size: 10px !important;
+      line-height: 1.38 !important;
+    }
+
+    .has-page4-acceptance .terms-page3-footer-grid {
+      margin-top: 10px !important;
+      padding-top: 8px !important;
+    }
+
+    /* Large PAID Stamp in a Box (Screen & Clean PDF) */
+    .invoice-paid-stamp {
+      display: none;
+      position: absolute;
+      top: 130px;
+      right: 42px;
+      border: 3.5px solid #137333;
+      color: #137333;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      padding: 5px 22px;
+      border-radius: 8px;
+      transform: rotate(-13deg);
+      opacity: 0.90;
+      pointer-events: none;
+      z-index: 100;
+      background: rgba(230, 244, 234, 0.75);
+      box-shadow: 0 0 0 1.5px rgba(19, 115, 51, 0.25);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
     /* Formatted Rich Terms Editor */
     .rich-terms-toolbar {
       display: flex;
@@ -3359,8 +3430,15 @@
                 </select>
               </div>
               <div class="form-field-group">
-                <label class="field-label">Shoot / Completion Date (Optional)</label>
-                <input type="text" id="inpProjectDate" class="input-app" placeholder="e.g. October 2026">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <label class="field-label" style="margin-bottom:0;">Shoot / Completion Date (Optional)</label>
+                  <div style="display:flex; gap:4px; align-items:center;">
+                    <button type="button" class="btn-app-secondary" id="btnSetTodayProjectDate" style="font-size:10px; padding:1px 6px; border-radius:4px;" title="Set to Today's Date">⚡ Today</button>
+                    <button type="button" class="btn-app-secondary" id="btnPickProjectDate" style="font-size:10px; padding:1px 6px; border-radius:4px;" title="Pick Date from Calendar">📅 Calendar</button>
+                    <input type="date" id="nativeProjectDatePicker" style="position:absolute; opacity:0; width:0; height:0; pointer-events:none;">
+                  </div>
+                </div>
+                <input type="text" id="inpProjectDate" class="input-app" placeholder="e.g. October 2026 or 15/10/2026">
               </div>
             </div>
           </div>
@@ -3533,6 +3611,13 @@
                 <label class="field-label">Quantity / Unit</label>
                 <input type="text" id="inpItemQuantity" class="input-app" value="1 Package">
               </div>
+            </div>
+
+            <div class="form-field-group" style="margin-top: 4px; margin-bottom: 8px;">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:rgba(52,168,83,0.12); border:1px solid rgba(52,168,83,0.35); padding:7px 12px; border-radius:6px; user-select:none;">
+                <input type="checkbox" id="chkPaidWatermark" style="width:16px; height:16px; accent-color:#34a853; cursor:pointer;">
+                <span style="font-size:12px; font-weight:700; color:#81c995; letter-spacing:0.3px;">MARK INVOICE AS PAID (Large PAID Stamp on PDF)</span>
+              </label>
             </div>
 
             <div class="form-field-group">
@@ -3746,7 +3831,10 @@
             </div>
 
             <div class="form-field-group">
-              <label class="field-label">Terms Source</label>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <label class="field-label" style="margin-bottom:0;">Terms Source</label>
+                <button type="button" class="btn-app-secondary" id="btnResetTermsGeneral" onclick="resetTermsToOriginal()" style="font-size:10px; padding:1px 8px; color:var(--g-blue-light); border-color:var(--g-blue-light);" title="Reset back to standard terms (Pages 2 & 3)">↺ Reset Terms</button>
+              </div>
               <select id="selectTermsSource" class="input-app">
                 <option value="official_clauses" selected>Standard Professional Clauses (1 - 9)</option>
                 <option value="custom_formatted">Custom Formatted Terms (Editable Text Box)</option>
@@ -3756,10 +3844,18 @@
 
             <!-- Custom Formatted Terms Box -->
             <div id="boxCustomFormattedTerms" style="display:none; flex-direction:column; gap:6px;">
-              <label class="field-label">Custom Formatted Terms & Clauses</label>
-              <button type="button" class="btn-app-secondary" onclick="regenerateDynamicTermsUI()" style="margin-bottom:8px; font-size:11px; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
-                <span>🔄 Auto-Generate Dynamic Terms from Active Services & Amounts</span>
-              </button>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <label class="field-label" style="margin-bottom:0;">Custom Formatted Terms & Clauses</label>
+                <button type="button" class="btn-app-secondary" id="btnResetTermsBox" onclick="resetTermsToOriginal()" style="font-size:10px; padding:1px 8px; color:var(--g-blue-light); border-color:var(--g-blue-light);" title="Reset to original terms and restore pages">↺ Reset Terms</button>
+              </div>
+              <div style="display:flex; gap:6px; margin-bottom:8px;">
+                <button type="button" class="btn-app-secondary" onclick="regenerateDynamicTermsUI()" style="flex:1; font-size:11px; display:flex; align-items:center; justify-content:center; gap:5px;">
+                  <span>🔄 Auto-Generate</span>
+                </button>
+                <button type="button" class="btn-app-secondary" id="btnResetTerms" onclick="resetTermsToOriginal()" style="flex:1; font-size:11px; display:flex; align-items:center; justify-content:center; gap:5px; color:var(--g-blue-light); border-color:var(--g-blue-light);">
+                  <span>↺ Reset Terms</span>
+                </button>
+              </div>
               <div class="rich-terms-toolbar">
                 <button type="button" class="rich-btn" onclick="insertTermsFormat('**', '**')"><b>B</b></button>
                 <button type="button" class="rich-btn" onclick="insertTermsFormat('*', '*')"><i>I</i></button>
@@ -3842,7 +3938,9 @@
         <div class="page-wrapper-card" id="pageWrapper1">
           <div class="page-index-pill"><span class="page-num-text">Page 1 of 3: Tax Invoice</span> (Interactive: Click any element to edit inline)</div>
           
-          <div class="a4-page" id="invoiceSheetPage1">
+          <div class="a4-page" id="invoiceSheetPage1" style="position:relative;">
+            <!-- Large PAID Stamp in a Box (Screen & Clean PDF) -->
+            <div id="stampInvoicePaid" class="invoice-paid-stamp">PAID</div>
             <div class="invoice-content-grid">
 
               <!-- Top Section: Header, Subject, Salutation, Items Table, Banking -->
@@ -3994,6 +4092,9 @@
                   </table>
                 </div>
 
+                <!-- Mount Target for Page 1 Acceptance (when terms are excluded) -->
+                <div id="mountAcceptancePage1"></div>
+
               </div>
 
               <!-- 6. Bottom Sign-off Block (Balanced Margin, Zero Void) -->
@@ -4024,7 +4125,7 @@
           </div>
             
             <div class="a4-page" id="invoiceSheetPage2">
-              <div class="invoice-content-grid" style="justify-content:flex-start;">
+              <div class="invoice-content-grid" style="justify-content:space-between;">
                 
                 <div class="terms-header-bar">
                   <div style="flex:1;">
@@ -4092,6 +4193,9 @@
 
                   </div> <!-- /wrapOfficialClauses -->
                 </div> <!-- /termsBodyContainer -->
+
+                <!-- Mount Target for Page 2 Acceptance (when Page 2 is the last active page) -->
+                <div id="mountAcceptancePage2"></div>
 
               </div>
             </div>
@@ -4172,29 +4276,32 @@
                   </div>
                 </div>
 
-                <!-- Page 3 Acceptance & Client Signature Footer -->
-                <div class="terms-page3-footer-grid">
-                  <div style="font-size:11px; font-weight:700; color:var(--pdf-slate); margin-bottom:4px; text-transform:uppercase;">CLIENT ACCEPTANCE & SIGN-OFF</div>
-                  <table class="acceptance-table">
-                    <tr>
-                      <td class="acceptance-header-cell" style="width:50%;">Client Details</td>
-                      <td class="acceptance-header-cell" style="width:50%;">Signature & Stamp</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div style="font-weight:700; font-size:11.5px;" class="canvas-editable" id="previewTermsClientName" data-bind-input="inpClientName" data-bind-tab="tabClient" contenteditable="true" spellcheck="false" title="Click to edit Client Name">Client Name</div>
-                        <div style="color:#333; margin-top:2px;" class="canvas-editable" id="previewTermsClientPhone" data-bind-input="inpClientPhone" data-bind-tab="tabClient" contenteditable="true" spellcheck="false" title="Click to edit Client Phone">+91 00000 00000</div>
-                        <div style="color:#555; margin-top:2px;" class="canvas-editable" id="previewTermsClientAddr" data-bind-input="inpClientArea" data-bind-tab="tabClient" contenteditable="true" spellcheck="false" title="Click to edit Client Address">Location</div>
-                        <div style="margin-top:6px; font-size:10px; color:#666;">Date: <span class="canvas-editable" id="previewTermsDate" data-bind-input="inpInvoiceDate" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Date">--/--/----</span></div>
-                      </td>
-                      <td class="canvas-clickable" onclick="switchTab('tabEsign')" title="Click to open E-Signature pad">
-                        <div class="client-sig-box">
-                          <img id="previewPage3EsignImg" class="esign-stamp-preview" src="" alt="Signature" style="display:none; margin:auto;">
-                          <div class="client-sig-line">Authorized Signatory / Stamp</div>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
+                <!-- Mount Target for Page 3 Acceptance -->
+                <div id="mountAcceptancePage3">
+                  <!-- Page 3 Acceptance & Client Signature Footer -->
+                  <div class="terms-page3-footer-grid" id="boxClientAcceptanceSignoff">
+                    <div style="font-size:11px; font-weight:700; color:var(--pdf-slate); margin-bottom:4px; text-transform:uppercase;">CLIENT ACCEPTANCE & SIGN-OFF</div>
+                    <table class="acceptance-table">
+                      <tr>
+                        <td class="acceptance-header-cell" style="width:50%;">Client Details</td>
+                        <td class="acceptance-header-cell" style="width:50%;">Signature & Stamp</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div style="font-weight:700; font-size:11.5px;" class="canvas-editable" id="previewTermsClientName" data-bind-input="inpClientName" data-bind-tab="tabClient" contenteditable="true" spellcheck="false" title="Click to edit Client Name">Client Name</div>
+                          <div style="color:#333; margin-top:2px;" class="canvas-editable" id="previewTermsClientPhone" data-bind-input="inpClientPhone" data-bind-tab="tabClient" contenteditable="true" spellcheck="false" title="Click to edit Client Phone">+91 00000 00000</div>
+                          <div style="color:#555; margin-top:2px;" class="canvas-editable" id="previewTermsClientAddr" data-bind-input="inpClientArea" data-bind-tab="tabClient" contenteditable="true" spellcheck="false" title="Click to edit Client Address">Location</div>
+                          <div style="margin-top:6px; font-size:10px; color:#666;">Date: <span class="canvas-editable" id="previewTermsDate" data-bind-input="inpInvoiceDate" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Date">--/--/----</span></div>
+                        </td>
+                        <td class="canvas-clickable" onclick="switchTab('tabEsign')" title="Click to open E-Signature pad">
+                          <div class="client-sig-box">
+                            <img id="previewPage3EsignImg" class="esign-stamp-preview" src="" alt="Signature" style="display:none; margin:auto;">
+                            <div class="client-sig-line">Authorized Signatory / Stamp</div>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
 
               </div>
@@ -4239,26 +4346,8 @@
                 </div>
               </div>
 
-              <!-- Page 4 Authorized Signatures Footer -->
-              <div class="terms-page3-footer-grid">
-                <div style="font-size:11px; font-weight:700; color:var(--pdf-slate); margin-bottom:4px; text-transform:uppercase;">SIGNATURE & ACCEPTANCE</div>
-                <table class="acceptance-table">
-                  <tr>
-                    <td class="acceptance-header-cell" style="width:50%;">Client Confirmation</td>
-                    <td class="acceptance-header-cell" style="width:50%;">Service Provider Sign-Off</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div style="font-weight:700; font-size:11.5px;" class="canvas-editable" id="previewP4ClientName" contenteditable="true">Client Name</div>
-                      <div style="color:#666; font-size:10px; margin-top:4px;">Agreed & Confirmed</div>
-                    </td>
-                    <td>
-                      <div style="font-weight:700; font-size:11.5px;" class="canvas-editable" id="previewP4CreatorName" contenteditable="true">Creator Name</div>
-                      <div style="color:#666; font-size:10px; margin-top:4px;">Authorized Representative</div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
+              <!-- Mount Target for Page 4 Acceptance (when Page 4 is the last active page) -->
+              <div id="mountAcceptancePage4"></div>
 
             </div>
           </div>
@@ -6586,19 +6675,109 @@
         });
       }
 
+      // Shoot / Completion Date Quick Controls ("⚡ Today" and "📅 Calendar")
+      const btnTodayProj = document.getElementById('btnSetTodayProjectDate');
+      if (btnTodayProj) {
+        btnTodayProj.addEventListener('click', () => {
+          const todayStr = getTodayFormatted();
+          const pInput = document.getElementById('inpProjectDate');
+          if (pInput) {
+            pInput.value = todayStr;
+            pInput.dispatchEvent(new Event('input', { bubbles: true }));
+            pulseCanvasElement('previewProjectDate');
+            showToast("Shoot / Completion date set to " + todayStr, 'info');
+          }
+        });
+      }
+
+      const btnPickProj = document.getElementById('btnPickProjectDate');
+      const nativeProjPicker = document.getElementById('nativeProjectDatePicker');
+      if (btnPickProj && nativeProjPicker) {
+        btnPickProj.addEventListener('click', () => {
+          const curVal = document.getElementById('inpProjectDate')?.value.trim();
+          const d = parseDateFlexible(curVal);
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const dd = String(d.getDate()).padStart(2, '0');
+          nativeProjPicker.value = `${yyyy}-${mm}-${dd}`;
+          if (typeof nativeProjPicker.showPicker === 'function') {
+            nativeProjPicker.showPicker();
+          } else {
+            nativeProjPicker.click();
+          }
+        });
+
+        nativeProjPicker.addEventListener('change', () => {
+          if (nativeProjPicker.value) {
+            const parts = nativeProjPicker.value.split('-');
+            if (parts.length === 3) {
+              const formatted = `${parts[2]}/${parts[1]}/${parts[0]}`;
+              const pInput = document.getElementById('inpProjectDate');
+              if (pInput) {
+                pInput.value = formatted;
+                pInput.dispatchEvent(new Event('input', { bubbles: true }));
+                showToast('Shoot/Completion date set to ' + formatted, 'info');
+              }
+            }
+          }
+        });
+      }
+
+      // Mark Invoice as PAID Watermark Stamp & Status Sync
+      const chkPaid = document.getElementById('chkPaidWatermark');
+      if (chkPaid) {
+        chkPaid.addEventListener('change', (e) => {
+          const isPaid = e.target.checked;
+          const selStatus = document.getElementById('inpPaymentStatus');
+          if (selStatus) selStatus.value = isPaid ? 'paid' : 'pending';
+          updatePreview();
+          pulseCanvasElement('stampInvoicePaid');
+          showToast(isPaid ? 'Invoice marked as PAID (Large stamp active).' : 'Invoice marked as Pending.', 'info');
+        });
+      }
+
+      const selPaymentStatus = document.getElementById('inpPaymentStatus');
+      if (selPaymentStatus) {
+        selPaymentStatus.addEventListener('change', (e) => {
+          const isPaid = e.target.value === 'paid';
+          if (chkPaid) chkPaid.checked = isPaid;
+          updatePreview();
+        });
+      }
+
       // Terms controls
       const inpCustomTerms = document.getElementById('inpCustomTermsText');
       if (inpCustomTerms) {
         inpCustomTerms.addEventListener('input', () => {
           inpCustomTerms.dataset.userEdited = 'true';
-          const termsSource = document.getElementById('selectTermsSource')?.value;
-          if (termsSource === 'custom_formatted') {
+          const selSource = document.getElementById('selectTermsSource');
+          if (selSource && selSource.value !== 'custom_formatted') {
+            selSource.value = 'custom_formatted';
+            const boxCustom = document.getElementById('boxCustomFormattedTerms');
+            if (boxCustom) boxCustom.style.display = 'flex';
+            updateTermsVisibility();
+          }
+          renderCustomFormattedTerms(inpCustomTerms.value);
+        });
+        inpCustomTerms.addEventListener('focus', () => {
+          const selSource = document.getElementById('selectTermsSource');
+          if (selSource && selSource.value !== 'custom_formatted') {
+            selSource.value = 'custom_formatted';
+            const boxCustom = document.getElementById('boxCustomFormattedTerms');
+            if (boxCustom) boxCustom.style.display = 'flex';
+            updateTermsVisibility();
             renderCustomFormattedTerms(inpCustomTerms.value);
           }
         });
       }
 
-      document.getElementById('chkIncludeTerms').addEventListener('change', updateTermsVisibility);
+      document.getElementById('chkIncludeTerms').addEventListener('change', () => {
+        updateTermsVisibility();
+        relocateAcceptanceSignoff();
+        updatePageNumbers();
+        updatePreview();
+      });
+
       document.getElementById('selectTermsSource').addEventListener('change', (e) => {
         const val = e.target.value;
         const boxCustom = document.getElementById('boxCustomFormattedTerms');
@@ -6606,54 +6785,44 @@
         if (boxCustom) boxCustom.style.display = val === 'custom_formatted' ? 'flex' : 'none';
         if (boxPdf) boxPdf.style.display = val === 'pdf_upload' ? 'flex' : 'none';
 
-        if (val === 'custom_formatted') {
+        if (val === 'official_clauses') {
+          // Re-activate Page 2 and Page 3 if they were removed
+          activePages[2] = true;
+          activePages[3] = true;
+          const w2 = document.getElementById('pageWrapper2');
+          const w3 = document.getElementById('pageWrapper3');
+          if (w2) w2.style.display = 'block';
+          if (w3) w3.style.display = 'block';
+          const sideP2 = document.getElementById('btnSideToggleP2');
+          if (sideP2) { sideP2.textContent = 'Active (Click to Remove)'; sideP2.style.color = '#ea4335'; }
+          const sideP3 = document.getElementById('btnSideToggleP3');
+          if (sideP3) { sideP3.textContent = 'Active (Click to Remove)'; sideP3.style.color = '#ea4335'; }
+          const btnNavP2 = document.getElementById('btnNavPage2');
+          if (btnNavP2) btnNavP2.style.display = 'inline-flex';
+          const btnNavP3 = document.getElementById('btnNavPage3');
+          if (btnNavP3) btnNavP3.style.display = 'inline-flex';
+
+          relocateAcceptanceSignoff();
+          updateTermsVisibility();
+          updatePageNumbers();
+          updatePreview();
+          showToast('Standard Professional Clauses active (Pages 2 & 3 restored).', 'info');
+        } else if (val === 'custom_formatted') {
           const textarea = document.getElementById('inpCustomTermsText');
           if (textarea && !textarea.value.trim()) {
-            textarea.value = `**1. SCOPE OF WORK & ENGAGEMENT**
-• Defined Roles: Services may include Cinematography, D.I.T., Editing, DI Color Grading, and Visual Effects as mutually confirmed.
-• Any services not expressly listed herein or in a signed project quote shall be treated as out-of-scope and quoted separately.
-• Payment of the advance deposit or commencement of work constitutes the Client's full and unconditional acceptance of these Terms.
-• The Service Provider operates strictly as an independent contractor.
-
-**2. FINANCIAL TERMS**
-• All quoted fees are net of applicable statutory taxes, GST, and banking transaction levies.
-• Payment is strictly due according to the payment terms specified in this invoice.
-• Late payments exceeding credit terms shall accrue interest at 1.5% per month or statutory maximum.
-
-**3. WORKING HOURS & REVISIONS**
-• Standard production day comprises up to 10 on-set hours including meal breaks. Overtime is billed at agreed hourly rates.
-• Post-production includes up to two (2) rounds of consolidation revisions based on agreed brief.
-• Additional revisions or changes after project signoff will be billed as additional scope.
-
-**4. INTELLECTUAL PROPERTY (IP) & CREDIT**
-• All raw footage, master project files, and unrendered assets remain intellectual property of the Artist until full final payment is received.
-• Upon receipt of 100% agreed fees, the Client receives a non-exclusive license to use the final deliverables as agreed.
-• The Artist retains the right to use excerpts and stills for self-promotional, portfolio, and awards purposes.
-
-**5. DATA MANAGEMENT, LIABILITY & INDEMNITY**
-• The Client is responsible for supplying adequate working storage drives. Project data is retained for seven (7) days post-delivery.
-• The Client warrants they hold all necessary licenses for provided third-party assets and fully indemnifies the Artist against related claims.
-• The Artist's liability for any technical failure or omission is strictly capped at the actual amount paid for that specific service.
-• Where the Client provides equipment, it must be in full working order; the Artist is not liable for delays from faulty Client equipment.
-
-**6. CANCELLATIONS & DELAYS**
-• If the Client cancels a confirmed shoot: (i) >48 hours prior: deposit is forfeited; (ii) <48 hours prior: 100% of agreed rate is payable.
-• Post-production projects paused by the Client for over 30 days will incur a re-initiation fee.
-• Neither party is liable for delays caused by events beyond reasonable control (force majeure).
-
-**7. GOVERNING LAW & JURISDICTION**
-• This Agreement and any dispute arising from it shall be governed exclusively by the laws of India.
-• The Parties submit to the exclusive jurisdiction of the competent courts of Mumbai.
-
-**8. CONFIDENTIALITY**
-• Both Parties agree to keep confidential all proprietary commercial terms, technical workflows, and unreleased footage for two (2) years.
-
-**9. GENERAL PROVISIONS**
-• This Agreement, together with the applicable Invoice, constitutes the entire agreement between the Parties.
-• No modification to this Agreement shall be valid unless made in writing and signed by both Parties.`;
+            textarea.value = getStandardClausesMarkdown();
           }
+          if (textarea) renderCustomFormattedTerms(textarea.value);
+          updateTermsVisibility();
+          relocateAcceptanceSignoff();
+          updatePageNumbers();
+          updatePreview();
+        } else {
+          updateTermsVisibility();
+          relocateAcceptanceSignoff();
+          updatePageNumbers();
+          updatePreview();
         }
-        updateTermsVisibility();
       });
 
       // High quality PDF.js terms upload
@@ -7099,15 +7268,171 @@
       safeSetText('previewTermsDate', effectiveDate, todayFormatted); updateDynamicTerms(false);
 
       // 10. Custom formatted terms sync if active
-      const termsSource = document.getElementById('selectTermsSource').value;
+      const termsSource = document.getElementById('selectTermsSource')?.value;
       if (termsSource === 'custom_formatted') {
-        const customText = document.getElementById('inpCustomTermsText').value.trim();
+        const customText = document.getElementById('inpCustomTermsText')?.value?.trim();
         if (customText) {
           renderCustomFormattedTerms(customText);
         }
       }
 
+      // Large PAID stamp handling
+      const isPaid = (document.getElementById('inpPaymentStatus')?.value === 'paid') || Boolean(document.getElementById('chkPaidWatermark')?.checked);
+      const stampPaid = document.getElementById('stampInvoicePaid');
+      if (stampPaid) {
+        stampPaid.style.display = isPaid ? 'block' : 'none';
+      }
+      const chkPaid = document.getElementById('chkPaidWatermark');
+      if (chkPaid && chkPaid.checked !== isPaid) {
+        chkPaid.checked = isPaid;
+      }
+
+      relocateAcceptanceSignoff();
       updateTermsVisibility();
+    }
+
+    function getStandardClausesMarkdown() {
+      return `**1. SCOPE OF WORK & ENGAGEMENT**
+• Defined Roles: Services may include Cinematography, D.I.T., Editing, DI Color Grading, and Visual Effects as mutually confirmed.
+• Any services not expressly listed herein or in a signed project quote shall be treated as out-of-scope and quoted separately.
+• Payment of the advance deposit or commencement of work constitutes the Client's full and unconditional acceptance of these Terms.
+• The Service Provider operates strictly as an independent contractor.
+
+**2. FINANCIAL TERMS**
+• All quoted fees are net of applicable statutory taxes, GST, and banking transaction levies.
+• Payment is strictly due according to the payment terms specified in this invoice.
+• Late payments exceeding credit terms shall accrue interest at 1.5% per month or statutory maximum.
+
+**3. WORKING HOURS & REVISIONS**
+• Standard production day comprises up to 10 on-set hours including meal breaks. Overtime is billed at agreed hourly rates.
+• Post-production includes up to two (2) rounds of consolidation revisions based on agreed brief.
+• Additional revisions or changes after project signoff will be billed as additional scope.
+
+**4. INTELLECTUAL PROPERTY (IP) & CREDIT**
+• All raw footage, master project files, and unrendered assets remain intellectual property of the Artist until full final payment is received.
+• Upon receipt of 100% agreed fees, the Client receives a non-exclusive license to use the final deliverables as agreed.
+• The Artist retains the right to use excerpts and stills for self-promotional, portfolio, and awards purposes.
+
+**5. DATA MANAGEMENT, LIABILITY & INDEMNITY**
+• The Client is responsible for supplying adequate working storage drives. Project data is retained for seven (7) days post-delivery.
+• The Client warrants they hold all necessary licenses for provided third-party assets and fully indemnifies the Artist against related claims.
+• The Artist's liability for any technical failure or omission is strictly capped at the actual amount paid for that specific service.
+• Where the Client provides equipment, it must be in full working order; the Artist is not liable for delays from faulty Client equipment.
+
+**6. CANCELLATIONS & DELAYS**
+• If the Client cancels a confirmed shoot: (i) >48 hours prior: deposit is forfeited; (ii) <48 hours prior: 100% of agreed rate is payable.
+• Post-production projects paused by the Client for over 30 days will incur a re-initiation fee.
+• Neither party is liable for delays caused by events beyond reasonable control (force majeure).
+
+**7. GOVERNING LAW & JURISDICTION**
+• This Agreement and any dispute arising from it shall be governed exclusively by the laws of India.
+• The Parties submit to the exclusive jurisdiction of the competent courts of Mumbai.
+
+**8. CONFIDENTIALITY**
+• Both Parties agree to keep confidential all proprietary commercial terms, technical workflows, and unreleased footage for two (2) years.
+
+**9. GENERAL PROVISIONS**
+• This Agreement, together with the applicable Invoice, constitutes the entire agreement between the Parties.
+• No modification to this Agreement shall be valid unless made in writing and signed by both Parties.`;
+    }
+
+    function resetTermsToOriginal() {
+      // 1. Reset selection to official_clauses
+      const selSource = document.getElementById('selectTermsSource');
+      if (selSource) selSource.value = 'official_clauses';
+
+      // 2. Hide custom & pdf boxes
+      const boxCustom = document.getElementById('boxCustomFormattedTerms');
+      if (boxCustom) boxCustom.style.display = 'none';
+      const boxPdf = document.getElementById('boxUploadPdfTerms');
+      if (boxPdf) boxPdf.style.display = 'none';
+
+      // 3. Reset custom terms textarea to standard markdown
+      const textarea = document.getElementById('inpCustomTermsText');
+      if (textarea) {
+        textarea.value = getStandardClausesMarkdown();
+        textarea.dataset.userEdited = 'false';
+      }
+
+      // 4. Ensure chkIncludeTerms is checked
+      const chkTerms = document.getElementById('chkIncludeTerms');
+      if (chkTerms) chkTerms.checked = true;
+
+      // 5. Restore Page 2 and Page 3 as active
+      activePages[2] = true;
+      activePages[3] = true;
+      activePages[4] = false;
+
+      const w2 = document.getElementById('pageWrapper2');
+      const w3 = document.getElementById('pageWrapper3');
+      const w4 = document.getElementById('pageWrapper4');
+      if (w2) w2.style.display = 'block';
+      if (w3) w3.style.display = 'block';
+      if (w4) w4.style.display = 'none';
+
+      // Update sidebar toggle buttons
+      const sideP2 = document.getElementById('btnSideToggleP2');
+      if (sideP2) { sideP2.textContent = 'Active (Click to Remove)'; sideP2.style.color = '#ea4335'; }
+      const sideP3 = document.getElementById('btnSideToggleP3');
+      if (sideP3) { sideP3.textContent = 'Active (Click to Remove)'; sideP3.style.color = '#ea4335'; }
+      const sideP4 = document.getElementById('btnSideToggleP4');
+      if (sideP4) { sideP4.textContent = '+ Add Page 4'; sideP4.style.color = ''; }
+
+      // Update nav buttons
+      const btnP2 = document.getElementById('btnNavPage2');
+      if (btnP2) btnP2.style.display = 'inline-flex';
+      const btnP3 = document.getElementById('btnNavPage3');
+      if (btnP3) btnP3.style.display = 'inline-flex';
+      const btnP4 = document.getElementById('btnNavPage4');
+      if (btnP4) btnP4.style.display = 'none';
+
+      // 6. Relocate acceptance, update visibility, numbers & preview
+      relocateAcceptanceSignoff();
+      updateTermsVisibility();
+      updatePageNumbers();
+      updatePreview();
+      showToast('Standard terms & pages successfully reset to original.', 'success');
+    }
+
+    function relocateAcceptanceSignoff() {
+      const boxSignoff = document.getElementById('boxClientAcceptanceSignoff');
+      if (!boxSignoff) return;
+
+      const includeTerms = document.getElementById('chkIncludeTerms')?.checked;
+      const sheetP1 = document.getElementById('invoiceSheetPage1');
+      const sheetP2 = document.getElementById('invoiceSheetPage2');
+      const sheetP4 = document.getElementById('invoiceSheetPage4');
+
+      // Remove modifier classes
+      if (sheetP1) sheetP1.classList.remove('has-page1-acceptance');
+      if (sheetP2) sheetP2.classList.remove('has-page2-acceptance');
+      if (sheetP4) sheetP4.classList.remove('has-page4-acceptance');
+
+      let targetMount = null;
+
+      // When terms are excluded or no sub-pages active, mount on Page 1
+      if (!includeTerms) {
+        targetMount = document.getElementById('mountAcceptancePage1');
+        if (sheetP1) sheetP1.classList.add('has-page1-acceptance');
+      } else {
+        // Last active page gets the acceptance block
+        if (activePages[4]) {
+          targetMount = document.getElementById('mountAcceptancePage4');
+          if (sheetP4) sheetP4.classList.add('has-page4-acceptance');
+        } else if (activePages[3]) {
+          targetMount = document.getElementById('mountAcceptancePage3');
+        } else if (activePages[2]) {
+          targetMount = document.getElementById('mountAcceptancePage2');
+          if (sheetP2) sheetP2.classList.add('has-page2-acceptance');
+        } else {
+          targetMount = document.getElementById('mountAcceptancePage1');
+          if (sheetP1) sheetP1.classList.add('has-page1-acceptance');
+        }
+      }
+
+      if (targetMount && boxSignoff.parentElement !== targetMount) {
+        targetMount.appendChild(boxSignoff);
+      }
     }
 
     function renderCustomFormattedTerms(markdown) {
@@ -7121,6 +7446,13 @@
         const out = [];
         let inList = false;
 
+        function formatInline(str) {
+          return escapeHtml(str)
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/&lt;u&gt;(.*?)&lt;\/u&gt;/g, '<u>$1</u>');
+        }
+
         for (let i = 0; i < lines.length; i++) {
           let line = lines[i].trim();
           if (!line) {
@@ -7131,32 +7463,35 @@
             continue;
           }
 
-          if (line.startsWith('**') && line.endsWith('**') && line.length > 4) {
+          // Check for Markdown headings: #, ##, ### or bold-wrapped headings: **Heading** or Numbered headings: 1. HEADING
+          const isMdHeading = /^(?:#{1,4}\s+|(?:\*\*[^*]+\*\*:?\s*$))/.test(line);
+          const isNumberedHeading = /^(?:(?:\d+\.|[A-Z]\.)\s+[A-Z0-9\s,&/\-]{3,}:?\s*$)/.test(line);
+
+          if (isMdHeading || isNumberedHeading) {
             if (inList) {
               out.push('</ul>');
               inList = false;
             }
-            const headingText = line.slice(2, -2).trim();
-            out.push('<div class="terms-sec-title" style="margin-top:8px; margin-bottom:3px;">' + headingText + '</div>');
-          } else if (line.startsWith('•') || line.startsWith('- ') || line.startsWith('* ')) {
+            let headingText = line
+              .replace(/^#{1,4}\s*/, '')
+              .replace(/^\*\*/, '')
+              .replace(/\*\*:?$/, '')
+              .replace(/:$/, '')
+              .trim();
+            out.push('<div class="terms-sec-title" style="margin-top:8px; margin-bottom:3px; font-weight:700; color:var(--pdf-slate); text-transform:uppercase;">' + escapeHtml(headingText) + '</div>');
+          } else if (line.startsWith('•') || line.startsWith('- ') || line.startsWith('* ') || /^\d+\)\s+/.test(line)) {
             if (!inList) {
               out.push('<ul class="terms-bullet-list" style="padding-left:16px; margin:2px 0 5px 0;">');
               inList = true;
             }
-            const bulletText = line.replace(/^[•\-\*]\s*/, '').trim()
-              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-              .replace(/\*(.*?)\*/g, '<em>$1</em>')
-              .replace(/<u>(.*?)<\/u>/g, '<u>$1</u>');
+            const bulletText = formatInline(line.replace(/^(?:[•\-\*]|\d+\))\s*/, '').trim());
             out.push('<li style="margin-bottom:3px; font-size:11px; line-height:1.48;">' + bulletText + '</li>');
           } else {
             if (inList) {
               out.push('</ul>');
               inList = false;
             }
-            const normalText = line
-              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-              .replace(/\*(.*?)\*/g, '<em>$1</em>')
-              .replace(/<u>(.*?)<\/u>/g, '<u>$1</u>');
+            const normalText = formatInline(line);
             out.push('<div style="margin-bottom:4px; font-size:11px; line-height:1.48;">' + normalText + '</div>');
           }
         }
@@ -7164,35 +7499,41 @@
         return out.join('');
       }
 
-      let p2Md = markdown;
+      let p2Md = markdown || '';
       let p3Md = '';
 
-      const pageBreakRegex = /\n*---+\s*(?:PAGE\s*BREAK(?:\s*\(Page\s*3\))?|Page\s*3)?\s*---+\n*/i;
-      if (pageBreakRegex.test(markdown)) {
-        const parts = markdown.split(pageBreakRegex);
-        p2Md = parts[0].trim();
-        p3Md = parts.slice(1).join('\n\n').trim();
-      } else {
-        const match5 = markdown.match(/(?:\n|^)\s*(?:\*\*)?(?:5[\.\)]|Clause\s*5\b|V[\.\)])/i);
-        if (match5 && match5.index !== undefined) {
-          p2Md = markdown.substring(0, match5.index).trim();
-          p3Md = markdown.substring(match5.index).trim();
+      if (activePages[2] && activePages[3]) {
+        const pageBreakRegex = /\n*---+\s*(?:PAGE\s*BREAK(?:\s*\(Page\s*3\))?|Page\s*3)?\s*---+\n*/i;
+        if (pageBreakRegex.test(markdown)) {
+          const parts = markdown.split(pageBreakRegex);
+          p2Md = parts[0].trim();
+          p3Md = parts.slice(1).join('\n\n').trim();
         } else {
-          const match6 = markdown.match(/(?:\n|^)\s*(?:\*\*)?(?:6[\.\)]|Clause\s*6\b|VI[\.\)])/i);
-          if (match6 && match6.index !== undefined && match6.index > 700) {
-            p2Md = markdown.substring(0, match6.index).trim();
-            p3Md = markdown.substring(match6.index).trim();
+          const match5 = markdown.match(/(?:\n|^)\s*(?:\*\*)?(?:5[\.\)]|Clause\s*5\b|V[\.\)])/i);
+          if (match5 && match5.index !== undefined) {
+            p2Md = markdown.substring(0, match5.index).trim();
+            p3Md = markdown.substring(match5.index).trim();
           } else {
-            const paragraphs = markdown.split(/\n{2,}/);
-            if (paragraphs.length > 2) {
-              const splitIdx = Math.ceil(paragraphs.length * 0.50);
-              p2Md = paragraphs.slice(0, splitIdx).join('\n\n').trim();
-              p3Md = paragraphs.slice(splitIdx).join('\n\n').trim();
+            const match6 = markdown.match(/(?:\n|^)\s*(?:\*\*)?(?:6[\.\)]|Clause\s*6\b|VI[\.\)])/i);
+            if (match6 && match6.index !== undefined && match6.index > 700) {
+              p2Md = markdown.substring(0, match6.index).trim();
+              p3Md = markdown.substring(match6.index).trim();
+            } else {
+              const paragraphs = markdown.split(/\n{2,}/);
+              if (paragraphs.length > 2) {
+                const splitIdx = Math.ceil(paragraphs.length * 0.50);
+                p2Md = paragraphs.slice(0, splitIdx).join('\n\n').trim();
+                p3Md = paragraphs.slice(splitIdx).join('\n\n').trim();
+              }
             }
           }
         }
+        p3Md = p3Md.replace(/^(?:\*\*)?5\.\s*DATA\s*MANAGEMENT.*?(?:CONTD|CONTINUED).*?(?:\*\*)?\n*/im, '').trim();
+      } else {
+        // If Page 3 is not active, all terms go to Page 2 so nothing is hidden
+        p2Md = markdown || '';
+        p3Md = '';
       }
-      p3Md = p3Md.replace(/^(?:\*\*)?5\.\s*DATA\s*MANAGEMENT.*?(?:CONTD|CONTINUED).*?(?:\*\*)?\n*/im, '').trim();
 
       if (wrapCustom) {
         wrapCustom.innerHTML = '<div style="font-size:11px; line-height:1.48; color:#111;">' + formatMd(p2Md) + '</div>';
@@ -7201,6 +7542,12 @@
         wrapCustomP3.innerHTML = '<div style="font-size:11px; line-height:1.48; color:#111;">' + (p3Md ? formatMd(p3Md) : '') + '</div>';
       }
     }
+
+    // Expose functions globally on window for inline handlers
+    window.getStandardClausesMarkdown = getStandardClausesMarkdown;
+    window.resetTermsToOriginal = resetTermsToOriginal;
+    window.relocateAcceptanceSignoff = relocateAcceptanceSignoff;
+    window.renderCustomFormattedTerms = renderCustomFormattedTerms;
 
     function updateTermsVisibility() {
       const includeTerms = document.getElementById('chkIncludeTerms').checked;
@@ -7361,6 +7708,10 @@
         }
       }
 
+      relocateAcceptanceSignoff();
+      const customText = document.getElementById('inpCustomTermsText')?.value;
+      if (customText) renderCustomFormattedTerms(customText);
+      updateTermsVisibility();
       updatePageNumbers();
       updatePreview();
 
