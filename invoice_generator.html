@@ -2074,6 +2074,14 @@
       }
     }
 
+    /* Desktop top bar: never wrap labels */
+    .app-topbar button, .app-topbar .page-nav-chip, .active-profile-pill, .wysiwyg-badge { white-space: nowrap; }
+    .app-topbar { gap: 10px; }
+    .topbar-left, .topbar-center { min-width: 0; } .topbar-center { flex: 1 1 auto; overflow: hidden; justify-content: center; } .topbar-right, .topbar-left { flex-shrink: 0; }
+    @media screen and (max-width: 1500px) and (min-width: 901px) {
+      .wysiwyg-badge, .zoom-control-bar .btn-app-secondary { display: none !important; }
+      .page-nav-chip { padding: 5px 9px; font-size: 11px; }
+    }
   </style>
 </head>
 <body class="mobile-view-editor">
@@ -5209,20 +5217,38 @@
       const balanceInp = document.getElementById('inpBalanceNumeric');
       const wordsInp = document.getElementById('inpAmountInWords');
 
+      // Advance follows the % in Payment Terms until the user types a custom advance
+      let advanceManual = false;
+      const termsInp = document.getElementById('inpPaymentTerms');
+      function advancePctFromTerms() {
+        const t = (termsInp && termsInp.value) || '';
+        const m = t.match(/(\d{1,3})\s*%/);
+        if (m) return Math.min(100, parseInt(m[1], 10));
+        return /full|100/i.test(t) ? 100 : /receipt|completion/i.test(t) ? 0 : 50;
+      }
+
       function recalculateAmounts() {
-        const total = parseFloat(totalInp.value) || 0;
-        const advance = parseFloat(advanceInp.value) || 0;
-        const balance = Math.max(0, total - advance);
-        balanceInp.value = balance > 0 ? balance : '';
+        let total = Math.max(0, parseFloat(totalInp.value) || 0);
+        if (!advanceManual && total > 0) {
+          advanceInp.value = Math.round(total * advancePctFromTerms() / 100);
+        }
+        let advance = Math.max(0, parseFloat(advanceInp.value) || 0);
+        if (advance > total) { advance = total; advanceInp.value = total || ''; }
+        const balance = total - advance;
+        balanceInp.value = total > 0 ? balance : '';
         const currency = document.getElementById('selCurrency') ? document.getElementById('selCurrency').value : 'INR';
         wordsInp.value = numberToCurrencyWords(total, currency);
         updatePreview();
       }
 
+      if (!totalInp.value) totalInp.value = 50000; // sensible sample instead of ₹00,000 placeholders
       totalInp.addEventListener('input', recalculateAmounts);
-      advanceInp.addEventListener('input', recalculateAmounts);
+      advanceInp.addEventListener('input', () => { advanceManual = advanceInp.value !== ''; recalculateAmounts(); });
+      if (termsInp) termsInp.addEventListener('input', recalculateAmounts);
+      document.addEventListener('change', e => { if (e.target.tagName === 'SELECT') setTimeout(recalculateAmounts, 0); });
       balanceInp.addEventListener('input', updatePreview);
       wordsInp.addEventListener('input', updatePreview);
+      setTimeout(recalculateAmounts, 0);
 
       // Project inputs
       document.getElementById('inpProjectName').addEventListener('input', () => {
