@@ -5268,12 +5268,19 @@
     }
 
     function getActiveProfileId() {
-      return 'profile_guest'; // Always boots into Guest ID by default
+      return activeProfileId || 'profile_guest';
     }
 
     function setActiveProfileId(id) {
-      activeProfileId = id;
-      localStorage.setItem('invoice_studio_active_profile_id', id);
+      activeProfileId = id || 'profile_guest';
+      try {
+        ['selectStudioProfile', 'topProfileSelector', 'sidebarGlobalProfileSelect'].forEach(selId => {
+          const sel = document.getElementById(selId);
+          if (sel && sel.value !== activeProfileId) {
+            sel.value = activeProfileId;
+          }
+        });
+      } catch (e) {}
     }
 
     function openPinModal() {
@@ -5596,6 +5603,11 @@
       const currentP = profiles.find(p => p.id === currentId) || profiles[0];
       const lbl = document.getElementById('txtTopActiveProfileLabel');
       if (lbl && currentP) lbl.textContent = currentP.profileName;
+
+      ['selectStudioProfile', 'topProfileSelector', 'sidebarGlobalProfileSelect'].forEach(selId => {
+        const el = document.getElementById(selId);
+        if (el) el.value = currentId;
+      });
     }
 
     function updateProfileLockUI(p) {
@@ -5790,9 +5802,19 @@
     }
 
     function switchActiveProfile(profileId) {
-      setActiveProfileId(profileId);
       const profiles = getStoredProfiles();
       const pObj = profiles.find(p => p.id === profileId);
+
+      // If switching away from TSG Studio, ensure TSG is re-locked for security
+      if (activeProfileId === 'profile_tsg' && profileId !== 'profile_tsg') {
+        const tsg = profiles.find(p => p.id === 'profile_tsg');
+        if (tsg) {
+          tsg.isLocked = true;
+          saveStoredProfiles(profiles);
+        }
+      }
+
+      setActiveProfileId(profileId);
 
       if (profileId === 'profile_guest') {
         const gIdx = profiles.findIndex(p => p.id === 'profile_guest');
@@ -5810,11 +5832,10 @@
         if (document.getElementById('inpClientCity')) document.getElementById('inpClientCity').value = '';
         if (document.getElementById('inpClientPincode')) document.getElementById('inpClientPincode').value = '';
         if (document.getElementById('inpProjectName')) document.getElementById('inpProjectName').value = '';
-        showToast('Switched to Guest Profile (Fresh clean session initialized)', 'info');
+        showToast('Switched to Guest Profile (Fresh clean session)', 'info');
       } else {
-        // ALWAYS LOCK WHEN SWITCHING BACK TO A PROTECTED PROFILE!
-        if (pObj && pObj.pinCode) {
-          pObj.isLocked = true;
+        if (pObj) {
+          pObj.isLocked = false;
           saveStoredProfiles(profiles);
         }
         showToast('Switched to profile: ' + (pObj ? pObj.profileName : 'Profile'), 'info');
@@ -5947,7 +5968,7 @@
 
       saveStoredProfiles(profiles);
       populateProfileDropdown();
-      showToast('Profile saved successfully.', 'success');
+      showToast('Profile "' + profiles[idx].profileName + '" saved successfully.', 'success');
       updatePreview();
     }
 
