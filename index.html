@@ -3420,22 +3420,29 @@
                   <label class="field-label" style="margin-bottom:0;">Invoice Code</label>
                   <button type="button" class="btn-app-secondary" id="btnAutoGenerateCode" style="font-size:10px; padding:1px 6px; border-radius:4px;" title="Format: Initials / Year / DDMM + 2-digit number">⚡ Auto-Code</button>
                 </div>
-                <input type="text" id="inpInvoiceNumber" class="input-app" value="SG/2026/131001" placeholder="e.g. SG/2026/131001">
+                <input type="text" id="inpInvoiceNumber" class="input-app" value="" placeholder="e.g. INV/2026/141001">
               </div>
               <div class="form-field-group">
-                <label class="field-label">Invoice Date</label>
-                <input type="text" id="inpInvoiceDate" class="input-app" value="13/10/2026">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <label class="field-label" style="margin-bottom:0;">Invoice Date</label>
+                  <div style="display:flex; gap:4px; align-items:center;">
+                    <button type="button" class="btn-app-secondary" id="btnSetTodayDate" style="font-size:10px; padding:1px 6px; border-radius:4px;" title="Set to Today's Date">⚡ Today</button>
+                    <button type="button" class="btn-app-secondary" id="btnPickDate" style="font-size:10px; padding:1px 6px; border-radius:4px;" title="Pick Date from Calendar">📅 Calendar</button>
+                    <input type="date" id="nativeDatePicker" style="position:absolute; opacity:0; width:0; height:0; pointer-events:none;">
+                  </div>
+                </div>
+                <input type="text" id="inpInvoiceDate" class="input-app" value="" placeholder="DD/MM/YYYY">
               </div>
             </div>
 
             <div class="form-row-2col">
               <div class="form-field-group">
                 <label class="field-label">Invoice Month</label>
-                <input type="text" id="inpInvoiceMonth" class="input-app" value="October 2026">
+                <input type="text" id="inpInvoiceMonth" class="input-app" value="" placeholder="e.g. October 2026">
               </div>
               <div class="form-field-group">
                 <label class="field-label">Financial Year</label>
-                <input type="text" id="inpFinancialYear" class="input-app" value="2026 - 2027">
+                <input type="text" id="inpFinancialYear" class="input-app" value="" placeholder="e.g. 2026 - 2027">
               </div>
             </div>
 
@@ -3867,16 +3874,16 @@
                   <!-- Right: INVOICE, Number, Borderless Meta Table -->
                   <div class="header-right">
                     <div class="invoice-big-title">INVOICE</div>
-                    <div class="invoice-number-tag canvas-editable" id="previewInvoiceNumber" data-bind-input="inpInvoiceNumber" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Invoice Number">SG/2026/014</div>
+                    <div class="invoice-number-tag canvas-editable" id="previewInvoiceNumber" data-bind-input="inpInvoiceNumber" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Invoice Number">INV/2026/01</div>
 
                     <table class="meta-table">
                       <tr>
                         <td class="meta-label">Invoice Date :</td>
-                        <td class="meta-value canvas-editable" id="previewInvoiceDate" data-bind-input="inpInvoiceDate" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Invoice Date">13/10/2026</td>
+                        <td class="meta-value canvas-editable" id="previewInvoiceDate" data-bind-input="inpInvoiceDate" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Invoice Date">--/--/----</td>
                       </tr>
                       <tr>
                         <td class="meta-label">Invoice Month :</td>
-                        <td class="meta-value canvas-editable" id="previewInvoiceMonth" data-bind-input="inpInvoiceMonth" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Invoice Month">October 2026</td>
+                        <td class="meta-value canvas-editable" id="previewInvoiceMonth" data-bind-input="inpInvoiceMonth" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Invoice Month">--</td>
                       </tr>
                       <tr>
                         <td class="meta-label">PAN No. :</td>
@@ -3927,7 +3934,7 @@
                   <tbody>
                     <tr>
                       <td class="col-desc canvas-editable" id="previewDesc1" data-bind-input="inpDesc1" data-bind-tab="tabProject" contenteditable="true" spellcheck="false" title="Click to edit Scope Description">Professional charges for Cinematography, Editing, Color grading and Sound design</td>
-                      <td rowspan="3" class="col-center canvas-editable" id="previewItemMonth" data-bind-input="inpInvoiceMonth" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" style="font-weight: 600;" title="Click to edit Month">October 2026</td>
+                      <td rowspan="3" class="col-center canvas-editable" id="previewItemMonth" data-bind-input="inpInvoiceMonth" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" style="font-weight: 600;" title="Click to edit Month">--</td>
                       <td rowspan="3" class="col-center" id="previewItemRate" style="font-weight: 600;">Gross</td>
                       <td rowspan="3" class="col-center canvas-editable" id="previewItemQuantity" data-bind-input="inpItemQuantity" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" style="font-size: 11px; line-height: 1.3;" title="Click to edit Quantity">1 Package</td>
                       <td class="col-amount canvas-editable" id="previewAmount1" data-bind-input="inpTotalNumeric" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Total Amount">₹00,000/-</td>
@@ -4178,7 +4185,7 @@
                         <div style="font-weight:700; font-size:11.5px;" class="canvas-editable" id="previewTermsClientName" data-bind-input="inpClientName" data-bind-tab="tabClient" contenteditable="true" spellcheck="false" title="Click to edit Client Name">Client Name</div>
                         <div style="color:#333; margin-top:2px;" class="canvas-editable" id="previewTermsClientPhone" data-bind-input="inpClientPhone" data-bind-tab="tabClient" contenteditable="true" spellcheck="false" title="Click to edit Client Phone">+91 00000 00000</div>
                         <div style="color:#555; margin-top:2px;" class="canvas-editable" id="previewTermsClientAddr" data-bind-input="inpClientArea" data-bind-tab="tabClient" contenteditable="true" spellcheck="false" title="Click to edit Client Address">Location</div>
-                        <div style="margin-top:6px; font-size:10px; color:#666;">Date: <span class="canvas-editable" id="previewTermsDate" data-bind-input="inpInvoiceDate" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Date">13/10/2026</span></div>
+                        <div style="margin-top:6px; font-size:10px; color:#666;">Date: <span class="canvas-editable" id="previewTermsDate" data-bind-input="inpInvoiceDate" data-bind-tab="tabItems" contenteditable="true" spellcheck="false" title="Click to edit Date">--/--/----</span></div>
                       </td>
                       <td class="canvas-clickable" onclick="switchTab('tabEsign')" title="Click to open E-Signature pad">
                         <div class="client-sig-box">
@@ -4536,18 +4543,55 @@
       }
     ];
 
-    // Helper to calculate Indian Financial Year dynamically from date (April 1 - March 31)
-    function calculateFinancialYear(dateVal) {
-      let d = new Date();
-      if (dateVal) {
-        if (dateVal.includes('-')) {
-          const p = dateVal.split('-');
-          if (p[0].length === 4) d = new Date(parseInt(p[0]), parseInt(p[1]) - 1, parseInt(p[2]));
-        } else if (dateVal.includes('/')) {
-          const p = dateVal.split('/');
-          if (p.length === 3) d = new Date(parseInt(p[2]), parseInt(p[1]) - 1, parseInt(p[0]));
+    // ==========================================================================
+    // DYNAMIC DATE & TIME HELPERS
+    // ==========================================================================
+    function getTodayFormatted() {
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yyyy = now.getFullYear();
+      return `${dd}/${mm}/${yyyy}`;
+    }
+
+    function parseDateFlexible(val) {
+      if (!val) return new Date();
+      if (val instanceof Date && !isNaN(val.getTime())) return val;
+      const str = String(val).trim();
+      if (str.includes('/')) {
+        const parts = str.split('/');
+        if (parts.length === 3) {
+          if (parts[2].length === 4) return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+          if (parts[0].length === 4) return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        }
+      } else if (str.includes('-')) {
+        const parts = str.split('-');
+        if (parts.length === 3) {
+          if (parts[0].length === 4) return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+          if (parts[2].length === 4) return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+        }
+      } else if (str.includes('.')) {
+        const parts = str.split('.');
+        if (parts.length === 3 && parts[2].length === 4) {
+          return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
         }
       }
+      const parsed = new Date(str);
+      return isNaN(parsed.getTime()) ? new Date() : parsed;
+    }
+
+    function getMonthYearFormatted(dateObjOrStr) {
+      const d = parseDateFlexible(dateObjOrStr);
+      const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      return `${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+    }
+
+    // Helper to calculate Indian Financial Year dynamically from date (April 1 - March 31)
+    function calculateFinancialYear(dateVal) {
+      const d = parseDateFlexible(dateVal);
       const year = d.getFullYear();
       const month = d.getMonth() + 1;
       return month >= 4 ? (year + ' - ' + (year + 1)) : ((year - 1) + ' - ' + year);
@@ -4570,25 +4614,64 @@
 
     // Helper to generate Smart Invoice Code (Initials / Year / DDMM + Sequence)
     function generateSmartInvoiceCode(seq = '01') {
-      const creator = (document.getElementById('inpCreatorName').value || '').trim();
+      const creator = (document.getElementById('inpCreatorName')?.value || '').trim();
       const initials = getCreatorInitials(creator);
 
-      const dateVal = (document.getElementById('inpInvoiceDate').value || '').trim();
-      let d = new Date();
-      if (dateVal) {
-        if (dateVal.includes('-')) {
-          const p = dateVal.split('-');
-          if (p[0].length === 4) d = new Date(parseInt(p[0]), parseInt(p[1]) - 1, parseInt(p[2]));
-        } else if (dateVal.includes('/')) {
-          const p = dateVal.split('/');
-          if (p.length === 3) d = new Date(parseInt(p[2]), parseInt(p[1]) - 1, parseInt(p[0]));
-        }
-      }
+      const dateVal = (document.getElementById('inpInvoiceDate')?.value || '').trim();
+      const d = parseDateFlexible(dateVal);
       const year = d.getFullYear();
       const dd = String(d.getDate()).padStart(2, '0');
       const mm = String(d.getMonth() + 1).padStart(2, '0');
       const seqStr = String(seq).padStart(2, '0');
       return initials + '/' + year + '/' + dd + mm + seqStr;
+    }
+
+    function initDynamicDate() {
+      const todayStr = getTodayFormatted();
+      const inpDate = document.getElementById('inpInvoiceDate');
+      if (inpDate) {
+        inpDate.value = todayStr;
+      }
+      const inpMonth = document.getElementById('inpInvoiceMonth');
+      if (inpMonth && (!inpMonth.dataset.userEdited || inpMonth.dataset.userEdited !== 'true')) {
+        inpMonth.value = getMonthYearFormatted(new Date());
+      }
+      const inpFy = document.getElementById('inpFinancialYear');
+      if (inpFy && (!inpFy.dataset.userEdited || inpFy.dataset.userEdited !== 'true')) {
+        inpFy.value = calculateFinancialYear(todayStr);
+      }
+      const inpNum = document.getElementById('inpInvoiceNumber');
+      if (inpNum && (!inpNum.value || inpNum.value.includes('131001') || inpNum.value === 'SG/2026/014')) {
+        inpNum.value = generateSmartInvoiceCode('01');
+      }
+    }
+
+    function handleInvoiceDateChange(isUserAction = false) {
+      const inpDate = document.getElementById('inpInvoiceDate');
+      if (!inpDate) return;
+      const dVal = inpDate.value.trim();
+      if (!dVal) return;
+
+      const parsedDate = parseDateFlexible(dVal);
+
+      // Auto update Invoice Month if user has not manually customized the month field
+      const inpMonth = document.getElementById('inpInvoiceMonth');
+      if (inpMonth && (isUserAction || !inpMonth.dataset.userEdited || inpMonth.dataset.userEdited === 'false')) {
+        if (dVal.length >= 6) {
+          inpMonth.value = getMonthYearFormatted(parsedDate);
+        }
+      }
+
+      // Auto update Financial Year if user has not manually edited FY field
+      const inpFy = document.getElementById('inpFinancialYear');
+      if (inpFy && (isUserAction || !inpFy.dataset.userEdited || inpFy.dataset.userEdited === 'false')) {
+        if (dVal.length >= 6) {
+          inpFy.value = calculateFinancialYear(dVal);
+        }
+      }
+
+      updatePreview();
+      updateDynamicTerms();
     }
 
     // Pulse animation to highlight updated canvas element
@@ -4740,6 +4823,7 @@
     // INITIALIZATION
     // ==========================================================================
     window.addEventListener('DOMContentLoaded', () => {
+      initDynamicDate();
       initProfiles();
       initHonorifics();
       initServicesTags();
@@ -4813,6 +4897,22 @@
             document.getElementById('inpBalanceNumeric').value = bal > 0 ? bal : '';
             const cur = document.getElementById('selCurrency') ? document.getElementById('selCurrency').value : 'INR';
             document.getElementById('inpAmountInWords').value = numberToCurrencyWords(total, cur);
+          } else if (inputId === 'inpInvoiceDate') {
+            inputEl.value = rawText;
+            if (rawText.length >= 6) {
+              const d = parseDateFlexible(rawText);
+              const inpMonth = document.getElementById('inpInvoiceMonth');
+              if (inpMonth && inpMonth.dataset.userEdited !== 'true') {
+                inpMonth.value = getMonthYearFormatted(d);
+              }
+              const inpFy = document.getElementById('inpFinancialYear');
+              if (inpFy && inpFy.dataset.userEdited !== 'true') {
+                inpFy.value = calculateFinancialYear(rawText);
+              }
+            }
+            const otherDateEl = el.id === 'previewInvoiceDate' ? document.getElementById('previewTermsDate') : document.getElementById('previewInvoiceDate');
+            if (otherDateEl) otherDateEl.textContent = rawText;
+            updateDynamicTerms();
           } else {
             inputEl.value = rawText;
           }
@@ -4828,6 +4928,9 @@
 
         // Clean formatting on blur
         el.addEventListener('blur', () => {
+          if (el.dataset.bindInput === 'inpInvoiceDate') {
+            handleInvoiceDateChange(false);
+          }
           updatePreview();
         });
       });
@@ -5974,7 +6077,7 @@
 
     function resetCurrentProfile() {
       if (activeProfileId === 'profile_tsg') {
-        const tsg = DEFAULT_PROFILES[0];
+        const tsg = DEFAULT_PROFILES.find(p => p.id === 'profile_tsg') || DEFAULT_PROFILES[1];
         document.getElementById('inpCreatorName').value = tsg.creatorName;
         document.getElementById('inpCreatorEmail').value = tsg.creatorEmail;
         document.getElementById('inpCreatorWebsite').value = tsg.creatorWebsite;
@@ -6345,6 +6448,14 @@
         });
       }
 
+      // Invoice Month manual edit tracker
+      const inpInvoiceMo = document.getElementById('inpInvoiceMonth');
+      if (inpInvoiceMo) {
+        inpInvoiceMo.addEventListener('input', () => {
+          inpInvoiceMo.dataset.userEdited = 'true';
+        });
+      }
+
       // Financial year manual edit tracker
       const inpFinancialYr = document.getElementById('inpFinancialYear');
       if (inpFinancialYr) {
@@ -6353,15 +6464,69 @@
         });
       }
 
-      // Dynamic Financial year update when date changes
-      document.getElementById('inpInvoiceDate').addEventListener('change', () => {
-        const dVal = document.getElementById('inpInvoiceDate').value.trim();
-        const fyVal = calculateFinancialYear(dVal);
-        if (inpFinancialYr && inpFinancialYr.dataset.userEdited !== 'true') {
-          inpFinancialYr.value = fyVal;
-        }
-        updatePreview();
-      });
+      // Dynamic Date & Month & FY updates when date changes
+      const inpInvDate = document.getElementById('inpInvoiceDate');
+      if (inpInvDate) {
+        inpInvDate.addEventListener('input', () => handleInvoiceDateChange(false));
+        inpInvDate.addEventListener('change', () => handleInvoiceDateChange(false));
+      }
+
+      // Quick "⚡ Today" Button
+      const btnToday = document.getElementById('btnSetTodayDate');
+      if (btnToday) {
+        btnToday.addEventListener('click', () => {
+          const todayStr = getTodayFormatted();
+          const dInput = document.getElementById('inpInvoiceDate');
+          if (dInput) dInput.value = todayStr;
+          
+          if (inpInvoiceMo) {
+            delete inpInvoiceMo.dataset.userEdited;
+            inpInvoiceMo.value = getMonthYearFormatted(new Date());
+          }
+          if (inpFinancialYr) {
+            delete inpFinancialYr.dataset.userEdited;
+            inpFinancialYr.value = calculateFinancialYear(todayStr);
+          }
+          pulseCanvasElement('previewInvoiceDate');
+          pulseCanvasElement('previewInvoiceMonth');
+          pulseCanvasElement('previewFinancialYear');
+          handleInvoiceDateChange(true);
+          showToast("Invoice date set to today's date: " + todayStr, 'success');
+        });
+      }
+
+      // Calendar Date Picker Button
+      const btnPick = document.getElementById('btnPickDate');
+      const nativePicker = document.getElementById('nativeDatePicker');
+      if (btnPick && nativePicker) {
+        btnPick.addEventListener('click', () => {
+          const curVal = document.getElementById('inpInvoiceDate')?.value.trim();
+          const d = parseDateFlexible(curVal);
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const dd = String(d.getDate()).padStart(2, '0');
+          nativePicker.value = `${yyyy}-${mm}-${dd}`;
+          if (typeof nativePicker.showPicker === 'function') {
+            nativePicker.showPicker();
+          } else {
+            nativePicker.click();
+          }
+        });
+
+        nativePicker.addEventListener('change', () => {
+          if (nativePicker.value) {
+            const parts = nativePicker.value.split('-');
+            if (parts.length === 3) {
+              const formatted = `${parts[2]}/${parts[1]}/${parts[0]}`;
+              const dInput = document.getElementById('inpInvoiceDate');
+              if (dInput) dInput.value = formatted;
+              handleInvoiceDateChange(true);
+              pulseCanvasElement('previewInvoiceDate');
+              showToast('Invoice date set to ' + formatted, 'info');
+            }
+          }
+        });
+      }
 
       // Terms controls
       document.getElementById('chkIncludeTerms').addEventListener('change', updateTermsVisibility);
@@ -6679,23 +6844,34 @@
       if (skipElementId !== 'previewSalutation') safeSetText('previewSalutation', salutation, 'Respected Sir / Madam,');
 
       // 4. Metadata Box
+      const todayFormatted = getTodayFormatted();
+      const rawDateVal = (document.getElementById('inpInvoiceDate')?.value || '').trim();
+      const effectiveDate = rawDateVal || todayFormatted;
+      const parsedDate = parseDateFlexible(effectiveDate);
+      const computedMonth = getMonthYearFormatted(parsedDate);
+      const computedFy = calculateFinancialYear(effectiveDate);
+
       if (skipElementId !== 'previewInvoiceNumber') {
         safeSetText('previewInvoiceNumber', document.getElementById('inpInvoiceNumber').value, generateSmartInvoiceCode('01'));
       }
-      if (skipElementId !== 'previewInvoiceDate') safeSetText('previewInvoiceDate', document.getElementById('inpInvoiceDate').value, '13/10/2026');
-      if (skipElementId !== 'previewInvoiceMonth') safeSetText('previewInvoiceMonth', document.getElementById('inpInvoiceMonth').value, 'October 2026');
+      if (skipElementId !== 'previewInvoiceDate') safeSetText('previewInvoiceDate', effectiveDate, todayFormatted);
       
+      const inpMonth = document.getElementById('inpInvoiceMonth');
+      if (inpMonth && (!inpMonth.dataset.userEdited || inpMonth.dataset.userEdited === 'false')) {
+        inpMonth.value = computedMonth;
+      }
+      if (skipElementId !== 'previewInvoiceMonth') safeSetText('previewInvoiceMonth', (inpMonth && inpMonth.value) ? inpMonth.value : computedMonth, computedMonth);
+      if (skipElementId !== 'previewItemMonth') safeSetText('previewItemMonth', (inpMonth && inpMonth.value) ? inpMonth.value : computedMonth, computedMonth);
+
       const panVal = document.getElementById('inpPanNo').value.trim();
       if (skipElementId !== 'previewPanNo') safeSetText('previewPanNo', panVal, 'DNCPG1658G');
 
       // Dynamic Financial Year calculation
-      const invDateVal = document.getElementById('inpInvoiceDate').value.trim();
-      const computedFy = calculateFinancialYear(invDateVal);
       const inpFy = document.getElementById('inpFinancialYear');
       if (inpFy && (!inpFy.dataset.userEdited || inpFy.dataset.userEdited === 'false')) {
         inpFy.value = computedFy;
       }
-      if (skipElementId !== 'previewFinancialYear') safeSetText('previewFinancialYear', inpFy ? inpFy.value : computedFy, computedFy);
+      if (skipElementId !== 'previewFinancialYear') safeSetText('previewFinancialYear', (inpFy && inpFy.value) ? inpFy.value : computedFy, computedFy);
       if (skipElementId !== 'previewPaymentTerms') safeSetText('previewPaymentTerms', document.getElementById('inpPaymentTerms').value, 'Advance 50%, Balance on Completion');
       if (skipElementId !== 'previewDueDate') safeSetText('previewDueDate', document.getElementById('inpDueDate').value, 'Due on Receipt');
 
@@ -6838,7 +7014,7 @@
       safeSetText('previewTermsClientName', clientFullName, 'Client Name');
       safeSetText('previewTermsClientPhone', phoneDisplay, '+91 00000 00000');
       safeSetText('previewTermsClientAddr', combinedAddress, 'Location');
-      safeSetText('previewTermsDate', document.getElementById('inpInvoiceDate').value, '13/10/2026'); updateDynamicTerms();
+      safeSetText('previewTermsDate', effectiveDate, todayFormatted); updateDynamicTerms();
 
       // 10. Custom formatted terms sync if active
       const termsSource = document.getElementById('selectTermsSource').value;
@@ -7583,7 +7759,7 @@
       const projectName = document.getElementById('inpProjectName')?.value.trim() || '';
       const phrase = (typeof buildNaturalServicePhrase === 'function' && typeof selectedServices !== 'undefined') ? buildNaturalServicePhrase(selectedServices) : 'creative services';
       const paymentTermsText = document.getElementById('inpPaymentTerms')?.value.trim() || '50% Advance, 50% on Final Delivery';
-      const invoiceDate = document.getElementById('inpInvoiceDate')?.value.trim() || '14/10/2026';
+      const invoiceDate = document.getElementById('inpInvoiceDate')?.value.trim() || (typeof getTodayFormatted === 'function' ? getTodayFormatted() : '14/10/2026');
       const currencySymbol = (typeof getCurrencySymbol === 'function') ? getCurrencySymbol() : '₹';
 
       let totalVal = Math.max(0, parseFloat(document.getElementById('inpTotalNumeric')?.value) || 0);
