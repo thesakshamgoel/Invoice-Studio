@@ -604,6 +604,2121 @@
     }
 
     // --- GOOGLE AUTH & FIREBASE PROFILE ISOLATION ---
+    function selectGoogleAccount(name, email) {
+      const demoUser = {
+        uid: 'google_' + email.replace(/[^a-zA-Z0-9]/g, '_'),
+        displayName: name,
+        email: email,
+        photoURL: 'https://lh3.googleusercontent.com/a/default-user'
+      };
+
+      localStorage.setItem('invoice_studio_google_user', JSON.stringify(demoUser));
+      currentGoogleUser = demoUser;
+      applyGoogleUserUI(demoUser);
+      closeFirebaseConfigModal();
+
+      // Ensure profile is initialized with TSG default credentials if Saksham Goel
+      const storageKey = getProfilesStorageKey();
+      let storedProfiles = localStorage.getItem(storageKey);
+      if (!storedProfiles) {
+        const seedProfile = JSON.parse(JSON.stringify(DEFAULT_PROFILES.find(p => p.id === 'profile_tsg') || DEFAULT_PROFILES[0]));
+        seedProfile.id = 'profile_' + demoUser.uid;
+        seedProfile.profileName = name + ' (Google Profile) 🔒';
+        seedProfile.creatorName = name;
+        seedProfile.creatorEmail = email;
+        seedProfile.history = [];
+        localStorage.setItem(storageKey, JSON.stringify([seedProfile]));
+      }
+
+      populateProfileDropdown();
+      const profiles = getStoredProfiles();
+      loadProfileData(profiles[0].id);
+      renderHistoryUI();
+      updateHistoryBadge();
+      showToast('🔒 Signed in as ' + name + ' (' + email + ')! Account isolated.', 'success');
+    }
+
+    function submitCustomGoogleAccount() {
+      const name = document.getElementById('inpCustomGoogleName')?.value?.trim() || 'Google User';
+      const email = document.getElementById('inpCustomGoogleEmail')?.value?.trim() || 'user@gmail.com';
+      selectGoogleAccount(name, email);
+    }
+
+    function initFirebaseAuth() {
+      try {
+        const savedUser = localStorage.getItem('invoice_studio_google_user');
+        if (savedUser) {
+          try {
+            currentGoogleUser = JSON.parse(savedUser);
+            applyGoogleUserUI(currentGoogleUser);
+            populateProfileDropdown();
+            renderHistoryUI();
+            updateHistoryBadge();
+            return;
+          } catch(e) {}
+        }
+      } catch (err) {
+        console.warn('Google Auth init warning:', err);
+      }
+    }
+
+    function handleGoogleSignOut() {
+      localStorage.removeItem('invoice_studio_google_user');
+      currentGoogleUser = null;
+      applyGoogleUserUI(null);
+      populateProfileDropdown();
+      const profiles = getStoredProfiles();
+      loadProfileData(profiles[0].id);
+      renderHistoryUI();
+      updateHistoryBadge();
+      showToast('🚪 Signed out of Google Account. Returned to local session.', 'info');
+    }
+
+    // Initialize Firebase and Render History UI on Startup
+    setTimeout(function() {
+      initFirebaseAuth();
+      renderHistoryUI();
+      updateHistoryBadge();
+    }, 300);
+
+    // === END INVOICE STUDIO PROFILE HISTORY & GOOGLE AUTH ENGINE ===
+
+  </script>
+  <script src="html2pdf.bundle.min.js"></script>
+  <!-- Firebase App & Auth SDKs for Google Login & Account Profiles -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    if (typeof html2pdf === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
+    }
+  </script>
+  <style>
+    /* ==========================================================================
+       GOOGLE WORKSPACE / MATERIAL 3 DARK THEME DESIGN SYSTEM
+       ========================================================================== */
+    :root {
+      /* Google Dark Theme Palette */
+      --g-bg-base: #121316;
+      --g-bg-surface: #1a1c21;
+      --g-bg-surface-elevated: #242730;
+      --g-bg-input: #15171b;
+      --g-border: #323742;
+      --g-border-hover: #4a5160;
+      --g-border-focus: #8ab4f8;
+      
+      /* Google Workspace Accents */
+      --g-blue: #1a73e8;
+      --g-blue-hover: #1557b0;
+      --g-blue-light: #8ab4f8;
+      --g-blue-subtle: rgba(138, 180, 248, 0.12);
+      --g-green: #34a853;
+      --g-amber: #fbbc04;
+      --g-red: #ea4335;
+      
+      /* Typography */
+      --g-text-primary: #f1f3f4;
+      --g-text-secondary: #bdc1c6;
+      --g-text-tertiary: #80868b;
+      --g-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      
+      /* Exact Reference PDF Invoice Palette */
+      --pdf-slate: #3e4c5e;
+      --pdf-border: #000000;
+      --pdf-text: #000000;
+      --pdf-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--g-font);
+      background-color: var(--g-bg-base);
+      color: var(--g-text-primary);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* Slider Styling for Logo Sizing */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: var(--g-border);
+      height: 4px;
+      border-radius: 2px;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--g-blue-light);
+      cursor: pointer;
+      transition: transform 0.12s ease;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.25);
+      background: #ffffff;
+    }
+
+    /* Minimalist Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #393e48;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #565d6c;
+    }
+
+    /* ==========================================================================
+       TOP APP BAR
+       ========================================================================== */
+    .app-topbar {
+      height: 52px;
+      background: #17181c;
+      border-bottom: 1px solid var(--g-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+      z-index: 50;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-brand-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .app-brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1a73e8, #4285f4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      box-shadow: 0 2px 6px rgba(26, 115, 232, 0.4);
+    }
+
+    .app-brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      color: var(--g-text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .active-profile-pill {
+      font-size: 11.5px;
+      background: var(--g-blue-subtle);
+      color: var(--g-blue-light);
+      border: 1px solid rgba(138, 180, 248, 0.25);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+    .active-profile-pill:hover {
+      background: rgba(138, 180, 248, 0.2);
+      border-color: var(--g-blue-light);
+    }
+
+    .wysiwyg-badge {
+      font-size: 11px;
+      background: rgba(52, 168, 83, 0.15);
+      color: #81c995;
+      border: 1px solid rgba(52, 168, 83, 0.3);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-dot-pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--g-green);
+      display: inline-block;
+      box-shadow: 0 0 6px var(--g-green);
+    }
+
+    .topbar-center {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .page-nav-pill-group {
+      display: flex;
+      background: #111215;
+      border: 1px solid var(--g-border);
+      border-radius: 20px;
+      padding: 2px;
+    }
+
+    .page-nav-chip {
+      background: transparent;
+      border: none;
+      color: var(--g-text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .page-nav-chip:hover {
+      color: var(--g-text-primary);
+    }
+    .page-nav-chip.active {
+      background: var(--g-bg-surface-elevated);
+      color: var(--g-blue-light);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .zoom-control-bar {
+      display: flex;
+      align-items: center;
+      background: #111215;
+      border: 1px solid var(--g-border);
+      border-radius: 18px;
+      padding: 2px 4px;
+      gap: 2px;
+    }
+
+    .btn-zoom-circle {
+      background: transparent;
+      border: none;
+      color: var(--g-text-secondary);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .btn-zoom-circle:hover {
+      background: var(--g-border);
+      color: var(--g-text-primary);
+    }
+
+    .zoom-pct-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--g-text-secondary);
+      min-width: 44px;
+      text-align: center;
+    }
+
+    .btn-app-secondary {
+      background: #23262d;
+      border: 1px solid var(--g-border);
+      color: var(--g-text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-app-secondary:hover {
+      background: #2d313a;
+      border-color: var(--g-border-hover);
+    }
+
+    .btn-google-primary {
+      background: var(--g-blue);
+      border: 1px solid transparent;
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 7px 18px;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .btn-google-primary:hover {
+      background: var(--g-blue-hover);
+      box-shadow: 0 4px 10px rgba(26, 115, 232, 0.4);
+    }
+
+    /* ==========================================================================
+       MAIN APP WORKSPACE
+       ========================================================================== */
+    .app-workspace {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      height: calc(100vh - 52px);
+    }
+
+    /* LEFT SIDEBAR: GOOGLE WORKSPACE INSPECTOR */
+    .app-sidebar {
+      width: 440px;
+      flex-shrink: 0;
+      background: var(--g-bg-surface);
+      border-right: 1px solid var(--g-border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 20;
+    }
+
+    /* ICON RAIL HEADER: NO HORIZONTAL SCROLL, TOOLTIP ON HOVER */
+    .sidebar-nav-header {
+      padding: 10px 14px;
+      background: #181a1f;
+      border-bottom: 1px solid var(--g-border);
+      flex-shrink: 0;
+    }
+
+    .tab-icons-rail {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .tab-icon-btn {
+      flex: 1;
+      height: 38px;
+      background: #131417;
+      border: 1px solid var(--g-border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--g-text-secondary);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-icon-btn:hover {
+      background: #252831;
+      border-color: var(--g-blue-light);
+      color: var(--g-text-primary);
+      transform: translateY(-1px);
+    }
+
+    .tab-icon-btn.active {
+      background: var(--g-blue);
+      border-color: var(--g-blue);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(26, 115, 232, 0.4);
+    }
+
+    /* Tooltip on hover: ensure no clipping or overflow cutoff */
+    .sidebar-nav-header {
+      overflow: visible !important;
+      position: relative;
+      z-index: 150;
+    }
+
+    .tab-icons-rail {
+      overflow: visible !important;
+    }
+
+    .tab-icon-btn .tab-tooltip {
+      position: absolute;
+      top: 44px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-4px);
+      background: #282c35;
+      border: 1px solid var(--g-border);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    .tab-icon-btn:hover .tab-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Rightmost tab (Terms & Annexure) aligns to right edge so it NEVER cuts off */
+    .tab-icon-btn:last-child .tab-tooltip {
+      left: auto !important;
+      right: 0 !important;
+      transform: translateY(-4px) !important;
+    }
+    .tab-icon-btn:last-child:hover .tab-tooltip {
+      transform: translateY(0) !important;
+    }
+
+    /* Leftmost tab aligns to left edge */
+    .tab-icon-btn:first-child .tab-tooltip {
+      left: 0 !important;
+      right: auto !important;
+      transform: translateY(-4px) !important;
+    }
+    .tab-icon-btn:first-child:hover .tab-tooltip {
+      transform: translateY(0) !important;
+    }
+
+    /* Sidebar Scrollable Body */
+    .sidebar-scroll-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-pane-content {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .tab-pane-content.active {
+      display: flex;
+    }
+
+    /* Section Cards */
+    .panel-card {
+      background: var(--g-bg-surface-elevated);
+      border: 1px solid var(--g-border);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .panel-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 8px;
+    }
+
+    .panel-card-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--g-text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    /* Form Fields Grid & Controls */
+    .form-row-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-row-3col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .form-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--g-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .field-helper {
+      font-size: 10px;
+      color: var(--g-text-tertiary);
+      text-transform: none;
+      font-weight: 400;
+    }
+
+    .input-app {
+      background: var(--g-bg-input);
+      border: 1px solid var(--g-border);
+      border-radius: 6px;
+      color: var(--g-text-primary);
+      font-size: 12.5px;
+      padding: 7px 10px;
+      font-family: inherit;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .input-app:focus {
+      border-color: var(--g-border-focus);
+      box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.2);
+    }
+
+    /* PULSING HIGHLIGHT ANIMATION WHEN DEEP-LINKED FROM CANVAS */
+    @keyframes fieldPulseHighlight {
+      0% {
+        border-color: #8ab4f8;
+        box-shadow: 0 0 0 4px rgba(138, 180, 248, 0.5);
+        background-color: rgba(26, 115, 232, 0.25);
+      }
+      50% {
+        border-color: #8ab4f8;
+        box-shadow: 0 0 0 6px rgba(138, 180, 248, 0.35);
+        background-color: rgba(26, 115, 232, 0.18);
+      }
+      100% {
+        border-color: var(--g-border);
+        box-shadow: none;
+        background-color: var(--g-bg-input);
+      }
+    }
+
+    .input-field-pulse {
+      animation: fieldPulseHighlight 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    }
+
+    textarea.input-app {
+      resize: vertical;
+      min-height: 56px;
+      line-height: 1.4;
+    }
+
+    select.input-app {
+      cursor: pointer;
+    }
+
+    /* STEP WIZARD NAVIGATION BAR (PREVIOUS / NEXT) */
+    .wizard-footer-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      padding: 12px 2px 20px 2px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .wizard-step-label {
+      font-size: 11px;
+      color: var(--g-text-tertiary);
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    /* Quick Suggestion Chips */
+    .suggestion-chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .chip-btn {
+      background: #191b20;
+      border: 1px solid var(--g-border);
+      color: var(--g-text-secondary);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .chip-btn:hover {
+      background: #252830;
+      border-color: var(--g-blue-light);
+      color: var(--g-text-primary);
+    }
+    .chip-btn.selected {
+      background: var(--g-blue-subtle);
+      border-color: var(--g-blue-light);
+      color: var(--g-blue-light);
+      font-weight: 600;
+    }
+
+    /* Active Services Selected Pill Box */
+    .selected-tags-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: var(--g-bg-input);
+      border: 1px dashed var(--g-border);
+      border-radius: 6px;
+      padding: 6px;
+      min-height: 38px;
+      align-items: center;
+    }
+
+    .service-tag {
+      background: var(--g-bg-surface-elevated);
+      border: 1px solid var(--g-border);
+      color: var(--g-text-primary);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .service-tag-remove {
+      cursor: pointer;
+      color: var(--g-text-tertiary);
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1;
+    }
+    .service-tag-remove:hover {
+      color: var(--g-red);
+    }
+
+    /* E-Sign Pad Area */
+    .esign-canvas-container {
+      background: #ffffff;
+      border: 2px dashed #9aa0a6;
+      border-radius: 8px;
+      position: relative;
+      cursor: crosshair;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+      touch-action: none;
+    }
+
+    #canvasEsign {
+      display: block;
+      width: 100%;
+      height: 140px;
+      touch-action: none;
+    }
+
+    .esign-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .pen-color-picker {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pen-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.1s ease;
+    }
+    .pen-dot:hover {
+      transform: scale(1.15);
+    }
+    .pen-dot.active {
+      border-color: #ffffff;
+      box-shadow: 0 0 0 1px var(--g-blue);
+    }
+
+    /* Modal for New Profile */
+    .app-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .app-modal-backdrop.active {
+      display: flex;
+    }
+
+    .app-modal-dialog {
+      background: var(--g-bg-surface-elevated);
+      border: 1px solid var(--g-border);
+      border-radius: 12px;
+      width: 480px;
+      max-width: 90vw;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+    }
+
+    /* RIGHT CANVAS PREVIEW PANE (GOOGLE DOCS VIEWER STYLE) */
+    .app-canvas-pane {
+      flex: 1;
+      background: #141517;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .canvas-scroll-stage {
+      flex: 1;
+      overflow: auto;
+      padding: 30px 20px 80px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .page-wrapper-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      transform-origin: top center;
+      transition: transform 0.15s ease-out;
+    }
+
+    .page-index-pill {
+      background: rgba(30, 32, 38, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--g-border);
+      color: var(--g-text-secondary);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ==========================================================================
+       PIXEL-PERFECT A4 INVOICE SHEET (210mm x 297mm) - EXACT PDF MATCH
+       ========================================================================== */
+    .a4-page {
+      width: 210mm;
+      height: 297mm;
+      min-height: 297mm;
+      max-height: 297mm;
+      background: #ffffff;
+      color: var(--pdf-text);
+      padding: 16mm 20mm 15mm 20mm;
+      box-sizing: border-box;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.2);
+      border-radius: 2px;
+      font-family: var(--pdf-font);
+      font-size: 11.5px;
+      line-height: 1.35;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      user-select: text;
+    }
+
+    .invoice-content-grid {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+    }
+
+    /* ==========================================================================
+       INTERACTIVE CANVAS INLINE EDITING & TWO-WAY SYNC STYLES
+       ========================================================================== */
+    .canvas-editable {
+      position: relative;
+      transition: background-color 0.15s ease, outline 0.15s ease;
+      border-radius: 2px;
+      cursor: text;
+      outline: none;
+    }
+
+    .canvas-editable:hover {
+      background-color: rgba(26, 115, 232, 0.08);
+      outline: 1.5px dashed #1a73e8;
+      outline-offset: 2px;
+    }
+
+    .canvas-editable:focus {
+      background-color: rgba(26, 115, 232, 0.14);
+      outline: 2px solid #1a73e8;
+      outline-offset: 2px;
+    }
+
+    .canvas-clickable {
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border-radius: 4px;
+    }
+
+    .canvas-clickable:hover {
+      outline: 2px dashed #1a73e8;
+      outline-offset: 3px;
+      filter: brightness(1.05);
+    }
+
+    /* Top Header Grid: 55% Left / 45% Right */
+    .invoice-header-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+      margin-bottom: 12px;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    /* Prominent, high-visibility logo sizing matching PDF reference */
+    .invoice-logo-img {
+      height: 68px;
+      max-height: 68px;
+      width: auto;
+      align-self: flex-start;
+      object-fit: contain;
+      object-position: left;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    .creator-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: #000;
+      margin-bottom: 1px;
+      display: inline-block;
+    }
+
+    .creator-detail {
+      font-size: 11px;
+      color: #111;
+      line-height: 1.35;
+      display: inline-block;
+    }
+
+    .bill-to-section {
+      margin-top: 14px;
+    }
+
+    .bill-to-label {
+      font-size: 11px;
+      color: #555;
+      margin-bottom: 2px;
+    }
+
+    .bill-to-name {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #000;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .bill-to-detail {
+      font-size: 11px;
+      color: #111;
+      line-height: 1.35;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .bill-to-email {
+      font-size: 11px;
+      color: #0056b3;
+      text-decoration: underline;
+      line-height: 1.35;
+      word-break: break-all;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* Clickable interactive links on canvas */
+    .canvas-link {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      display: block;
+      margin-bottom: 2px;
+      transition: color 0.15s ease;
+    }
+
+    .creator-detail.canvas-link {
+      color: #111;
+      text-decoration: none;
+    }
+
+    .creator-detail.canvas-link:hover {
+      text-decoration: underline;
+      color: #0056b3;
+    }
+
+    .bill-to-email.canvas-link {
+      color: #0056b3;
+      text-decoration: underline;
+    }
+
+    /* Right Column Metadata (Exact borderless match) */
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    .invoice-big-title {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-align: right;
+      line-height: 1;
+      color: #000;
+      margin-bottom: 3px;
+    }
+
+    .invoice-number-tag {
+      font-size: 12px;
+      font-weight: 600;
+      color: #777;
+      text-align: right;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    .meta-table {
+      border-collapse: collapse;
+      font-size: 10.5px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .meta-table td {
+      padding: 1.5px 0;
+      vertical-align: top;
+    }
+
+    .meta-label {
+      color: #555;
+      font-weight: 600;
+      text-align: right;
+      padding-right: 6px !important;
+      white-space: nowrap;
+      font-size: 10.5px;
+    }
+
+    .meta-value {
+      color: #000;
+      font-weight: 700;
+      text-align: left;
+      white-space: normal;
+      font-size: 10.5px;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    /* Center Subject / Registration Block */
+    .center-subject-block {
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .kind-attention-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #777;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .kind-attention-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 7px;
+      display: inline-block;
+    }
+
+    .registration-label {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #000;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .registration-pill {
+      background-color: transparent;
+      color: #000000;
+      border: 1px solid var(--pdf-border);
+      border-radius: 0;
+      padding: 6px 14px;
+      font-size: 11.5px;
+      font-weight: 500;
+      line-height: 1.45;
+      text-align: center;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* High contrast highlight & selection on Registration Pill */
+    .registration-pill.canvas-editable:hover {
+      outline: 2px dashed #ffd700 !important;
+      outline-offset: 3px !important;
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.45) !important;
+    }
+
+    .registration-pill.canvas-editable:focus {
+      outline: 2.5px solid #ffd700 !important;
+      outline-offset: 3px !important;
+      box-shadow: 0 0 16px rgba(255, 215, 0, 0.65) !important;
+    }
+
+    .registration-pill::selection,
+    .registration-pill *::selection {
+      background-color: #ffd700 !important;
+      color: #000000 !important;
+    }
+
+    #inpRegistrationText:focus {
+      border-color: #8ab4f8 !important;
+      box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.25) !important;
+    }
+
+    #inpRegistrationText::selection {
+      background-color: #8ab4f8 !important;
+      color: #000000 !important;
+    }
+
+    /* Salutation & Lead-in */
+    .salutation-block {
+      margin-top: 10px;
+      margin-bottom: 8px;
+      font-size: 11.5px;
+      color: #000;
+    }
+
+    .salutation-line {
+      font-weight: 400;
+      display: inline-block;
+    }
+
+    .summary-lead-in {
+      margin-top: 2px;
+      font-weight: 400;
+    }
+
+    /* Line Items Table */
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid var(--pdf-border);
+      font-size: 11.5px;
+      margin-bottom: 10px;
+    }
+
+    .items-table th {
+      background-color: var(--pdf-slate);
+      color: #ffffff;
+      font-weight: 700;
+      text-align: center;
+      padding: 6px 4px;
+      border: 1px solid var(--pdf-border);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .items-table td {
+      border: 1px solid var(--pdf-border);
+      padding: 6px 8px;
+      color: #000;
+    }
+
+    .items-table td.col-desc {
+      text-align: left;
+    }
+
+    .items-table td.col-center {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .items-table td.col-amount {
+      text-align: center;
+      font-weight: 700;
+      vertical-align: middle;
+    }
+
+    .items-table tr.total-row td {
+      border: 1px solid var(--pdf-border);
+      padding: 6px 8px;
+    }
+
+    .items-table td.total-label {
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      text-align: left;
+    }
+
+    .items-table td.total-amount-cell {
+      font-weight: 800;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .items-table td.words-cell {
+      text-align: center;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 6px 8px;
+    }
+
+    /* Banking & UPI Grid Block */
+    .banking-block {
+      margin-top: 10px;
+    }
+
+    .banking-header-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 5px;
+      color: #000;
+    }
+
+    .bank-qr-grid {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid var(--pdf-border);
+    }
+
+    .bank-qr-grid td {
+      border: 1px solid var(--pdf-border);
+    }
+
+    .bank-label-cell {
+      background-color: var(--pdf-slate);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 10.5px;
+      padding: 5px 8px;
+      width: 27%;
+      text-align: left;
+      white-space: nowrap;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .bank-value-cell {
+      background-color: #ffffff;
+      color: #000000;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 5px 10px;
+      width: 48%;
+      text-align: left;
+    }
+
+    /* Dynamic two-column bank layout when QR is not included */
+    .bank-qr-grid.no-qr .bank-label-cell {
+      width: 35%;
+    }
+    .bank-qr-grid.no-qr .bank-value-cell {
+      width: 65%;
+    }
+
+    .qr-container-cell {
+      width: 25%;
+      text-align: center;
+      vertical-align: middle;
+      padding: 0;
+      background: #ffffff;
+    }
+
+    .qr-box-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 2px;
+    }
+
+    .qr-image-display {
+      width: 88px;
+      height: 88px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .qr-label-strip {
+      border-top: 1px solid var(--pdf-border);
+      width: 100%;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-align: center;
+      padding: 3px 0;
+      background: #ffffff;
+      color: #000;
+    }
+
+    /* Sign-off Block */
+    .signoff-block {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .signoff-left {
+      font-size: 11.5px;
+      color: #000;
+    }
+
+    .signoff-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      min-width: 160px;
+    }
+
+    .esign-stamp-preview {
+      max-height: 48px;
+      max-width: 150px;
+      object-fit: contain;
+      margin-bottom: 2px;
+      display: block;
+    }
+
+    .signoff-creator-name {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #000;
+      text-align: right;
+      display: inline-block;
+    }
+
+    /* ==========================================================================
+       TERMS & CONDITIONS (PAGES 2 & 3)
+       ========================================================================== */
+    .terms-header-bar {
+      border-bottom: 2px solid var(--pdf-slate);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .terms-main-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--pdf-slate);
+      letter-spacing: 0.6px;
+    }
+
+    .terms-sub-title {
+      font-size: 10px;
+      font-weight: 600;
+      color: #666;
+      letter-spacing: 0.4px;
+    }
+
+    .terms-top-logo {
+      height: 44px;
+      width: auto;
+      max-width: 130px;
+      object-fit: contain;
+    }
+
+    .terms-body-text {
+      font-size: 11px;
+      line-height: 1.48;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .terms-sec-title {
+      font-size: 11.8px;
+      font-weight: 800;
+      color: var(--pdf-slate);
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .terms-subhead {
+      font-size: 11px;
+      font-weight: 700;
+      color: #333;
+      margin-top: 3px;
+    }
+
+    .roles-badges-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 4px 0;
+    }
+
+    .roles-badges-table td {
+      border: 1px solid var(--pdf-slate);
+      background: rgba(62, 76, 94, 0.08);
+      font-weight: 700;
+      font-size: 11px;
+      text-align: center;
+      padding: 4px 3px;
+      color: #222;
+    }
+
+    .terms-bullet-list {
+      padding-left: 16px;
+      margin: 2px 0;
+    }
+
+    .terms-bullet-list li {
+      margin-bottom: 3px;
+      font-size: 11px;
+      line-height: 1.48;
+    }
+
+    /* Page 3 Acceptance & Client Signature Table */
+    .terms-page3-footer-grid {
+      margin-top: 14px;
+      border-top: 1.5px solid var(--pdf-slate);
+      padding-top: 12px;
+    }
+
+    .acceptance-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5px;
+      margin-top: 8px;
+    }
+
+    .acceptance-table td {
+      border: 1px solid #444;
+      padding: 6px 8px;
+      vertical-align: top;
+    }
+
+    .acceptance-header-cell {
+      background: var(--pdf-slate);
+      color: #ffffff;
+      font-weight: 700;
+      text-align: center;
+      font-size: 11px;
+      padding: 4px !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .client-sig-box {
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .client-sig-line {
+      border-top: 1px dashed #777;
+      width: 80%;
+      text-align: center;
+      font-size: 9.5px;
+      color: #555;
+      padding-top: 2px;
+    }
+
+    /* Dynamic Acceptance Relocation Styling (Clean, Balanced Proportions) */
+    .has-page1-acceptance.a4-page {
+      padding: 13mm 18mm 12mm 18mm !important;
+    }
+    .has-page1-acceptance .invoice-header-grid {
+      margin-bottom: 8px !important;
+    }
+    .has-page1-acceptance .invoice-logo-img {
+      max-height: 62px !important;
+    }
+    .has-page1-acceptance .desc-hero-banner {
+      margin: 6px 0 !important;
+      padding: 5px 14px !important;
+    }
+    .has-page1-acceptance .items-table th,
+    .has-page1-acceptance .items-table td {
+      padding: 6px 10px !important;
+    }
+    .has-page1-acceptance .bank-table th,
+    .has-page1-acceptance .bank-table td {
+      padding: 4px 10px !important;
+    }
+    .has-page1-acceptance .acceptance-box {
+      margin-top: auto !important;
+      padding-top: 6px !important;
+    })/g, function(match, p1) {
+          return String.fromCharCode('0x' + p1);
+        }));
+      } catch (err) {
+        console.error('Encoding error:', err);
+        return '';
+      }
+    }
+
+    function decodePayloadBase64(b64) {
+      try {
+        const binaryStr = atob(b64.trim());
+        const jsonStr = decodeURIComponent(Array.prototype.map.call(binaryStr, function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonStr);
+      } catch (err) {
+        console.error('Decoding error:', err);
+        return null;
+      }
+    }
+
+    // --- CAPTURE COMPLETE INVOICE STATE ---
+    function captureCurrentInvoiceState() {
+      const getVal = (id, fallback = '') => {
+        const el = document.getElementById(id);
+        return el ? el.value : fallback;
+      };
+      const getChk = (id, fallback = false) => {
+        const el = document.getElementById(id);
+        return el ? Boolean(el.checked) : fallback;
+      };
+
+      const invNum = getVal('inpInvoiceNumber') || (document.getElementById('invNumText')?.textContent?.trim() || 'INV-001');
+      const clientName = getVal('inpClientName') || (document.getElementById('invClientName')?.textContent?.trim() || 'Client');
+      const creatorName = getVal('inpCreatorName') || 'Saksham Goel';
+      const totalNum = parseFloat(getVal('inpTotalNumeric')) || 0;
+      const advanceNum = parseFloat(getVal('inpAdvanceNumeric')) || 0;
+      const balanceNum = parseFloat(getVal('inpBalanceNumeric')) || 0;
+
+      const currencySymbol = (typeof getCurrencySymbol === 'function') ? getCurrencySymbol() : '₹';
+      const totalFormatted = (typeof formatCurrency === 'function' && totalNum > 0) ? formatCurrency(totalNum) : (currencySymbol + totalNum.toLocaleString('en-IN') + '/-');
+
+      return {
+        version: '2.0',
+        app: 'Invoice Studio',
+        timestamp: Date.now(),
+        savedAt: new Date().toISOString(),
+        displayDate: (typeof getTodayFormatted === 'function') ? getTodayFormatted() : new Date().toLocaleDateString(),
+        activeProfileId: (typeof getActiveProfileId === 'function') ? getActiveProfileId() : 'profile_guest',
+        activeInvoiceTemplate: typeof activeInvoiceTemplate !== 'undefined' ? activeInvoiceTemplate : 'onyx',
+        activePages: typeof activePages !== 'undefined' ? { ...activePages } : { 1: true, 2: true, 3: true, 4: false },
+        activeHonorific: typeof activeHonorific !== 'undefined' ? activeHonorific : '',
+        
+        // Creator Details
+        creatorName: creatorName,
+        creatorEmail: getVal('inpCreatorEmail'),
+        creatorWebsite: getVal('inpCreatorWebsite'),
+        creatorPhone: getVal('inpCreatorPhone'),
+        creatorAddr1: getVal('inpCreatorAddr1'),
+        creatorAddr2: getVal('inpCreatorAddr2'),
+        panNo: getVal('inpPanNo'),
+
+        // Client Details
+        clientName: clientName,
+        countryCode: getVal('selectCountryCode', '+91'),
+        clientPhone: getVal('inpClientPhone'),
+        clientEmail: getVal('inpClientEmail'),
+        clientArea: getVal('inpClientArea'),
+        clientCity: getVal('inpClientCity'),
+        clientPincode: getVal('inpClientPincode'),
+        kindAttention: getVal('inpKindAttention'),
+        salutation: getVal('inpSalutation'),
+        customTag: getVal('inpCustomTag'),
+
+        // Project Details
+        projectName: getVal('inpProjectName'),
+        projectType: getVal('inpProjectType'),
+        projectDate: getVal('inpProjectDate'),
+        descPrefix: getVal('selDescPrefix'),
+        bannerPrefix: getVal('selBannerPrefix'),
+        desc1: getVal('inpDesc1'),
+        registrationText: getVal('inpRegistrationText'),
+        selectedServices: (typeof selectedServices !== 'undefined' && Array.isArray(selectedServices)) ? [...selectedServices] : [],
+
+        // Metadata & Dates
+        invoiceNumber: invNum,
+        invoiceDate: getVal('inpInvoiceDate'),
+        invoiceMonth: getVal('inpInvoiceMonth'),
+        financialYear: getVal('inpFinancialYear'),
+        paymentTermsPreset: getVal('selPaymentTermsPreset'),
+        paymentTerms: getVal('inpPaymentTerms'),
+        dueDatePreset: getVal('selDueDatePreset'),
+        dueDate: getVal('inpDueDate'),
+
+        // Financials
+        currency: getVal('selCurrency', 'INR'),
+        totalNumeric: totalNum,
+        advanceNumeric: advanceNum,
+        balanceNumeric: balanceNum,
+        totalFormatted: totalFormatted,
+        paymentStatus: getVal('inpPaymentStatus', 'pending'),
+        itemQuantity: getVal('inpItemQuantity', '1 Package'),
+        paidWatermark: getChk('chkPaidWatermark'),
+        amountInWords: getVal('inpAmountInWords'),
+
+        // Bank Details
+        bankNameOfAccount: getVal('inpBankNameOfAccount'),
+        bankName: getVal('inpBankName'),
+        bankAccountNo: getVal('inpBankAccountNo'),
+        bankIfsc: getVal('inpBankIfsc'),
+        bankUpi: getVal('inpBankUpi'),
+        showBankMobile: getChk('chkShowBankMobile'),
+        bankMobile: getVal('inpBankMobile'),
+        showQrCode: getChk('chkShowQrCode'),
+        qrSrc: typeof currentQrSrc !== 'undefined' ? currentQrSrc : '',
+
+        // Branding & Signatures
+        logoSrc: typeof currentLogoSrc !== 'undefined' ? currentLogoSrc : '',
+        esignSrc: typeof currentEsignDataUrl !== 'undefined' ? currentEsignDataUrl : '',
+        esignMode: getVal('selectEsignMode', 'draw'),
+        typeEsignName: getVal('inpTypeEsignName'),
+        esignFont: getVal('selectEsignFont'),
+
+        // Terms & Conditions
+        includeTerms: getChk('chkIncludeTerms', true),
+        customTermsText: getVal('txtCustomOfficialTerms')
+      };
+    }
+
+    // --- RESTORE INVOICE STATE ---
+    function restoreInvoiceState(state) {
+      if (!state || typeof state !== 'object') {
+        showToast('⚠️ Invalid invoice state data.', 'warning');
+        return false;
+      }
+
+      const setVal = (id, val) => {
+        if (val === undefined || val === null) return;
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      };
+      const setChk = (id, val) => {
+        if (val === undefined || val === null) return;
+        const el = document.getElementById(id);
+        if (el) el.checked = Boolean(val);
+      };
+
+      // 1. Template
+      if (state.activeInvoiceTemplate && typeof setInvoiceTemplate === 'function') {
+        setInvoiceTemplate(state.activeInvoiceTemplate);
+      }
+
+      // 2. Creator
+      setVal('inpCreatorName', state.creatorName);
+      setVal('inpCreatorEmail', state.creatorEmail);
+      setVal('inpCreatorWebsite', state.creatorWebsite);
+      setVal('inpCreatorPhone', state.creatorPhone);
+      setVal('inpCreatorAddr1', state.creatorAddr1);
+      setVal('inpCreatorAddr2', state.creatorAddr2);
+      setVal('inpPanNo', state.panNo);
+
+      // 3. Client
+      setVal('inpClientName', state.clientName);
+      setVal('selectCountryCode', state.countryCode || '+91');
+      setVal('inpClientPhone', state.clientPhone);
+      setVal('inpClientEmail', state.clientEmail);
+      setVal('inpClientArea', state.clientArea);
+      setVal('inpClientCity', state.clientCity);
+      setVal('inpClientPincode', state.clientPincode);
+      setVal('inpKindAttention', state.kindAttention);
+      setVal('inpSalutation', state.salutation);
+      setVal('inpCustomTag', state.customTag);
+
+      if (state.activeHonorific !== undefined) {
+        activeHonorific = state.activeHonorific;
+        document.querySelectorAll('.honorific-pill').forEach(pill => {
+          pill.classList.toggle('active', pill.getAttribute('data-honorific') === activeHonorific);
+        });
+      }
+
+      // 4. Project & Services
+      setVal('inpProjectName', state.projectName);
+      setVal('inpProjectType', state.projectType);
+      setVal('inpProjectDate', state.projectDate);
+      setVal('selDescPrefix', state.descPrefix);
+      setVal('selBannerPrefix', state.bannerPrefix);
+      setVal('inpDesc1', state.desc1);
+      setVal('inpRegistrationText', state.registrationText);
+
+      if (Array.isArray(state.selectedServices)) {
+        selectedServices = [...state.selectedServices];
+        if (typeof renderServiceChips === 'function') renderServiceChips();
+        if (typeof updatePage2RolesBadges === 'function') updatePage2RolesBadges();
+      }
+
+      // 5. Metadata & Dates
+      setVal('inpInvoiceNumber', state.invoiceNumber);
+      setVal('inpInvoiceDate', state.invoiceDate);
+      setVal('inpInvoiceMonth', state.invoiceMonth);
+      setVal('inpFinancialYear', state.financialYear);
+      setVal('selPaymentTermsPreset', state.paymentTermsPreset);
+      setVal('inpPaymentTerms', state.paymentTerms);
+      setVal('selDueDatePreset', state.dueDatePreset);
+      setVal('inpDueDate', state.dueDate);
+
+      // 6. Financials
+      setVal('selCurrency', state.currency || 'INR');
+      setVal('inpTotalNumeric', state.totalNumeric);
+      setVal('inpAdvanceNumeric', state.advanceNumeric);
+      setVal('inpBalanceNumeric', state.balanceNumeric);
+      setVal('inpPaymentStatus', state.paymentStatus || 'pending');
+      setVal('inpItemQuantity', state.itemQuantity || '1 Package');
+      setChk('chkPaidWatermark', state.paidWatermark);
+      setVal('inpAmountInWords', state.amountInWords);
+
+      // 7. Bank Details
+      setVal('inpBankNameOfAccount', state.bankNameOfAccount);
+      setVal('inpBankName', state.bankName);
+      setVal('inpBankAccountNo', state.bankAccountNo);
+      setVal('inpBankIfsc', state.bankIfsc);
+      setVal('inpBankUpi', state.bankUpi);
+      setChk('chkShowBankMobile', state.showBankMobile);
+      setVal('inpBankMobile', state.bankMobile);
+      setChk('chkShowQrCode', state.showQrCode);
+
+      if (state.qrSrc !== undefined) {
+        currentQrSrc = state.qrSrc;
+        const previewSidebarQr = document.getElementById('previewSidebarQr');
+        const previewQrImg = document.getElementById('previewQrImage');
+        if (previewSidebarQr) previewSidebarQr.src = currentQrSrc;
+        if (previewQrImg) previewQrImg.src = currentQrSrc;
+      }
+
+      // 8. Logo & Signatures
+      if (state.logoSrc !== undefined) {
+        currentLogoSrc = state.logoSrc;
+        if (typeof updateLogoElements === 'function') updateLogoElements();
+      }
+
+      if (state.esignSrc !== undefined) {
+        currentEsignDataUrl = state.esignSrc;
+        setVal('selectEsignMode', state.esignMode || 'draw');
+        setVal('inpTypeEsignName', state.typeEsignName || '');
+        setVal('selectEsignFont', state.esignFont || 'font-caveat');
+      }
+
+      // 9. Terms & Conditions
+      setChk('chkIncludeTerms', state.includeTerms !== false);
+      if (state.customTermsText !== undefined) {
+        setVal('txtCustomOfficialTerms', state.customTermsText);
+      }
+
+      // 10. Active Pages
+      if (state.activePages && typeof togglePage === 'function') {
+        Object.keys(state.activePages).forEach(pageNum => {
+          togglePage(parseInt(pageNum, 10), state.activePages[pageNum]);
+        });
+      }
+
+      // 11. Refresh Previews & Dynamic Layout
+      if (typeof updateCurrencySymbols === 'function') updateCurrencySymbols(state.currency || 'INR');
+      if (typeof updatePreview === 'function') updatePreview();
+      if (typeof updateDynamicTerms === 'function') updateDynamicTerms(false);
+      if (typeof updateTermsVisibility === 'function') updateTermsVisibility();
+      if (typeof updatePageNumbers === 'function') updatePageNumbers();
+      if (typeof relocateAcceptanceSignoff === 'function') relocateAcceptanceSignoff();
+
+      return true;
+    }
+
+    // --- RE-EDITABLE PDF FILE IMPORTER ---
+    function triggerOpenSavedPdf() {
+      const fileInp = document.getElementById('fileInputOpenSavedPdf');
+      if (fileInp) {
+        fileInp.value = '';
+        fileInp.click();
+      }
+    }
+
+    function handlePdfFileInput(file) {
+      if (!file) return;
+      if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+        showToast('⚠️ Please select a valid PDF file.', 'warning');
+        return;
+      }
+
+      showToast('🔍 Inspecting PDF for embedded Invoice Studio state...', 2500);
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const text = evt.target.result;
+        let payload = null;
+
+        // 1. Check EOF Trailer marker
+        const startMarker = '%INVOICE_STUDIO_PAYLOAD_START%';
+        const endMarker = '%INVOICE_STUDIO_PAYLOAD_END%';
+        const startIdx = text.indexOf(startMarker);
+        const endIdx = text.indexOf(endMarker);
+
+        if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+          const b64 = text.substring(startIdx + startMarker.length, endIdx).trim();
+          payload = decodePayloadBase64(b64);
+        }
+
+        // 2. Fallback: check /Subject (INVOICE_STUDIO_PAYLOAD:...)
+        if (!payload) {
+          const subMatch = text.match(/INVOICE_STUDIO_PAYLOAD:([A-Za-z0-9+/=]+)/);
+          if (subMatch && subMatch[1]) {
+            payload = decodePayloadBase64(subMatch[1]);
+          }
+        }
+
+        if (payload) {
+          restoreInvoiceState(payload);
+          // Also record snapshot in current profile history
+          saveInvoiceToProfileHistory(false);
+          closeInvoiceHistoryModal();
+          showToast('🎉 Restored Invoice #' + (payload.invoiceNumber || 'INV') + ' for ' + (payload.clientName || 'Client') + '! Ready for full re-editing.', 'success');
+        } else {
+          showToast('⚠️ This PDF does not contain Invoice Studio re-editable data. Please choose a PDF generated by Invoice Studio.', 'warning');
+        }
+      };
+
+      reader.onerror = function() {
+        showToast('⚠️ Error reading PDF file.', 'warning');
+      };
+
+      reader.readAsText(file);
+    }
+
+    // Window drag-and-drop listener for PDF files
+    window.addEventListener('dragover', function(e) {
+      if (e.dataTransfer && e.dataTransfer.types && Array.from(e.dataTransfer.types).includes('Files')) {
+        e.preventDefault();
+        const overlay = document.getElementById('pdfDropOverlay');
+        if (overlay) overlay.classList.add('active');
+      }
+    });
+
+    window.addEventListener('dragleave', function(e) {
+      if (e.relatedTarget === null || e.clientY <= 0 || e.clientX <= 0) {
+        const overlay = document.getElementById('pdfDropOverlay');
+        if (overlay) overlay.classList.remove('active');
+      }
+    });
+
+    window.addEventListener('drop', function(e) {
+      const overlay = document.getElementById('pdfDropOverlay');
+      if (overlay) overlay.classList.remove('active');
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        const file = e.dataTransfer.files[0];
+        if (file.name.toLowerCase().endsWith('.pdf')) {
+          e.preventDefault();
+          handlePdfFileInput(file);
+        }
+      }
+    });
+
+    // --- PROFILE INVOICE HISTORY (UP TO 3 SAVES PER PROFILE) ---
+    function getActiveProfileHistory() {
+      const profiles = getStoredProfiles();
+      const activeId = getActiveProfileId();
+      const profile = profiles.find(p => p.id === activeId);
+      if (!profile) return [];
+      if (!Array.isArray(profile.history)) profile.history = [];
+      return profile.history.slice(0, 3);
+    }
+
+    function saveInvoiceToProfileHistory(isManualToast = false) {
+      const profiles = getStoredProfiles();
+      const activeId = getActiveProfileId();
+      const idx = profiles.findIndex(p => p.id === activeId);
+      if (idx === -1) return null;
+
+      if (!Array.isArray(profiles[idx].history)) {
+        profiles[idx].history = [];
+      }
+
+      const state = captureCurrentInvoiceState();
+      const invNum = state.invoiceNumber || 'INV-001';
+      const clientName = state.clientName || 'Client';
+
+      const historyEntry = {
+        id: 'hist_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        savedAt: new Date().toISOString(),
+        displayDate: (typeof getTodayFormatted === 'function') ? getTodayFormatted() : new Date().toLocaleDateString(),
+        displayTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        invoiceNumber: invNum,
+        clientName: clientName,
+        projectName: state.projectName || '',
+        totalAmount: state.totalFormatted || ('₹' + (state.totalNumeric || 0)),
+        currency: state.currency || 'INR',
+        paymentStatus: state.paymentStatus || 'pending',
+        template: state.activeInvoiceTemplate || 'onyx',
+        state: state
+      };
+
+      // Add to front and enforce strict limit of 3 saves
+      profiles[idx].history.unshift(historyEntry);
+      if (profiles[idx].history.length > 3) {
+        profiles[idx].history = profiles[idx].history.slice(0, 3);
+      }
+
+      saveStoredProfiles(profiles);
+      renderHistoryUI();
+      updateHistoryBadge();
+
+      if (isManualToast) {
+        showToast('💾 Invoice snapshot saved to ' + profiles[idx].profileName + ' (' + profiles[idx].history.length + '/3 saves)!', 'success');
+      }
+      return historyEntry;
+    }
+
+    function deleteInvoiceHistoryItem(entryId) {
+      const profiles = getStoredProfiles();
+      const activeId = getActiveProfileId();
+      const idx = profiles.findIndex(p => p.id === activeId);
+      if (idx === -1) return;
+
+      if (Array.isArray(profiles[idx].history)) {
+        profiles[idx].history = profiles[idx].history.filter(h => h.id !== entryId);
+        saveStoredProfiles(profiles);
+        renderHistoryUI();
+        updateHistoryBadge();
+        showToast('🗑️ History item deleted. Slot freed.', 'info');
+      }
+    }
+
+    function restoreHistoryItem(entryId) {
+      const history = getActiveProfileHistory();
+      const item = history.find(h => h.id === entryId);
+      if (!item || !item.state) {
+        showToast('⚠️ History state not found.', 'warning');
+        return;
+      }
+      restoreInvoiceState(item.state);
+      closeInvoiceHistoryModal();
+      showToast('✏️ Re-editing Invoice #' + item.invoiceNumber + ' (' + item.clientName + ')', 'success');
+    }
+
+    function quickExportHistoryPdf(entryId) {
+      const history = getActiveProfileHistory();
+      const item = history.find(h => h.id === entryId);
+      if (!item || !item.state) return;
+      restoreInvoiceState(item.state);
+      closeInvoiceHistoryModal();
+      downloadCleanPdf();
+    }
+
+    function renderHistoryUI() {
+      const history = getActiveProfileHistory();
+      const sidebarContainer = document.getElementById('sidebarHistoryContainer');
+      const modalContainer = document.getElementById('modalHistorySlotsContainer');
+
+      const profiles = getStoredProfiles();
+      const activeP = profiles.find(p => p.id === getActiveProfileId()) || profiles[0];
+      const pName = activeP ? activeP.profileName : 'Active Profile';
+      
+      const modalPLabel = document.getElementById('modalHistoryProfileName');
+      if (modalPLabel) modalPLabel.textContent = pName;
+
+      // Render 3 slots
+      let sidebarHtml = '';
+      let modalHtml = '';
+
+      for (let i = 0; i < 3; i++) {
+        const item = history[i];
+        if (item) {
+          const statusBadge = item.paymentStatus === 'paid' 
+            ? '<span style="font-size:9.5px; padding:1px 6px; border-radius:10px; background:rgba(52,168,83,0.18); color:#81c995; font-weight:700;">✓ PAID</span>'
+            : '<span style="font-size:9.5px; padding:1px 6px; border-radius:10px; background:rgba(251,188,4,0.18); color:#fdd663; font-weight:700;">⏳ PENDING</span>';
+
+          // Sidebar card
+          sidebarHtml += `
+            <div class="history-card-item">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:10px; font-weight:700; color:var(--g-blue-light, #8ab4f8);">Slot ${i+1} • ${escapeHtml(item.invoiceNumber)}</span>
+                <span style="font-size:9.5px; color:var(--g-text-tertiary);">${escapeHtml(item.displayDate)}</span>
+              </div>
+              <div style="font-size:11.5px; font-weight:600; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(item.clientName)}</div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                <span style="font-size:12px; font-weight:700; color:var(--g-green, #34a853);">${escapeHtml(item.totalAmount)}</span>
+                ${statusBadge}
+              </div>
+              <div style="display:flex; gap:6px; margin-top:4px;">
+                <button type="button" class="btn-app-secondary" onclick="restoreHistoryItem('${item.id}')" style="flex:1; justify-content:center; font-size:10.5px; padding:3px 6px;">✏️ Re-Edit</button>
+                <button type="button" class="btn-app-secondary" onclick="deleteInvoiceHistoryItem('${item.id}')" style="padding:3px 8px; font-size:10.5px; color:#f28b82;" title="Delete Snapshot">🗑️</button>
+              </div>
+            </div>`;
+
+          // Modal Card
+          modalHtml += `
+            <div class="history-card-item" style="padding:14px; background:rgba(255,255,255,0.025);">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:11px; font-weight:700; background:rgba(66,133,244,0.2); color:var(--g-blue-light, #8ab4f8); padding:2px 8px; border-radius:12px;">Slot ${i+1} of 3</span>
+                    <strong style="font-size:13px; color:#fff;">${escapeHtml(item.invoiceNumber)}</strong>
+                    ${statusBadge}
+                  </div>
+                  <div style="font-size:12px; color:var(--g-text-secondary); margin-top:4px;">
+                    Client: <strong style="color:#fff;">${escapeHtml(item.clientName)}</strong> ${item.projectName ? '• Project: ' + escapeHtml(item.projectName) : ''}
+                  </div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:14px; font-weight:800; color:var(--g-green, #34a853);">${escapeHtml(item.totalAmount)}</div>
+                  <div style="font-size:10px; color:var(--g-text-tertiary); margin-top:2px;">Saved ${escapeHtml(item.displayDate)} ${item.displayTime ? item.displayTime : ''}</div>
+                </div>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06);">
+                <span style="font-size:10.5px; color:var(--g-text-tertiary);">Template: <strong>${escapeHtml(item.template)}</strong></span>
+                <div style="display:flex; gap:6px;">
+                  <button type="button" class="btn-google-primary" onclick="restoreHistoryItem('${item.id}')" style="font-size:11px; padding:4px 12px;">✏️ Load & Re-Edit</button>
+                  <button type="button" class="btn-app-secondary" onclick="quickExportHistoryPdf('${item.id}')" style="font-size:11px; padding:4px 10px;">📄 PDF</button>
+                  <button type="button" class="btn-app-secondary" onclick="deleteInvoiceHistoryItem('${item.id}')" style="font-size:11px; padding:4px 10px; color:#f28b82;" title="Delete this save">🗑️</button>
+                </div>
+              </div>
+            </div>`;
+        } else {
+          // Empty slot
+          sidebarHtml += `
+            <div class="history-empty-slot">
+              Slot ${i+1} (Empty) • Available for save
+            </div>`;
+
+          modalHtml += `
+            <div class="history-empty-slot" style="padding:16px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:var(--g-text-secondary);">Slot ${i+1} of 3: Empty</strong>
+                <div style="font-size:10.5px; color:var(--g-text-tertiary);">Save your current invoice state into this slot anytime.</div>
+              </div>
+              <button type="button" class="btn-app-secondary" onclick="saveInvoiceToProfileHistory(true)" style="font-size:10.5px; padding:4px 10px;">💾 Save Now</button>
+            </div>`;
+        }
+      }
+
+      if (sidebarContainer) sidebarContainer.innerHTML = sidebarHtml;
+      if (modalContainer) modalContainer.innerHTML = modalHtml;
+    }
+
+    function updateHistoryBadge() {
+      const history = getActiveProfileHistory();
+      const count = history.length;
+      const str = count + '/3';
+
+      const headerBadge = document.getElementById('headerHistoryBadge');
+      if (headerBadge) {
+        headerBadge.textContent = str;
+        headerBadge.style.background = count > 0 ? 'rgba(52, 168, 83, 0.2)' : 'rgba(66, 133, 244, 0.2)';
+        headerBadge.style.color = count > 0 ? '#81c995' : 'var(--g-blue-light, #8ab4f8)';
+      }
+
+      const tabBadge = document.getElementById('tabProfileHistoryBadge');
+      if (tabBadge) tabBadge.textContent = str + ' Saves';
+
+      const modalBadge = document.getElementById('modalHistorySlotsBadge');
+      if (modalBadge) modalBadge.textContent = str + ' Used';
+    }
+
+    function openInvoiceHistoryModal() {
+      renderHistoryUI();
+      updateHistoryBadge();
+      const modal = document.getElementById('modalInvoiceHistory');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeInvoiceHistoryModal() {
+      const modal = document.getElementById('modalInvoiceHistory');
+      if (modal) modal.classList.remove('active');
+    }
+
+    // --- GOOGLE AUTH & FIREBASE PROFILE ISOLATION ---
     function initFirebaseAuth() {
       try {
         // Check saved demo user first
@@ -2263,166 +4378,18 @@
       padding-top: 2px;
     }
 
-    /* Dynamic Acceptance Relocation Page Styling (Auto-Fit for 1, 2, 3, or 4 Pages) */
-    .has-page1-acceptance.a4-page,
-    .tpl-onyx .has-page1-acceptance.a4-page,
-    .tpl-swiss .has-page1-acceptance.a4-page,
-    .tpl-cobalt .has-page1-acceptance.a4-page,
-    .tpl-vogue .has-page1-acceptance.a4-page,
-    .tpl-mint .has-page1-acceptance.a4-page {
-      padding: 10mm 18mm 10mm 18mm !important;
+    /* Dynamic Acceptance Relocation Styling (Generous, Professional Proportions) */
+    .has-page1-acceptance.a4-page {
+      padding: 13mm 18mm 12mm 18mm !important;
     }
     .has-page1-acceptance .invoice-header-grid {
-      margin-bottom: 6px !important;
+      margin-bottom: 8px !important;
     }
-    .has-page1-acceptance .invoice-logo-img {
-      height: 50px !important;
-      max-height: 50px !important;
-      margin-bottom: 5px !important;
-    }
-    .has-page1-acceptance .creator-name {
-      font-size: 12px !important;
-      margin-bottom: 1px !important;
-    }
-    .has-page1-acceptance .creator-detail {
-      font-size: 10px !important;
-      line-height: 1.25 !important;
-    }
-    .has-page1-acceptance .bill-to-section {
-      margin-top: 5px !important;
-    }
-    .has-page1-acceptance .bill-to-name {
-      font-size: 11.5px !important;
-    }
-    .has-page1-acceptance .bill-to-detail {
-      font-size: 10px !important;
-      line-height: 1.25 !important;
-    }
-    .has-page1-acceptance .invoice-big-title {
-      font-size: 24px !important;
-      margin-bottom: 2px !important;
-    }
-    .has-page1-acceptance .invoice-number-tag {
-      font-size: 11px !important;
-      margin-bottom: 4px !important;
-      padding: 1px 8px !important;
-    }
-    .has-page1-acceptance .meta-table td {
-      padding: 1px 0 !important;
-      font-size: 9.5px !important;
-      line-height: 1.2 !important;
-    }
-    .has-page1-acceptance .center-subject-block {
-      margin-top: 5px !important;
-      margin-bottom: 3px !important;
-    }
-    .has-page1-acceptance .kind-attention-label {
-      font-size: 9px !important;
-      margin-bottom: 1px !important;
-    }
-    .has-page1-acceptance .kind-attention-name {
-      font-size: 11.5px !important;
-      margin-bottom: 2px !important;
-    }
-    .has-page1-acceptance .registration-label {
-      font-size: 10.5px !important;
-      margin-bottom: 1px !important;
-    }
-    .has-page1-acceptance .registration-pill {
-      font-size: 10px !important;
-      padding: 2.5px 8px !important;
-    }
-    .has-page1-acceptance .salutation-block {
-      margin: 3px 0 !important;
-    }
-    .has-page1-acceptance .salutation-line {
-      font-size: 10.5px !important;
-    }
-    .has-page1-acceptance .summary-lead-in {
-      font-size: 10px !important;
-    }
-    .has-page1-acceptance .items-table {
-      margin: 4px 0 5px 0 !important;
-    }
-    .has-page1-acceptance .items-table th,
-    .tpl-onyx .has-page1-acceptance .items-table th,
-    .tpl-swiss .has-page1-acceptance .items-table th,
-    .tpl-cobalt .has-page1-acceptance .items-table th,
-    .tpl-vogue .has-page1-acceptance .items-table th,
-    .tpl-mint .has-page1-acceptance .items-table th {
-      padding: 4px 6px !important;
-      font-size: 9px !important;
-    }
-    .has-page1-acceptance .items-table td,
-    .tpl-onyx .has-page1-acceptance .items-table td,
-    .tpl-swiss .has-page1-acceptance .items-table td,
-    .tpl-cobalt .has-page1-acceptance .items-table td,
-    .tpl-vogue .has-page1-acceptance .items-table td,
-    .tpl-mint .has-page1-acceptance .items-table td {
-      padding: 3.5px 6px !important;
-      font-size: 10px !important;
-      line-height: 1.25 !important;
-    }
-    .has-page1-acceptance .total-row td {
-      padding: 3.5px 6px !important;
-      font-size: 10px !important;
-    }
-    .has-page1-acceptance .total-amount-cell {
-      font-size: 13px !important;
-    }
-    .has-page1-acceptance .words-cell {
-      padding: 2px 6px !important;
-      font-size: 9px !important;
-    }
-    .has-page1-acceptance .banking-block {
-      margin-top: 4px !important;
-      padding: 4px 8px !important;
-    }
-    .has-page1-acceptance .banking-header-title {
-      font-size: 9.5px !important;
-      padding: 2px 6px !important;
-      margin-bottom: 2px !important;
-    }
-    .has-page1-acceptance .banking-block table td {
-      padding: 1.5px 5px !important;
-      font-size: 9px !important;
-      line-height: 1.2 !important;
-    }
-    .has-page1-acceptance .terms-page3-footer-grid {
-      margin-top: 5px !important;
-      border-top: 1.5px solid var(--pdf-slate) !important;
-      padding-top: 3px !important;
-    }
-    .has-page1-acceptance .terms-page3-footer-grid div[style*="font-weight:700"] {
-      font-size: 9.5px !important;
-      margin-bottom: 2px !important;
-    }
-    .has-page1-acceptance .acceptance-table {
-      margin-top: 2px !important;
-      font-size: 9.5px !important;
-    }
-    .has-page1-acceptance .acceptance-header-cell {
-      padding: 2px 6px !important;
-      font-size: 9px !important;
-    }
-    .has-page1-acceptance .acceptance-table td {
-      padding: 2px 6px !important;
-    }
-    .has-page1-acceptance .client-sig-box {
-      height: 38px !important;
-    }
-    .has-page1-acceptance .client-sig-line {
-      font-size: 8.5px !important;
-      margin-top: 2px !important;
-    }
-    .has-page1-acceptance .signoff-block {
-      display: none !important;
+    .has-page1-acceptance .acceptance-box {
+      margin-top: auto !important;
+      padding-top: 6px !important;
     }
 
-    .has-page2-acceptance .terms-page3-footer-grid {
-      margin-top: 6px !important;
-      padding-top: 4px !important;
-    }
     .has-page2-acceptance .terms-sec-title {
       margin-top: 4px !important;
       margin-bottom: 2px !important;
@@ -2443,132 +4410,6 @@
     }
     .has-page4-acceptance #previewPage4Content {
       min-height: 260px !important;
-    }
-
-    /* Template-specific compact overrides for Page 1 acceptance auto-fit */
-    .tpl-vogue .has-page1-acceptance .invoice-header-grid {
-      padding: 4px 0 !important;
-      margin-bottom: 5px !important;
-    }
-    .tpl-cobalt .has-page1-acceptance .header-left,
-    .tpl-cobalt .has-page1-acceptance .header-right,
-    .tpl-mint .has-page1-acceptance .header-left,
-    .tpl-mint .has-page1-acceptance .header-right {
-      padding: 4px 8px !important;
-    }
-    .tpl-swiss .has-page1-acceptance .items-table td {
-      padding: 3.5px 4px !important;
-    }
-
-    /* Large PAID Stamp in a Box (Screen & Clean PDF) */
-    .invoice-paid-stamp {
-      display: none;
-      position: absolute;
-      top: 130px;
-      right: 42px;
-      border: 3.5px solid #137333;
-      color: #137333;
-      font-size: 32px;
-      font-weight: 900;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      padding: 5px 22px;
-      border-radius: 8px;
-      transform: rotate(-13deg);
-      opacity: 0.90;
-      pointer-events: none;
-      z-index: 100;
-      background: rgba(230, 244, 234, 0.75);
-      box-shadow: 0 0 0 1.5px rgba(19, 115, 51, 0.25);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-
-    /* Formatted Rich Terms Editor */
-    .rich-terms-toolbar {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: var(--g-bg-input);
-      border: 1px solid var(--g-border);
-      border-radius: 6px 6px 0 0;
-      padding: 4px 6px;
-      border-bottom: none;
-    }
-
-    .rich-btn {
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--g-text-secondary);
-      border-radius: 4px;
-      padding: 3px 6px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .rich-btn:hover {
-      background: var(--g-bg-surface-elevated);
-      color: var(--g-text-primary);
-    }
-
-    .rich-terms-textarea {
-      background: var(--g-bg-input);
-      border: 1px solid var(--g-border);
-      border-radius: 0 0 6px 6px;
-      color: var(--g-text-primary);
-      font-size: 12px;
-      padding: 8px 10px;
-      min-height: 120px;
-      width: 100%;
-      font-family: inherit;
-      line-height: 1.4;
-      outline: none;
-    }
-    .rich-terms-textarea:focus {
-      border-color: var(--g-border-focus);
-    }
-
-    /* Toast Notification System (Google Material Snackbar) */
-    .toast-container {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 9999;
-      pointer-events: none;
-    }
-
-    .app-toast {
-      pointer-events: auto;
-      background: #2a2d34;
-      border: 1px solid var(--g-border);
-      color: #ffffff;
-      font-size: 12.5px;
-      font-weight: 500;
-      padding: 10px 16px;
-      border-radius: 8px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      animation: toastIn 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
-    }
-    .app-toast.success {
-      border-left: 4px solid var(--g-green);
-    }
-    .app-toast.warning {
-      border-left: 4px solid var(--g-amber);
-    }
-    .app-toast.info {
-      border-left: 4px solid var(--g-blue-light);
-    }
-
-    @keyframes toastIn {
-      from { transform: translateY(16px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
     }
 
     /* ==========================================================================
@@ -5241,9 +7082,10 @@
           </div>
             
             <div class="a4-page" id="invoiceSheetPage2">
-              <div class="invoice-content-grid" style="justify-content:space-between;">
+              <div class="invoice-content-grid" style="justify-content:flex-start; gap:0;">
                 
-                <div class="terms-header-bar">
+                <div class="terms-page2-content-flow" style="display:flex; flex-direction:column; width:100%; gap:8px;">
+                  <div class="terms-header-bar" style="margin-bottom:8px;">
                   <div style="flex:1;">
                     <div class="terms-main-title">TERMS AND CONDITIONS</div>
                     <div class="terms-sub-title">FOR THE SERVICES</div>
@@ -5311,7 +7153,8 @@
                 </div> <!-- /termsBodyContainer -->
 
                 <!-- Mount Target for Page 2 Acceptance (when Page 2 is the last active page) -->
-                <div id="mountAcceptancePage2"></div>
+                </div><!-- end terms-page2-content-flow -->
+                <div id="mountAcceptancePage2" style="margin-top:auto;"></div>
 
               </div>
             </div>
@@ -9490,46 +11333,50 @@
       };
 
       try {
-        // Capture full state snapshot & save to profile history (up to 3 saves)
-        const invoiceState = captureCurrentInvoiceState();
-        saveInvoiceToProfileHistory(false);
-
-        const base64Payload = encodePayloadBase64(invoiceState);
-
-        // Generate PDF with embedded subject metadata and EOF trailer marker
-        const worker = html2pdf().set(opt).from(exportContainer).toPdf();
-        const rawPdfBlob = await worker.get('pdf').then(pdf => {
-          try {
-            pdf.setProperties({
-              title: filename,
-              subject: 'INVOICE_STUDIO_PAYLOAD:' + base64Payload,
-              creator: 'Invoice Studio Re-Editable PDF',
-              author: invoiceState.creatorName || 'Invoice Studio'
-            });
-          } catch(e) {
-            console.warn('pdf.setProperties note:', e);
+        // Save current snapshot into profile history (up to 3 saves)
+        let invoiceState = null;
+        try {
+          invoiceState = captureCurrentInvoiceState();
+          if (typeof saveInvoiceToProfileHistory === 'function') {
+            saveInvoiceToProfileHistory(false);
           }
-          return pdf.output('blob');
-        });
+        } catch (stateErr) {
+          console.warn('State capture note:', stateErr);
+        }
 
-        // Append non-destructive trailer marker after EOF for 100% reliable re-editing
-        const trailerMarker = '\n%INVOICE_STUDIO_PAYLOAD_START%\n' + base64Payload + '\n%INVOICE_STUDIO_PAYLOAD_END%\n';
-        const finalBlob = new Blob([rawPdfBlob, trailerMarker], { type: 'application/pdf' });
+        const base64Payload = invoiceState ? encodePayloadBase64(invoiceState) : '';
 
-        const downloadUrl = URL.createObjectURL(finalBlob);
-        const a = document.createElement('a');
-        a.href = downloadUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(downloadUrl), 20000);
+        // Safe html2pdf generation pipeline
+        let pdfWorker = html2pdf().set(opt).from(exportContainer);
+        if (base64Payload) {
+          pdfWorker = pdfWorker.toPdf().get('pdf').then(function(pdf) {
+            try {
+              if (pdf && typeof pdf.setProperties === 'function') {
+                pdf.setProperties({
+                  title: filename,
+                  subject: 'INVOICE_STUDIO_PAYLOAD:' + base64Payload,
+                  creator: 'Invoice Studio',
+                  author: (invoiceState && invoiceState.creatorName) ? invoiceState.creatorName : 'Invoice Studio'
+                });
+              }
+            } catch (pErr) {
+              console.warn('Metadata embed note:', pErr);
+            }
+          });
+        }
 
-        showToast('✅ Clean PDF downloaded: ' + filename + ' (Re-editable enabled)', 4000);
+        await pdfWorker.save();
+        showToast('✅ Clean PDF successfully downloaded: ' + filename, 4000);
       } catch (err) {
-        console.error('PDF Engine error:', err);
-        showToast('⚠️ Fallback to browser print...', 3000);
-        triggerBrowserPrint();
+        console.warn('PDF Primary Worker note, trying direct save fallback:', err);
+        try {
+          await html2pdf().set(opt).from(exportContainer).save();
+          showToast('✅ Clean PDF successfully downloaded: ' + filename, 4000);
+        } catch (directErr) {
+          console.error('PDF Engine error:', directErr);
+          showToast('⚠️ Opening browser print as backup...', 3000);
+          triggerBrowserPrint();
+        }
       } finally {
         if (exportContainer.parentNode) {
           exportContainer.parentNode.removeChild(exportContainer);
@@ -9749,63 +11596,65 @@ ${ipBullets.map(b => '• ' + b.replace(/<[^>]+>/g, '')).join('\n')}
   </div>
 
   <!-- FIREBASE & GOOGLE AUTH CONFIG MODAL -->
+    <!-- GOOGLE ACCOUNT SIGN-IN & PROFILE SECURITY MODAL -->
   <div class="app-modal-backdrop" id="modalFirebaseConfig">
-    <div class="app-modal-dialog" style="width: 520px; max-width: 95vw; padding: 22px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--g-border); padding-bottom:12px; margin-bottom:14px;">
-        <div>
-          <div style="font-size:15px; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px;">
-            <span>🔒 Google Login & Firebase Security</span>
+    <div class="app-modal-dialog" style="width: 480px; max-width: 95vw; padding: 24px; border-radius:16px; background:#1e2128; border:1px solid #3d4352;">
+      <!-- Google Header -->
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <div>
+            <div style="font-size:16px; font-weight:700; color:#fff;">Sign in with Google</div>
+            <div style="font-size:11.5px; color:#9aa0a6;">Choose an account to continue to Invoice Studio</div>
           </div>
-          <div style="font-size:11px; color:var(--g-text-secondary); margin-top:2px;">Isolate profiles and invoice histories per Google Account with cloud protection.</div>
         </div>
         <button type="button" onclick="closeFirebaseConfigModal()" style="background:none; border:none; color:var(--g-text-secondary); font-size:22px; cursor:pointer; line-height:1;">&times;</button>
       </div>
 
-      <!-- Option 1: Turnkey 1-Click Google Sign In -->
-      <div style="background:rgba(66, 133, 244, 0.08); border:1px solid rgba(66, 133, 244, 0.25); border-radius:10px; padding:14px; margin-bottom:14px;">
-        <div style="font-size:12.5px; font-weight:700; color:#fff; margin-bottom:4px;">⚡ Instant Google Account Isolation</div>
-        <div style="font-size:11px; color:#bdc1c6; line-height:1.4; margin-bottom:10px;">
-          Sign in to automatically isolate your studio profiles, PIN security, and 3-invoice histories to your Google Account.
+      <!-- Google Account Options List -->
+      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;">
+        
+        <!-- Primary Account: Saksham Goel -->
+        <div onclick="selectGoogleAccount('Saksham Goel', 'thesakshamgoel@gmail.com')" style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:12px 14px; cursor:pointer; transition:all 0.15s ease;" onmouseover="this.style.borderColor='#4285f4'; this.style.background='rgba(66,133,244,0.08)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)'; this.style.background='rgba(255,255,255,0.04)';">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:38px; height:38px; border-radius:50%; background:#1a73e8; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; border:2px solid #8ab4f8;">
+              SG
+            </div>
+            <div>
+              <div style="font-size:13px; font-weight:700; color:#fff;">Saksham Goel</div>
+              <div style="font-size:11px; color:#9aa0a6;">thesakshamgoel@gmail.com</div>
+              <div style="font-size:9.5px; color:#81c995; font-weight:600; margin-top:2px;">✓ Verified Creator • TSG Studio Profile</div>
+            </div>
+          </div>
+          <span style="font-size:11px; font-weight:600; color:#8ab4f8;">Connect →</span>
         </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <button type="button" class="btn-google-primary" onclick="signInWithGoogle()" style="padding:7px 14px; font-size:11.5px; gap:8px;">
-            <svg width="14" height="14" viewBox="0 0 24 24">
-              <path fill="#ffffff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#ffffff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#ffffff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-              <path fill="#ffffff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-            </svg>
-            <span>Live Google Sign-In</span>
-          </button>
-          <button type="button" class="btn-app-secondary" onclick="signInWithDemoGoogle('Saksham Goel', 'thesakshamgoel@gmail.com')" style="padding:7px 12px; font-size:11.5px;">
-            <span>⚡ 1-Click Saksham Profile (Verified)</span>
+
+        <!-- Custom Account Entry -->
+        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--g-border); border-radius:10px; padding:12px 14px;">
+          <div style="font-size:12px; font-weight:600; color:#fff; margin-bottom:8px;">Or sign in with another Google Account:</div>
+          <div style="display:flex; gap:8px; margin-bottom:6px;">
+            <input type="text" id="inpCustomGoogleName" class="input-app" placeholder="Full Name (e.g. Jane Doe)" style="font-size:11.5px; padding:6px 10px;">
+            <input type="email" id="inpCustomGoogleEmail" class="input-app" placeholder="name@gmail.com" style="font-size:11.5px; padding:6px 10px;">
+          </div>
+          <button type="button" class="btn-app-secondary" onclick="submitCustomGoogleAccount()" style="font-size:11px; padding:5px 12px; width:100%; justify-content:center;">
+            Sign in as custom Google User
           </button>
         </div>
+
       </div>
 
-      <!-- Option 2: Custom Firebase Project Credentials (Optional) -->
-      <details style="background:var(--g-bg-input); border:1px solid var(--g-border); border-radius:8px; padding:10px 12px; margin-bottom:14px; font-size:11.5px;">
-        <summary style="cursor:pointer; font-weight:600; color:#fff;">⚙️ Custom Firebase Project Config (Optional)</summary>
-        <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
-          <div style="font-size:10.5px; color:var(--g-text-secondary);">Paste your Firebase project credentials from Firebase Console to sync with your private Firestore database.</div>
-          <div class="form-field-group">
-            <label class="field-label" style="font-size:10.5px;">API Key</label>
-            <input type="text" id="cfgFirebaseApiKey" class="input-app" placeholder="AIzaSy..." style="font-size:11px;">
-          </div>
-          <div class="form-field-group">
-            <label class="field-label" style="font-size:10.5px;">Project ID</label>
-            <input type="text" id="cfgFirebaseProjectId" class="input-app" placeholder="my-invoice-project" style="font-size:11px;">
-          </div>
-          <div class="form-field-group">
-            <label class="field-label" style="font-size:10.5px;">Auth Domain</label>
-            <input type="text" id="cfgFirebaseAuthDomain" class="input-app" placeholder="my-invoice-project.firebaseapp.com" style="font-size:11px;">
-          </div>
-          <button type="button" class="btn-app-secondary" onclick="saveFirebaseCustomConfig()" style="font-size:11px; padding:5px 10px; align-self:flex-start;">💾 Save Config</button>
-        </div>
-      </details>
+      <!-- Security Notice -->
+      <div style="background:rgba(52,168,83,0.08); border:1px solid rgba(52,168,83,0.25); border-radius:8px; padding:10px 12px; font-size:11px; color:#81c995; line-height:1.4; margin-bottom:14px;">
+        🔒 <strong>Maximum Security:</strong> Each Google Account has isolated profile storage, encrypted local storage keys, and a dedicated 3-save invoice history.
+      </div>
 
-      <div style="display:flex; justify-content:flex-end; gap:8px;">
-        <button type="button" class="btn-app-secondary" onclick="closeFirebaseConfigModal()" style="padding:6px 16px; font-size:11.5px;">Close</button>
+      <div style="display:flex; justify-content:flex-end;">
+        <button type="button" class="btn-app-secondary" onclick="closeFirebaseConfigModal()" style="padding:6px 16px; font-size:11.5px;">Cancel</button>
       </div>
     </div>
   </div>
