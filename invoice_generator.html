@@ -5416,7 +5416,7 @@
             } else {
               const err = document.getElementById('lblPinErrorMsg');
               if (err) {
-                err.textContent = 'Incorrect passcode. Pass 2686 required.';
+                err.textContent = 'Incorrect passcode. Please try again.';
                 err.style.display = 'block';
               }
               showToast('⚠️ Incorrect passcode. Access denied.', 3000);
@@ -5777,7 +5777,7 @@
         const titleEl = modal.querySelector('div[style*="font-size:15px"]') || modal.querySelector('.modal-pin-title');
         if (titleEl) titleEl.textContent = 'TSG Studio Security Pass';
         const subEl = modal.querySelector('div[style*="font-size:11px"]') || modal.querySelector('.modal-pin-subtitle');
-        if (subEl) subEl.textContent = 'Passcode required to access TSG Studio (Saksham Goel)';
+        if (subEl) subEl.textContent = 'Enter 4-digit passcode to unlock TSG Studio';
         const pinInp = document.getElementById('inpPinVerification');
         if (pinInp) { pinInp.value = ''; pinInp.focus(); }
         const err = document.getElementById('lblPinErrorMsg');
