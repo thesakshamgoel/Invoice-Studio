@@ -877,6 +877,7 @@
     .header-left {
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
       min-width: 0;
       box-sizing: border-box;
     }
@@ -884,13 +885,13 @@
     /* Prominent, high-visibility logo sizing matching PDF reference */
     .invoice-logo-img {
       height: 68px;
-      max-height: 72px;
+      max-height: 68px;
       width: auto;
-      max-width: 190px;
+      align-self: flex-start;
       object-fit: contain;
       object-position: left;
-      margin-bottom: 12px;
-      display: block;
+      margin-bottom: 10px;
+      display: inline-block;
     }
 
     .creator-name {
@@ -1452,50 +1453,201 @@
       padding-top: 2px;
     }
 
-    /* Dynamic Acceptance Relocation Page Styling */
-    .has-page1-acceptance .banking-block {
+    /* Dynamic Acceptance Relocation Page Styling (Auto-Fit for 1, 2, 3, or 4 Pages) */
+    .has-page1-acceptance.a4-page,
+    .tpl-onyx .has-page1-acceptance.a4-page,
+    .tpl-swiss .has-page1-acceptance.a4-page,
+    .tpl-cobalt .has-page1-acceptance.a4-page,
+    .tpl-vogue .has-page1-acceptance.a4-page,
+    .tpl-mint .has-page1-acceptance.a4-page {
+      padding: 10mm 18mm 10mm 18mm !important;
+    }
+    .has-page1-acceptance .invoice-header-grid {
+      margin-bottom: 6px !important;
+    }
+    .has-page1-acceptance .invoice-logo-img {
+      height: 50px !important;
+      max-height: 50px !important;
+      margin-bottom: 5px !important;
+    }
+    .has-page1-acceptance .creator-name {
+      font-size: 12px !important;
+      margin-bottom: 1px !important;
+    }
+    .has-page1-acceptance .creator-detail {
+      font-size: 10px !important;
+      line-height: 1.25 !important;
+    }
+    .has-page1-acceptance .bill-to-section {
       margin-top: 5px !important;
-      padding: 5px 8px !important;
     }
-    .has-page1-acceptance .banking-block table td {
-      padding: 2px 5px !important;
+    .has-page1-acceptance .bill-to-name {
+      font-size: 11.5px !important;
     }
-    .has-page1-acceptance .terms-page3-footer-grid {
-      margin-top: 6px !important;
-      border-top: 1.5px solid var(--pdf-slate) !important;
-      padding-top: 4px !important;
+    .has-page1-acceptance .bill-to-detail {
+      font-size: 10px !important;
+      line-height: 1.25 !important;
     }
-    .has-page1-acceptance .acceptance-table {
-      margin-top: 3px !important;
+    .has-page1-acceptance .invoice-big-title {
+      font-size: 24px !important;
+      margin-bottom: 2px !important;
+    }
+    .has-page1-acceptance .invoice-number-tag {
+      font-size: 11px !important;
+      margin-bottom: 4px !important;
+      padding: 1px 8px !important;
+    }
+    .has-page1-acceptance .meta-table td {
+      padding: 1px 0 !important;
+      font-size: 9.5px !important;
+      line-height: 1.2 !important;
+    }
+    .has-page1-acceptance .center-subject-block {
+      margin-top: 5px !important;
+      margin-bottom: 3px !important;
+    }
+    .has-page1-acceptance .kind-attention-label {
+      font-size: 9px !important;
+      margin-bottom: 1px !important;
+    }
+    .has-page1-acceptance .kind-attention-name {
+      font-size: 11.5px !important;
+      margin-bottom: 2px !important;
+    }
+    .has-page1-acceptance .registration-label {
+      font-size: 10.5px !important;
+      margin-bottom: 1px !important;
+    }
+    .has-page1-acceptance .registration-pill {
+      font-size: 10px !important;
+      padding: 2.5px 8px !important;
+    }
+    .has-page1-acceptance .salutation-block {
+      margin: 3px 0 !important;
+    }
+    .has-page1-acceptance .salutation-line {
+      font-size: 10.5px !important;
+    }
+    .has-page1-acceptance .summary-lead-in {
       font-size: 10px !important;
     }
+    .has-page1-acceptance .items-table {
+      margin: 4px 0 5px 0 !important;
+    }
+    .has-page1-acceptance .items-table th,
+    .tpl-onyx .has-page1-acceptance .items-table th,
+    .tpl-swiss .has-page1-acceptance .items-table th,
+    .tpl-cobalt .has-page1-acceptance .items-table th,
+    .tpl-vogue .has-page1-acceptance .items-table th,
+    .tpl-mint .has-page1-acceptance .items-table th {
+      padding: 4px 6px !important;
+      font-size: 9px !important;
+    }
+    .has-page1-acceptance .items-table td,
+    .tpl-onyx .has-page1-acceptance .items-table td,
+    .tpl-swiss .has-page1-acceptance .items-table td,
+    .tpl-cobalt .has-page1-acceptance .items-table td,
+    .tpl-vogue .has-page1-acceptance .items-table td,
+    .tpl-mint .has-page1-acceptance .items-table td {
+      padding: 3.5px 6px !important;
+      font-size: 10px !important;
+      line-height: 1.25 !important;
+    }
+    .has-page1-acceptance .total-row td {
+      padding: 3.5px 6px !important;
+      font-size: 10px !important;
+    }
+    .has-page1-acceptance .total-amount-cell {
+      font-size: 13px !important;
+    }
+    .has-page1-acceptance .words-cell {
+      padding: 2px 6px !important;
+      font-size: 9px !important;
+    }
+    .has-page1-acceptance .banking-block {
+      margin-top: 4px !important;
+      padding: 4px 8px !important;
+    }
+    .has-page1-acceptance .banking-header-title {
+      font-size: 9.5px !important;
+      padding: 2px 6px !important;
+      margin-bottom: 2px !important;
+    }
+    .has-page1-acceptance .banking-block table td {
+      padding: 1.5px 5px !important;
+      font-size: 9px !important;
+      line-height: 1.2 !important;
+    }
+    .has-page1-acceptance .terms-page3-footer-grid {
+      margin-top: 5px !important;
+      border-top: 1.5px solid var(--pdf-slate) !important;
+      padding-top: 3px !important;
+    }
+    .has-page1-acceptance .terms-page3-footer-grid div[style*="font-weight:700"] {
+      font-size: 9.5px !important;
+      margin-bottom: 2px !important;
+    }
+    .has-page1-acceptance .acceptance-table {
+      margin-top: 2px !important;
+      font-size: 9.5px !important;
+    }
+    .has-page1-acceptance .acceptance-header-cell {
+      padding: 2px 6px !important;
+      font-size: 9px !important;
+    }
     .has-page1-acceptance .acceptance-table td {
-      padding: 3px 6px !important;
+      padding: 2px 6px !important;
     }
     .has-page1-acceptance .client-sig-box {
-      height: 42px !important;
+      height: 38px !important;
+    }
+    .has-page1-acceptance .client-sig-line {
+      font-size: 8.5px !important;
+      margin-top: 2px !important;
     }
     .has-page1-acceptance .signoff-block {
       display: none !important;
     }
 
     .has-page2-acceptance .terms-page3-footer-grid {
-      margin-top: 8px !important;
-      padding-top: 6px !important;
+      margin-top: 6px !important;
+      padding-top: 4px !important;
     }
     .has-page2-acceptance .terms-sec-title {
       margin-top: 4px !important;
       margin-bottom: 2px !important;
+      font-size: 10px !important;
     }
     .has-page2-acceptance .terms-bullet-list li {
       margin-bottom: 2px !important;
-      font-size: 10px !important;
-      line-height: 1.38 !important;
+      font-size: 9.5px !important;
+      line-height: 1.35 !important;
+    }
+    .has-page2-acceptance .client-sig-box {
+      height: 42px !important;
     }
 
     .has-page4-acceptance .terms-page3-footer-grid {
       margin-top: 10px !important;
       padding-top: 8px !important;
+    }
+    .has-page4-acceptance #previewPage4Content {
+      min-height: 260px !important;
+    }
+
+    /* Template-specific compact overrides for Page 1 acceptance auto-fit */
+    .tpl-vogue .has-page1-acceptance .invoice-header-grid {
+      padding: 4px 0 !important;
+      margin-bottom: 5px !important;
+    }
+    .tpl-cobalt .has-page1-acceptance .header-left,
+    .tpl-cobalt .has-page1-acceptance .header-right,
+    .tpl-mint .has-page1-acceptance .header-left,
+    .tpl-mint .has-page1-acceptance .header-right {
+      padding: 4px 8px !important;
+    }
+    .tpl-swiss .has-page1-acceptance .items-table td {
+      padding: 3.5px 4px !important;
     }
 
     /* Large PAID Stamp in a Box (Screen & Clean PDF) */
@@ -4092,13 +4244,13 @@
                   </table>
                 </div>
 
-                <!-- Mount Target for Page 1 Acceptance (when terms are excluded) -->
-                <div id="mountAcceptancePage1"></div>
-
               </div>
 
+              <!-- Mount Target for Page 1 Acceptance (when Page 1 is the last/only active page) -->
+              <div id="mountAcceptancePage1" style="display:none; width:100%; margin-top:auto;"></div>
+
               <!-- 6. Bottom Sign-off Block (Balanced Margin, Zero Void) -->
-              <div class="signoff-block">
+              <div class="signoff-block" id="blockPage1Signoff">
                 <div class="signoff-left">Thanking you,</div>
                 <div class="signoff-right canvas-clickable" id="areaSignoffStamp" title="Click to open E-Signature pad">
                   <div id="mountPage1Esign" style="display:none; text-align:right;">
@@ -6921,16 +7073,44 @@
       const previewLogo = document.getElementById('previewLogo');
       if (previewLogo) {
         previewLogo.style.height = currentLogoSize + 'px';
-        previewLogo.style.maxHeight = (currentLogoSize + 12) + 'px';
-        previewLogo.style.maxWidth = Math.round(currentLogoSize * 2.8) + 'px';
+        previewLogo.style.maxHeight = currentLogoSize + 'px';
+        if (previewLogo.naturalWidth && previewLogo.naturalHeight) {
+          const ratio = previewLogo.naturalWidth / previewLogo.naturalHeight;
+          const exactWidth = Math.round(currentLogoSize * ratio);
+          previewLogo.style.width = exactWidth + 'px';
+          previewLogo.style.maxWidth = exactWidth + 'px';
+          previewLogo.setAttribute('width', exactWidth);
+          previewLogo.setAttribute('height', currentLogoSize);
+        } else {
+          previewLogo.style.width = 'auto';
+          previewLogo.style.maxWidth = Math.round(currentLogoSize * 2.8) + 'px';
+        }
+        previewLogo.style.objectFit = 'contain';
+        previewLogo.style.objectPosition = 'left';
+        previewLogo.style.alignSelf = 'flex-start';
       }
 
       const logo2 = document.getElementById('previewTermsLogo2');
       const logo3 = document.getElementById('previewTermsLogo3');
       const logo4 = document.getElementById('previewTermsLogo4');
       const termsLogoHeight = Math.round(currentLogoSize * 0.65);
-      if (logo2) logo2.style.height = termsLogoHeight + 'px';
-      if (logo3) logo3.style.height = termsLogoHeight + 'px';
+      [logo2, logo3, logo4].forEach(l => {
+        if (!l) return;
+        l.style.height = termsLogoHeight + 'px';
+        l.style.maxHeight = termsLogoHeight + 'px';
+        if (l.naturalWidth && l.naturalHeight) {
+          const r = l.naturalWidth / l.naturalHeight;
+          const w = Math.round(termsLogoHeight * r);
+          l.style.width = w + 'px';
+          l.style.maxWidth = w + 'px';
+          l.setAttribute('width', w);
+          l.setAttribute('height', termsLogoHeight);
+        } else {
+          l.style.width = 'auto';
+        }
+        l.style.objectFit = 'contain';
+        l.style.alignSelf = 'flex-start';
+      });
     }
 
     function setLogoSize(size) {
@@ -6961,6 +7141,7 @@
 
       if (currentLogoSrc) {
         if (previewLogo) {
+          previewLogo.onload = () => applyLogoSize(currentLogoSize);
           previewLogo.src = currentLogoSrc;
           previewLogo.style.display = 'block';
         }
@@ -6969,9 +7150,9 @@
           previewSidebarLogo.style.display = 'block';
         }
         if (lblNoLogo) lblNoLogo.style.display = 'none';
-        if (logo2) { logo2.src = currentLogoSrc; logo2.style.display = 'block'; }
-        if (logo3) { logo3.src = currentLogoSrc; logo3.style.display = 'block'; }
-        if (logo4) { logo4.src = currentLogoSrc; logo4.style.display = 'block'; }
+        if (logo2) { logo2.onload = () => applyLogoSize(currentLogoSize); logo2.src = currentLogoSrc; logo2.style.display = 'block'; }
+        if (logo3) { logo3.onload = () => applyLogoSize(currentLogoSize); logo3.src = currentLogoSrc; logo3.style.display = 'block'; }
+        if (logo4) { logo4.onload = () => applyLogoSize(currentLogoSize); logo4.src = currentLogoSrc; logo4.style.display = 'block'; }
         if (boxSizing) boxSizing.style.display = 'block';
         if (badgeStatus) {
           badgeStatus.textContent = 'Active';
@@ -7394,40 +7575,81 @@
       showToast('Standard terms & pages successfully reset to original.', 'success');
     }
 
+    function getLastActivePageNum() {
+      // 1. Check Page 4 (if active and wrapper not hidden)
+      if (activePages[4]) {
+        const wrap4 = document.getElementById('pageWrapper4');
+        if (wrap4 && wrap4.style.display !== 'none' && window.getComputedStyle(wrap4).display !== 'none') {
+          return 4;
+        }
+      }
+
+      // 2. Check Pages 3 and 2 only if standard/custom terms are included and visible
+      const chkTerms = document.getElementById('chkIncludeTerms');
+      const includeTerms = chkTerms ? chkTerms.checked : true;
+      const termsSource = document.getElementById('selectTermsSource')?.value;
+
+      if (includeTerms && termsSource !== 'pdf_upload') {
+        if (activePages[3]) {
+          const wrap3 = document.getElementById('pageWrapper3');
+          if (wrap3 && wrap3.style.display !== 'none' && window.getComputedStyle(wrap3).display !== 'none') {
+            return 3;
+          }
+        }
+        if (activePages[2]) {
+          const wrap2 = document.getElementById('pageWrapper2');
+          if (wrap2 && wrap2.style.display !== 'none' && window.getComputedStyle(wrap2).display !== 'none') {
+            return 2;
+          }
+        }
+      }
+
+      // 3. Fallback is always Page 1
+      return 1;
+    }
+
     function relocateAcceptanceSignoff() {
       const boxSignoff = document.getElementById('boxClientAcceptanceSignoff');
       if (!boxSignoff) return;
 
-      const includeTerms = document.getElementById('chkIncludeTerms')?.checked;
       const sheetP1 = document.getElementById('invoiceSheetPage1');
       const sheetP2 = document.getElementById('invoiceSheetPage2');
+      const sheetP3 = document.getElementById('invoiceSheetPage3');
       const sheetP4 = document.getElementById('invoiceSheetPage4');
+
+      const mountP1 = document.getElementById('mountAcceptancePage1');
+      const mountP2 = document.getElementById('mountAcceptancePage2');
+      const mountP3 = document.getElementById('mountAcceptancePage3');
+      const mountP4 = document.getElementById('mountAcceptancePage4');
+      const blockP1Signoff = document.getElementById('blockPage1Signoff');
 
       // Remove modifier classes
       if (sheetP1) sheetP1.classList.remove('has-page1-acceptance');
       if (sheetP2) sheetP2.classList.remove('has-page2-acceptance');
       if (sheetP4) sheetP4.classList.remove('has-page4-acceptance');
 
+      const lastPageNum = getLastActivePageNum();
       let targetMount = null;
 
-      // When terms are excluded or no sub-pages active, mount on Page 1
-      if (!includeTerms) {
-        targetMount = document.getElementById('mountAcceptancePage1');
+      if (lastPageNum === 1) {
+        targetMount = mountP1;
         if (sheetP1) sheetP1.classList.add('has-page1-acceptance');
+        if (mountP1) mountP1.style.display = 'block';
+        if (blockP1Signoff) blockP1Signoff.style.display = 'none';
+      } else if (lastPageNum === 2) {
+        targetMount = mountP2;
+        if (sheetP2) sheetP2.classList.add('has-page2-acceptance');
+        if (mountP1) mountP1.style.display = 'none';
+        if (blockP1Signoff) blockP1Signoff.style.display = 'flex';
+      } else if (lastPageNum === 4) {
+        targetMount = mountP4;
+        if (sheetP4) sheetP4.classList.add('has-page4-acceptance');
+        if (mountP1) mountP1.style.display = 'none';
+        if (blockP1Signoff) blockP1Signoff.style.display = 'flex';
       } else {
-        // Last active page gets the acceptance block
-        if (activePages[4]) {
-          targetMount = document.getElementById('mountAcceptancePage4');
-          if (sheetP4) sheetP4.classList.add('has-page4-acceptance');
-        } else if (activePages[3]) {
-          targetMount = document.getElementById('mountAcceptancePage3');
-        } else if (activePages[2]) {
-          targetMount = document.getElementById('mountAcceptancePage2');
-          if (sheetP2) sheetP2.classList.add('has-page2-acceptance');
-        } else {
-          targetMount = document.getElementById('mountAcceptancePage1');
-          if (sheetP1) sheetP1.classList.add('has-page1-acceptance');
-        }
+        targetMount = mountP3;
+        if (mountP1) mountP1.style.display = 'none';
+        if (blockP1Signoff) blockP1Signoff.style.display = 'flex';
       }
 
       if (targetMount && boxSignoff.parentElement !== targetMount) {
@@ -7595,6 +7817,10 @@
           }
         }
       }
+
+      // Synchronize dynamic acceptance relocation and page numbers
+      relocateAcceptanceSignoff();
+      updatePageNumbers();
     }
 
     // High-Resolution PDF.js Acceptor (scale: 2.8 for super-sharp print quality)
@@ -7747,8 +7973,33 @@
       }
     }
 
+    function getVisiblePages() {
+      const visible = [1];
+      const chkTerms = document.getElementById('chkIncludeTerms');
+      const includeTerms = chkTerms ? chkTerms.checked : true;
+      const termsSource = document.getElementById('selectTermsSource')?.value;
+
+      if (includeTerms && termsSource !== 'pdf_upload') {
+        if (activePages[2]) {
+          const w2 = document.getElementById('pageWrapper2');
+          if (w2 && w2.style.display !== 'none' && window.getComputedStyle(w2).display !== 'none') visible.push(2);
+        }
+        if (activePages[3]) {
+          const w3 = document.getElementById('pageWrapper3');
+          if (w3 && w3.style.display !== 'none' && window.getComputedStyle(w3).display !== 'none') visible.push(3);
+        }
+      }
+
+      if (activePages[4]) {
+        const w4 = document.getElementById('pageWrapper4');
+        if (w4 && w4.style.display !== 'none' && window.getComputedStyle(w4).display !== 'none') visible.push(4);
+      }
+
+      return visible;
+    }
+
     function updatePageNumbers() {
-      const visiblePages = [1, 2, 3, 4].filter(p => activePages[p]);
+      const visiblePages = getVisiblePages();
       const total = visiblePages.length;
 
       visiblePages.forEach((p, idx) => {
@@ -8108,6 +8359,16 @@
       const activePages = [];
 
       wrappers.forEach(wrap => {
+        // Skip hidden terms containers
+        const cot = wrap.closest('#containerOfficialTerms');
+        if (cot && (cot.style.display === 'none' || window.getComputedStyle(cot).display === 'none')) {
+          return;
+        }
+        const cpu = wrap.closest('#containerPdfUploadTerms');
+        if (cpu && (cpu.style.display === 'none' || window.getComputedStyle(cpu).display === 'none')) {
+          return;
+        }
+
         const page = wrap.querySelector('.a4-page');
         const isVisible = wrap.style.display !== 'none' && window.getComputedStyle(wrap).display !== 'none';
         if (page && isVisible) {
@@ -8135,13 +8396,46 @@
           el.style.outline = 'none';
         });
 
-        // Set strict in-flow A4 page dimensions
-        pageClone.style.cssText = 'position: relative !important; display: block !important; width: 210mm !important; height: 296.5mm !important; min-height: 296.5mm !important; max-height: 296.5mm !important; margin: 0 !important; padding: 16mm 20mm 15mm 20mm !important; box-sizing: border-box !important; overflow: hidden !important; background: #ffffff !important; border: none !important; box-shadow: none !important;';
+        // Set strict in-flow A4 page dimensions with correct flex layout & padding
+        const isP1Acceptance = page.classList.contains('has-page1-acceptance');
+        const pagePadding = isP1Acceptance ? '10mm 18mm 10mm 18mm !important;' : '16mm 20mm 15mm 20mm !important;';
+
+        pageClone.style.cssText = 'position: relative !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; width: 210mm !important; height: 296.5mm !important; min-height: 296.5mm !important; max-height: 296.5mm !important; margin: 0 !important; padding: ' + pagePadding + ' box-sizing: border-box !important; overflow: hidden !important; background: #ffffff !important; border: none !important; box-shadow: none !important;';
 
         if (idx < activePages.length - 1) {
           pageClone.classList.add('html2pdf__page-break');
         }
         exportContainer.appendChild(pageClone);
+      });
+
+      // Fix all images (logo, stamp, e-signatures) so html2canvas renders exact aspect ratio
+      exportContainer.querySelectorAll('.header-left').forEach(hl => {
+        hl.style.setProperty('align-items', 'flex-start', 'important');
+      });
+
+      exportContainer.querySelectorAll('img').forEach(img => {
+        const natW = img.naturalWidth;
+        const natH = img.naturalHeight;
+        const curH = parseFloat(img.style.height) || img.offsetHeight || 68;
+        
+        let exactW;
+        if (natW && natH && natH > 0) {
+          exactW = Math.round(curH * (natW / natH));
+        } else if (img.classList.contains('invoice-logo-img')) {
+          exactW = curH;
+        } else {
+          exactW = img.offsetWidth || curH;
+        }
+
+        img.style.setProperty('width', exactW + 'px', 'important');
+        img.style.setProperty('max-width', exactW + 'px', 'important');
+        img.style.setProperty('min-width', exactW + 'px', 'important');
+        img.style.setProperty('height', curH + 'px', 'important');
+        img.style.setProperty('max-height', curH + 'px', 'important');
+        img.style.setProperty('align-self', 'flex-start', 'important');
+        img.style.setProperty('object-fit', 'contain', 'important');
+        img.setAttribute('width', exactW);
+        img.setAttribute('height', Math.round(curH));
       });
 
       document.body.appendChild(exportContainer);
