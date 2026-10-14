@@ -21,6 +21,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <!-- PDF.js for high-resolution rendering of uploaded custom Terms PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="html2pdf.bundle.min.js"></script>
+  <script>
+    if (typeof html2pdf === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
+    }
+  </script>
   <style>
     /* ==========================================================================
        GOOGLE WORKSPACE / MATERIAL 3 DARK THEME DESIGN SYSTEM
@@ -1527,6 +1533,11 @@
       margin: 0;
     }
 
+    @page {
+      size: 210mm 297mm;
+      margin: 0mm;
+    }
+
     @media print {
       html, body {
         width: 210mm !important;
@@ -1540,13 +1551,29 @@
         print-color-adjust: exact !important;
       }
 
+      /* Unconditionally suppress all mobile sheets, backdrops, navbars, modals, toolbars, and install banners */
       .app-topbar,
       .app-sidebar,
       .page-index-pill,
       .toast-container,
       .canvas-floating-controls,
-      .modal-overlay {
+      .modal-overlay,
+      .mobile-bottom-nav,
+      .mobile-fab-toggle,
+      .mobile-canvas-zoom-pill,
+      .pwa-install-banner,
+      .mobile-sheet-backdrop,
+      .mobile-sheet-dialog,
+      .app-modal-backdrop,
+      .template-picker-card,
+      .pdf-engine-badge,
+      .btn-app-secondary,
+      .btn-google-primary,
+      .wizard-step-nav {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
       }
 
       .app-workspace,
@@ -1596,7 +1623,6 @@
         print-color-adjust: exact !important;
       }
 
-      /* Clean print representation of links */
       .canvas-link,
       .creator-detail.canvas-link,
       .bill-to-email.canvas-link {
@@ -1607,7 +1633,6 @@
         color: #0056b3 !important;
       }
 
-      /* Explicit print styling for registration block with table border */
       .registration-pill {
         border: 1px solid var(--pdf-border) !important;
         color: #000000 !important;
@@ -1616,7 +1641,6 @@
         print-color-adjust: exact !important;
       }
 
-      /* Completely strip any editing highlights or outlines when printing */
       .canvas-editable,
       .canvas-editable:hover,
       .canvas-editable:focus,
@@ -1626,6 +1650,256 @@
         box-shadow: none !important;
       }
     }
+
+    /* ==========================================================================
+       5 DESIGN TEMPLATES FOR INVOICE STUDIO
+       ========================================================================== */
+    .template-picker-card {
+      background: var(--g-surface-card);
+      border: 1px solid var(--g-border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin: 8px 12px 12px 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .template-picker-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .template-picker-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--g-text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tpl-active-badge {
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(26, 115, 232, 0.2);
+      color: var(--g-blue-light);
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(26, 115, 232, 0.4);
+    }
+    .template-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+    }
+    .tpl-btn {
+      background: #111215;
+      border: 1px solid var(--g-border);
+      color: var(--g-text-secondary);
+      border-radius: 8px;
+      padding: 6px 3px;
+      font-size: 10.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s ease;
+      text-align: center;
+      user-select: none;
+    }
+    .tpl-btn:hover {
+      border-color: var(--g-blue-light);
+      color: var(--g-text-primary);
+      background: #191c23;
+    }
+    .tpl-btn.active {
+      border-color: var(--g-blue);
+      background: rgba(26, 115, 232, 0.2);
+      color: #ffffff;
+      box-shadow: 0 0 0 1px var(--g-blue);
+    }
+    .tpl-btn .tpl-icon {
+      font-size: 14px;
+    }
+
+    /* Template 1: Pro (Default) */
+    .tpl-pro .a4-page {
+      /* Baseline agency design */
+    }
+
+    /* Template 2: Simple - Minimalist, modern hairline rules */
+    .tpl-simple .tax-invoice-banner {
+      background: transparent !important;
+      border-top: none !important;
+      border-bottom: 2px solid #111827 !important;
+      color: #111827 !important;
+      padding: 10px 0 !important;
+      margin-bottom: 16px !important;
+      justify-content: flex-start !important;
+    }
+    .tpl-simple .tax-invoice-title {
+      font-size: 18px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.08em !important;
+      color: #111827 !important;
+    }
+    .tpl-simple .items-table {
+      border: none !important;
+      border-collapse: collapse !important;
+    }
+    .tpl-simple .items-table th {
+      background: transparent !important;
+      color: #64748b !important;
+      font-size: 9.5px !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.08em !important;
+      border: none !important;
+      border-bottom: 1.5px solid #111827 !important;
+      padding: 10px 6px !important;
+    }
+    .tpl-simple .items-table td {
+      border: none !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+      padding: 11px 6px !important;
+      font-size: 11.5px !important;
+    }
+    .tpl-simple .bank-info-table {
+      background: transparent !important;
+      border: none !important;
+      border-left: 2px solid #e2e8f0 !important;
+      border-radius: 0 !important;
+      padding-left: 12px !important;
+    }
+    .tpl-simple .registration-pill {
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 4px !important;
+    }
+    .tpl-simple .roles-badges-table td {
+      background: #f8fafc !important;
+      color: #1e293b !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 4px !important;
+      font-weight: 500 !important;
+    }
+
+    /* Template 3: Advanced - Luxury Agency & Creative Studio */
+    .tpl-advanced .a4-page {
+      position: relative;
+    }
+    .tpl-advanced .a4-page::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #4f46e5 0%, #3b82f6 35%, #06b6d4 70%, #10b981 100%);
+      z-index: 10;
+    }
+    .tpl-advanced .tax-invoice-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+      color: #ffffff !important;
+      border-radius: 8px !important;
+      border: none !important;
+      padding: 10px 16px !important;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12) !important;
+    }
+    .tpl-advanced .tax-invoice-title {
+      color: #ffffff !important;
+      letter-spacing: 0.15em !important;
+      font-size: 14px !important;
+    }
+    .tpl-advanced .items-table th {
+      background: #1e293b !important;
+      color: #ffffff !important;
+      border: 1px solid #1e293b !important;
+      font-size: 9.5px !important;
+      letter-spacing: 0.05em !important;
+      text-transform: uppercase !important;
+    }
+    .tpl-advanced .items-table td {
+      border-color: #e2e8f0 !important;
+      padding: 10px 8px !important;
+    }
+    .tpl-advanced .items-table tbody tr:nth-child(even) {
+      background-color: #f8fafc !important;
+    }
+    .tpl-advanced .bank-info-table {
+      background: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 8px !important;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;
+    }
+    .tpl-advanced .roles-badges-table td {
+      background: #eff6ff !important;
+      color: #1d4ed8 !important;
+      border: 1px solid #bfdbfe !important;
+      border-radius: 14px !important;
+      font-weight: 600 !important;
+      font-size: 10px !important;
+      padding: 3px 10px !important;
+    }
+
+    /* Template 4: Terms Invoice - Hybrid SOW Agreement & Commercial Invoice */
+    .tpl-terms-invoice .tax-invoice-banner {
+      background: #1e3a5f !important;
+      color: #ffffff !important;
+      border-radius: 4px !important;
+      padding: 8px 12px !important;
+    }
+    .tpl-terms-invoice .tax-invoice-title::after {
+      content: ' & SERVICE AGREEMENT';
+      font-size: 11px;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    .tpl-terms-invoice .items-table th {
+      background: #203a43 !important;
+      color: #ffffff !important;
+      border-color: #203a43 !important;
+    }
+    .tpl-terms-invoice .terms-agreement-callout {
+      display: block !important;
+    }
+    .tpl-terms-invoice .dual-signature-grid {
+      display: grid !important;
+    }
+
+    /* Template 5: Quick Sheet - Compact Freelance Billing Voucher */
+    .tpl-quicksheet .tax-invoice-banner {
+      background: #111827 !important;
+      border: none !important;
+      border-radius: 6px !important;
+      padding: 6px 14px !important;
+    }
+    .tpl-quicksheet .tax-invoice-title {
+      font-size: 13px !important;
+      letter-spacing: 0.12em !important;
+    }
+    .tpl-quicksheet .items-table th {
+      background: #374151 !important;
+      color: #f9fafb !important;
+      padding: 6px 6px !important;
+      font-size: 9px !important;
+    }
+    .tpl-quicksheet .items-table td {
+      padding: 6px 6px !important;
+      font-size: 10.5px !important;
+    }
+    .tpl-quicksheet .bank-info-table {
+      border: 1px solid #d1d5db !important;
+      background: #f9fafb !important;
+      padding: 6px !important;
+    }
+    .tpl-quicksheet .qr-code-img {
+      border: 2px solid #111827 !important;
+      border-radius: 6px !important;
+    }
+    
+    
 
     /* ==========================================================================
        MOBILE & PWA APP-LIKE RESPONSIVE DESIGN SYSTEM
@@ -2160,11 +2434,17 @@
         <button type="button" class="btn-app-secondary" onclick="resetZoom(0.9)" style="padding:2px 8px; font-size:11px; margin-left:2px;">Fit</button>
       </div>
 
-      <button type="button" class="btn-google-primary" onclick="window.print()" title="Print / Export PDF (Ctrl+P)">
+      <!-- Dedicated Clean PDF Engine -->
+      <button type="button" class="btn-google-primary" id="btnDownloadCleanPdfHeader" onclick="downloadCleanPdf()" title="Save clean PDF without page titles or URLs">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
         </svg>
-        <span>Print / Save PDF</span>
+        <span>⬇️ Save Clean PDF</span>
+      </button>
+
+      <!-- Standard Browser Print -->
+      <button type="button" class="btn-app-secondary" id="btnPrintBrowserHeader" onclick="triggerBrowserPrint()" title="Browser Print Dialog / Physical Printer (Ctrl+P)" style="padding:6px 10px; font-size:11.5px; gap:4px;">
+        <span>🖨️ Print</span>
       </button>
     </div>
   </header>
@@ -2227,6 +2507,37 @@
       </div>
 
       <!-- Scrollable Tab Form Panels -->
+      
+      <!-- TEMPLATE PICKER WIDGET -->
+      <div class="template-picker-card">
+        <div class="template-picker-header">
+          <span class="template-picker-title">🎨 Invoice Design Template</span>
+          <span class="tpl-active-badge" id="lblActiveTemplate">Pro (Default)</span>
+        </div>
+        <div class="template-picker-grid">
+          <button type="button" class="tpl-btn active" data-tpl="pro" onclick="setInvoiceTemplate('pro')" title="Pro (Default) - Agency Standard">
+            <span class="tpl-icon">💼</span>
+            <span>Pro</span>
+          </button>
+          <button type="button" class="tpl-btn" data-tpl="simple" onclick="setInvoiceTemplate('simple')" title="Simple - Clean Hairline Minimalist">
+            <span class="tpl-icon">✨</span>
+            <span>Simple</span>
+          </button>
+          <button type="button" class="tpl-btn" data-tpl="advanced" onclick="setInvoiceTemplate('advanced')" title="Advanced - Studio Gradient Luxury">
+            <span class="tpl-icon">🚀</span>
+            <span>Advanced</span>
+          </button>
+          <button type="button" class="tpl-btn" data-tpl="terms-invoice" onclick="setInvoiceTemplate('terms-invoice')" title="Terms invoice - Legal SOW & Agreement">
+            <span class="tpl-icon">📜</span>
+            <span>Terms</span>
+          </button>
+          <button type="button" class="tpl-btn" data-tpl="quicksheet" onclick="setInvoiceTemplate('quicksheet')" title="Quick Sheet - Fast Freelance Voucher">
+            <span class="tpl-icon">⚡</span>
+            <span>Quick</span>
+          </button>
+        </div>
+      </div>
+
       <div class="sidebar-scroll-body">
 
         <!-- TAB 1: STUDIO PROFILE -->
@@ -2959,6 +3270,9 @@
             <!-- Custom Formatted Terms Box -->
             <div id="boxCustomFormattedTerms" style="display:none; flex-direction:column; gap:6px;">
               <label class="field-label">Custom Formatted Terms & Clauses</label>
+              <button type="button" class="btn-app-secondary" onclick="regenerateDynamicTermsUI()" style="margin-bottom:8px; font-size:11px; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
+                <span>🔄 Auto-Generate Dynamic Terms from Active Services & Amounts</span>
+              </button>
               <div class="rich-terms-toolbar">
                 <button type="button" class="rich-btn" onclick="insertTermsFormat('**', '**')"><b>B</b></button>
                 <button type="button" class="rich-btn" onclick="insertTermsFormat('*', '*')"><i>I</i></button>
@@ -3511,9 +3825,13 @@
       <span class="m-icon">📄</span>
       <span class="m-label">Pages</span>
     </button>
-    <button type="button" class="mobile-nav-item" id="mNavPrint" onclick="window.print()">
+    <button type="button" class="mobile-nav-item" id="mNavSavePdf" onclick="downloadCleanPdf()">
+      <span class="m-icon">⬇️</span>
+      <span class="m-label">Save PDF</span>
+    </button>
+    <button type="button" class="mobile-nav-item" id="mNavPrint" onclick="triggerBrowserPrint()">
       <span class="m-icon">🖨️</span>
-      <span class="m-label">PDF / Print</span>
+      <span class="m-label">Print</span>
     </button>
   </nav>
 
@@ -3522,7 +3840,7 @@
   <div class="mobile-sheet-dialog" id="mobilePagesSheetDialog">
     <div class="mobile-sheet-handle"></div>
     <div class="mobile-sheet-title">
-      <span>Invoice Pages Navigation</span>
+      <span>Invoice Design & Pages</span>
       <button type="button" onclick="closeMobilePagesSheet()" style="background:none; border:none; color:var(--g-text-secondary); font-size:20px; cursor:pointer;">&times;</button>
     </div>
     <div class="mobile-sheet-pages-list">
@@ -3919,6 +4237,8 @@
       initInteractiveCanvas();
       resetZoom(0.9);
       updatePreview();
+      initInvoiceTemplate();
+      updateDynamicTerms();
     });
 
     // Sidebar Tab Navigation with Clean Icons Rail (No Left-Right Scroll)
@@ -5243,7 +5563,7 @@
 
       if (!totalInp.value) totalInp.value = 50000; // sensible sample instead of ₹00,000 placeholders
       totalInp.addEventListener('input', recalculateAmounts);
-      advanceInp.addEventListener('input', () => { advanceManual = advanceInp.value !== ''; recalculateAmounts(); });
+      advanceInp.addEventListener('input', () => { advanceManual = advanceInp.value !== ''; recalculateAmounts(); updateDynamicTerms(); });
       if (termsInp) termsInp.addEventListener('input', recalculateAmounts);
       document.addEventListener('change', e => { if (e.target.tagName === 'SELECT') setTimeout(recalculateAmounts, 0); });
       balanceInp.addEventListener('input', updatePreview);
@@ -5905,7 +6225,7 @@
       safeSetText('previewTermsClientName', clientFullName, 'Client Name');
       safeSetText('previewTermsClientPhone', phoneDisplay, '+91 00000 00000');
       safeSetText('previewTermsClientAddr', combinedAddress, 'Location');
-      safeSetText('previewTermsDate', document.getElementById('inpInvoiceDate').value, '13/10/2026');
+      safeSetText('previewTermsDate', document.getElementById('inpInvoiceDate').value, '13/10/2026'); updateDynamicTerms();
 
       // 10. Custom formatted terms sync if active
       const termsSource = document.getElementById('selectTermsSource').value;
@@ -6435,6 +6755,361 @@
       showToast('Invoice Studio installed successfully!', 'success');
     });
 
-  </script>
+  
+
+    // ==========================================================================
+    // 5 DESIGN TEMPLATES ENGINE
+    // ==========================================================================
+    const INVOICE_TEMPLATES = {
+      'pro': 'Pro (Default)',
+      'simple': 'Simple',
+      'advanced': 'Advanced',
+      'terms-invoice': 'Terms invoice',
+      'quicksheet': 'Quick Sheet'
+    };
+
+    let activeInvoiceTemplate = 'pro';
+
+    function setInvoiceTemplate(tplKey) {
+      if (!INVOICE_TEMPLATES[tplKey]) tplKey = 'pro';
+      activeInvoiceTemplate = tplKey;
+
+      const stage = document.getElementById('a4Stage');
+      if (stage) {
+        stage.classList.remove('tpl-pro', 'tpl-simple', 'tpl-advanced', 'tpl-terms-invoice', 'tpl-quicksheet');
+        stage.classList.add('tpl-' + tplKey);
+        stage.setAttribute('data-template', tplKey);
+      }
+
+      // Update badge label in sidebar and mobile sheet
+      const badge = document.getElementById('lblActiveTemplate');
+      if (badge) badge.textContent = INVOICE_TEMPLATES[tplKey];
+
+      // Update button active states everywhere
+      document.querySelectorAll('.tpl-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tpl') === tplKey);
+      });
+
+      // Special handling for Terms Invoice template callout
+      const termsCallout = document.querySelector('.terms-agreement-callout');
+      if (termsCallout) {
+        termsCallout.style.display = tplKey === 'terms-invoice' ? 'block' : 'none';
+      }
+
+      try {
+        localStorage.setItem('selected_invoice_template_v1', tplKey);
+      } catch (e) {}
+
+      showToast('🎨 Invoice template: ' + INVOICE_TEMPLATES[tplKey], 2000);
+    }
+
+    function initInvoiceTemplate() {
+      try {
+        const saved = localStorage.getItem('selected_invoice_template_v1');
+        if (saved && INVOICE_TEMPLATES[saved]) {
+          setInvoiceTemplate(saved);
+          return;
+        }
+      } catch (e) {}
+      setInvoiceTemplate('pro');
+    }
+
+    // ==========================================================================
+    // CLEAN PDF EXPORT ENGINE (NO PAGE TITLES OR URL HEADERS)
+    // ==========================================================================
+    function triggerBrowserPrint() {
+      if (typeof closeMobilePagesSheet === 'function') closeMobilePagesSheet();
+      if (typeof closeMobileSheet === 'function') closeMobileSheet();
+      if (typeof closeAllModals === 'function') closeAllModals();
+
+      const originalTitle = document.title;
+      const invNum = (document.getElementById('invNumText')?.textContent?.trim() || 'INV').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const clientName = (document.getElementById('invClientName')?.textContent?.trim() || 'Client').replace(/[^a-zA-Z0-9_-]/g, '_');
+      document.title = invNum + '_' + clientName;
+
+      setTimeout(() => {
+        window.print();
+        setTimeout(() => {
+          document.title = originalTitle;
+        }, 1500);
+      }, 250);
+    }
+
+    async function downloadCleanPdf() {
+      if (typeof closeMobilePagesSheet === 'function') closeMobilePagesSheet();
+      if (typeof closeMobileSheet === 'function') closeMobileSheet();
+      if (typeof closeAllModals === 'function') closeAllModals();
+
+      if (typeof html2pdf === 'undefined') {
+        showToast('⚠️ PDF Engine is initializing. Falling back to browser print...', 3000);
+        triggerBrowserPrint();
+        return;
+      }
+
+      showToast('🚀 Generating clean, unbranded PDF export...', 4000);
+
+      const stage = document.getElementById('a4Stage');
+      if (!stage) {
+        triggerBrowserPrint();
+        return;
+      }
+
+      // Collect all visible .a4-page elements
+      const wrappers = stage.querySelectorAll('.page-wrapper-card');
+      const activePages = [];
+
+      wrappers.forEach(wrap => {
+        const page = wrap.querySelector('.a4-page');
+        const isVisible = wrap.style.display !== 'none' && window.getComputedStyle(wrap).display !== 'none';
+        if (page && isVisible) {
+          activePages.push(page);
+        }
+      });
+
+      if (activePages.length === 0) {
+        showToast('⚠️ No active invoice pages found to export.', 3000);
+        return;
+      }
+
+      // Create isolated temporary off-screen container matching active template
+      const exportContainer = document.createElement('div');
+      exportContainer.className = 'pdf-clean-export-container ' + (stage.className || '');
+      exportContainer.style.cssText = 'position:fixed; top:-99999px; left:-99999px; width:210mm; background:#ffffff; margin:0; padding:0; z-index:-99999;';
+
+      activePages.forEach((page, idx) => {
+        const pageClone = page.cloneNode(true);
+        // Clean out any contenteditable or focus rings
+        pageClone.removeAttribute('contenteditable');
+        pageClone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+        pageClone.querySelectorAll('.page-index-pill, .canvas-clickable').forEach(el => {
+          el.style.boxShadow = 'none';
+          el.style.outline = 'none';
+        });
+
+        // Set strict A4 page dimensions
+        pageClone.style.width = '210mm';
+        pageClone.style.minHeight = '296.8mm';
+        pageClone.style.maxHeight = '296.8mm';
+        pageClone.style.margin = '0';
+        pageClone.style.boxShadow = 'none';
+        pageClone.style.border = 'none';
+        pageClone.style.boxSizing = 'border-box';
+        pageClone.style.overflow = 'hidden';
+
+        if (idx < activePages.length - 1) {
+          pageClone.style.pageBreakAfter = 'always';
+          pageClone.style.breakAfter = 'page';
+        } else {
+          pageClone.style.pageBreakAfter = 'auto';
+          pageClone.style.breakAfter = 'auto';
+        }
+        exportContainer.appendChild(pageClone);
+      });
+
+      document.body.appendChild(exportContainer);
+
+      const invNum = (document.getElementById('invNumText')?.textContent?.trim() || 'INV').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const clientName = (document.getElementById('invClientName')?.textContent?.trim() || 'Client').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const filename = 'Invoice_' + invNum + '_' + clientName + '.pdf';
+
+      const opt = {
+        margin: [0, 0, 0, 0],
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          scrollY: 0,
+          scrollX: 0,
+          windowWidth: 794
+        },
+        jsPDF: {
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'portrait'
+        },
+        pagebreak: { mode: ['css', 'legacy'] }
+      };
+
+      try {
+        await html2pdf().set(opt).from(exportContainer).save();
+        showToast('✅ Clean PDF successfully downloaded: ' + filename, 4000);
+      } catch (err) {
+        console.error('PDF Engine error:', err);
+        showToast('⚠️ Fallback to browser print...', 3000);
+        triggerBrowserPrint();
+      } finally {
+        if (exportContainer.parentNode) {
+          exportContainer.parentNode.removeChild(exportContainer);
+        }
+      }
+    }
+
+    // ==========================================================================
+    // DYNAMIC INTELLIGENT TERMS & CONDITIONS ENGINE
+    // ==========================================================================
+    function updateDynamicTerms() {
+      const creatorName = document.getElementById('inpCreatorName')?.value.trim() || 'SAKSHAM GOEL';
+      const clientName = document.getElementById('inpClientName')?.value.trim() || 'Client Name';
+      const projectName = document.getElementById('inpProjectName')?.value.trim() || '';
+      const phrase = (typeof buildNaturalServicePhrase === 'function' && typeof selectedServices !== 'undefined') ? buildNaturalServicePhrase(selectedServices) : 'creative services';
+      const paymentTermsText = document.getElementById('inpPaymentTerms')?.value.trim() || '50% Advance, 50% on Final Delivery';
+      const invoiceDate = document.getElementById('inpInvoiceDate')?.value.trim() || '14/10/2026';
+      const currencySymbol = (typeof getCurrencySymbol === 'function') ? getCurrencySymbol() : '₹';
+
+      let totalVal = Math.max(0, parseFloat(document.getElementById('inpTotalNumeric')?.value) || 0);
+      if (!totalVal) {
+        totalVal = Math.max(0, parseFloat(document.getElementById('inpSubtotalNumeric')?.value) || 50000);
+      }
+      const totalFormatted = (typeof formatCurrency === 'function') ? formatCurrency(totalVal) : ('₹' + totalVal.toLocaleString('en-IN') + '/-');
+
+      let advanceVal = parseFloat(document.getElementById('inpAdvanceAmount')?.value) || 0;
+      if (!advanceVal && totalVal > 0) {
+        const pct = (typeof advancePctFromTerms === 'function') ? advancePctFromTerms() : 50;
+        advanceVal = Math.round(totalVal * pct / 100);
+      }
+      const advanceFormatted = (typeof formatCurrency === 'function') ? formatCurrency(advanceVal) : ('₹' + advanceVal.toLocaleString('en-IN') + '/-');
+      const balanceVal = Math.max(0, totalVal - advanceVal);
+      const balanceFormatted = (typeof formatCurrency === 'function') ? formatCurrency(balanceVal) : ('₹' + balanceVal.toLocaleString('en-IN') + '/-');
+
+      // Analyze services
+      const currentServices = (typeof selectedServices !== 'undefined' && Array.isArray(selectedServices)) ? selectedServices : [];
+      const hasShoot = currentServices.some(s => /cinematography|camera|shoot|directing|d\.?o\.?p/i.test(s));
+      const hasEditing = currentServices.some(s => /edit|post|assembly/i.test(s));
+      const hasColor = currentServices.some(s => /color|grading|di\b/i.test(s));
+      const hasVfx = currentServices.some(s => /vfx|visual effects|3d|motion/i.test(s));
+      const hasPhoto = currentServices.some(s => /photo|still/i.test(s));
+      const hasDesign = currentServices.some(s => /graphic|design|brand|logo/i.test(s));
+      const hasSound = currentServices.some(s => /sound|audio|mix/i.test(s));
+
+      // Build Dynamic Scope Bullets
+      const scopeBullets = [];
+      scopeBullets.push("Any services not expressly listed herein or in a separate confirmed project quote shall be treated as out-of-scope and quoted separately prior to execution.");
+      scopeBullets.push("Payment of the advance deposit or commencement of work constitutes the Client's (" + escapeHtml(clientName) + ") full and unconditional acceptance of these Terms. " + escapeHtml(creatorName) + " operates strictly as an independent contractor.");
+      
+      let specificDeliverables = [];
+      if (hasShoot) specificDeliverables.push("Principal cinematography on agreed production dates with calibrated camera packages and lighting equipment");
+      if (hasEditing) specificDeliverables.push("Offline & online editorial assembly delivered in broadcast ProRes 422HQ and 4K web masters");
+      if (hasColor) specificDeliverables.push("Scene-by-scene DI color grading with calibrated Rec.709/P3 color management");
+      if (hasVfx) specificDeliverables.push("Visual effects, kinetic motion design, compositing, and title sequences");
+      if (hasPhoto) specificDeliverables.push("High-resolution digital photography curation and professional retouching");
+      if (hasDesign) specificDeliverables.push("Vector graphic assets (.AI, .SVG, .PDF) and brand typographic layout");
+      if (hasSound) specificDeliverables.push("Dialogue editing, Foley, and broadcast loudness-compliant master audio mix");
+
+      if (specificDeliverables.length > 0) {
+        scopeBullets.push("Agreed deliverables for " + (projectName ? "“" + escapeHtml(projectName) + "”" : "the project") + " include: " + specificDeliverables.join("; ") + ".");
+      } else {
+        scopeBullets.push("Agreed deliverables for " + (projectName ? "“" + escapeHtml(projectName) + "”" : "the project") + " comprise " + phrase + " as mutually confirmed.");
+      }
+
+      // Build Dynamic Financial Terms
+      let milestoneSchedule = "";
+      if (/50%/.test(paymentTermsText) || (advanceVal > 0 && advanceVal < totalVal)) {
+        milestoneSchedule = "A mandatory non-refundable advance deposit of " + advanceFormatted + " (50%) is required to reserve dates and commence work. The remaining balance of " + balanceFormatted + " (50%) shall be due upon delivery of the watermarked review copy and prior to unwatermarked master file release.";
+      } else if (/100%/.test(paymentTermsText) || /full upfront/i.test(paymentTermsText)) {
+        milestoneSchedule = "100% full upfront payment of " + totalFormatted + " is required prior to project scheduling and master asset delivery.";
+      } else if (/net 15/i.test(paymentTermsText)) {
+        milestoneSchedule = "The total invoiced balance of " + totalFormatted + " is strictly payable within 15 calendar days of the invoice date (" + invoiceDate + ").";
+      } else if (/net 30/i.test(paymentTermsText)) {
+        milestoneSchedule = "The total invoiced balance of " + totalFormatted + " is strictly payable within 30 calendar days of the invoice date (" + invoiceDate + ").";
+      } else {
+        milestoneSchedule = "Payment shall be rendered in accordance with agreed terms (" + escapeHtml(paymentTermsText) + "): Advance deposit of " + advanceFormatted + " upon confirmation, and balance of " + balanceFormatted + " upon project completion.";
+      }
+
+      const financialBullets = [
+        milestoneSchedule,
+        "Overdue payments exceeding agreed credit terms shall accrue late payment interest at 1.5% per month (18% p.a.), calculated daily until fully cleared.",
+        "All fees are net of statutory GST. In the event of statutory TDS deductions (Sec 194C / 194J), the Client is required to issue the corresponding Form 16A TDS certificate within the statutory timeline."
+      ];
+
+      // Build Working Hours & Revisions
+      const revisionBullets = [];
+      if (hasShoot) {
+        revisionBullets.push("Standard production shoot day comprises up to ten (10) on-set hours including meal breaks. Overtime beyond 10 hours is billed pro-rata at agreed hourly rates.");
+      }
+      revisionBullets.push("The agreed project fee covers up to two (2) consolidated rounds of creative feedback provided within seven (7) calendar days of draft delivery. Consolidated feedback must specify clear timecodes or visual markers.");
+      revisionBullets.push("Script rewrites, fundamental concept alterations, or structural changes requested after picture lock/sign-off shall be quoted separately as out-of-scope additions.");
+
+      // Build IP & Copyright Bullets
+      const ipBullets = [
+        "Full commercial usage and broadcast rights in the final approved deliverables vest in the Client (" + escapeHtml(clientName) + ") strictly upon receipt of 100% full and cleared payment of " + totalFormatted + ". Until cleared payment is received, all intellectual property rights remain the exclusive property of " + escapeHtml(creatorName) + ".",
+        "Project working source files (.prproj, .aep, .drp project files, and raw unedited camera footage) remain proprietary to " + escapeHtml(creatorName) + " and are excluded unless explicitly itemized as a raw buyout.",
+        escapeHtml(creatorName) + " retains the irrevocable, non-exclusive right to display excerpts and stills from the completed work for portfolio, reel, and self-promotional purposes following public release.",
+        "The Client agrees to credit " + escapeHtml(creatorName) + " in all published/broadcasted materials consistent with the roles performed (e.g., “" + phrase + " by " + escapeHtml(creatorName) + "”)."
+      ];
+
+      // Update Page 2 wrapOfficialClauses
+      const wrapOfficial = document.getElementById('wrapOfficialClauses');
+      if (wrapOfficial) {
+        wrapOfficial.innerHTML = `
+          <div>
+            <div class="terms-sec-title">1. SCOPE OF WORK & ENGAGEMENT</div>
+            <div class="terms-subhead">Defined Roles: Services may include :</div>
+            <table class="roles-badges-table canvas-clickable" title="Click to edit Services in Project tab" onclick="switchTab('tabProject')">
+              <tr id="previewRolesBadgesRow">
+                ${currentServices.length > 0 ? currentServices.map(s => '<td>' + escapeHtml(s) + '</td>').join('') : '<td>Cinematography</td><td>D.I.T.</td><td>Editing</td><td>DI Color Grading</td><td>Visual Effects</td>'}
+              </tr>
+            </table>
+            <div class="terms-subhead">Scope of work agreed :</div>
+            <ul class="terms-bullet-list" style="margin-top: 4px;">
+              ${scopeBullets.map(b => '<li>' + b + '</li>').join('')}
+            </ul>
+          </div>
+
+          <div>
+            <div class="terms-sec-title">2. FINANCIAL TERMS & MILESTONE SCHEDULE</div>
+            <ul class="terms-bullet-list">
+              ${financialBullets.map(b => '<li>' + b + '</li>').join('')}
+            </ul>
+          </div>
+
+          <div>
+            <div class="terms-sec-title">3. WORKING HOURS & REVISIONS</div>
+            <ul class="terms-bullet-list">
+              ${revisionBullets.map(b => '<li>' + b + '</li>').join('')}
+            </ul>
+          </div>
+
+          <div>
+            <div class="terms-sec-title">4. INTELLECTUAL PROPERTY (IP) & CREDIT</div>
+            <ul class="terms-bullet-list">
+              ${ipBullets.map(b => '<li>' + b + '</li>').join('')}
+            </ul>
+          </div>
+        `;
+      }
+
+      // Also update the markdown version in custom terms box
+      const customTermsBox = document.getElementById('inpCustomTermsText');
+      if (customTermsBox) {
+        customTermsBox.value = `**1. SCOPE OF WORK & ENGAGEMENT**
+• Defined Roles: ${phrase}
+${scopeBullets.map(b => '• ' + b.replace(/<[^>]+>/g, '')).join('\n')}
+
+**2. FINANCIAL TERMS & MILESTONE SCHEDULE**
+${financialBullets.map(b => '• ' + b.replace(/<[^>]+>/g, '')).join('\n')}
+
+**3. WORKING HOURS & REVISIONS**
+${revisionBullets.map(b => '• ' + b.replace(/<[^>]+>/g, '')).join('\n')}
+
+**4. INTELLECTUAL PROPERTY (IP) & CREDIT**
+${ipBullets.map(b => '• ' + b.replace(/<[^>]+>/g, '')).join('\n')}
+
+**5. DATA MANAGEMENT & ARCHIVING**
+• Project data is archived for fourteen (14) calendar days post-delivery. Client is advised to verify and backup all assets upon delivery.
+
+**6. CANCELLATION & KILL FEE**
+• In the event of booking cancellation post-confirmation, the advance deposit is non-refundable to cover pre-production and reserved dates.
+`;
+      }
+    }
+
+    function regenerateDynamicTermsUI() {
+      updateDynamicTerms();
+      showToast('🔄 Dynamic terms updated based on current services, amounts & terms!', 2500);
+    }
+
+</script>
 </body>
 </html>

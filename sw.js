@@ -1,5 +1,5 @@
 // Invoice Studio Service Worker for Offline PWA Capabilities
-const CACHE_NAME = 'invoice-studio-v1.1';
+const CACHE_NAME = 'invoice-studio-v1.2';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -9,6 +9,7 @@ const STATIC_ASSETS = [
   './logo.png',
   './qr.jpg',
   './manifest.json',
+  './html2pdf.bundle.min.js',
   'https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Inter:wght@400;500;600;700;800;900&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'
 ];

@@ -8,19 +8,27 @@ Now fully optimized as an **App-like Progressive Web App (PWA)** with native mob
 
 ## 🌟 Key Features
 
+- ⬇️ **Clean PDF Export Engine**: Dedicated client-side PDF export engine powered by `html2pdf.js` that downloads unbranded, pixel-perfect A4 PDFs directly without browser print headers, file URLs, or page titles.
+- 🎨 **5 Professional Design Templates**:
+  1. **Pro (Default)**: Modern agency slate and Material 3 design tokens.
+  2. **Simple**: Minimalist editorial aesthetics with refined hairline rules and uncluttered typography.
+  3. **Advanced**: Creative studio luxury styling with vibrant accent gradient bars, carded modules, and dark table headers.
+  4. **Terms invoice**: Hybrid SOW agreement and commercial tax invoice featuring executive statement-of-work undertakngs and dual signatures.
+  5. **Quick Sheet**: Compact freelance billing voucher with prominent instant UPI QR scan-and-pay card.
+- 🧠 **Dynamic & Sensible Terms & Conditions**:
+  - Automatically derives clauses based on active selected services (cinematography shoot hours, video editing master codecs, DI color grading Rec.709/P3 calibration, 3D motion graphics, photography retouching).
+  - Calculates exact rupee figures and milestone schedules from payment terms (e.g. 50% advance / balance, full upfront, Net 15/30).
+  - Explicit IP protection: commercial usage rights transfer only upon 100% full cleared payment.
 - 📱 **Mobile & PWA App Experience**: 
   - Installable to home screens (Android, iOS Safari, macOS, Windows) with standalone display mode.
   - Offline capability powered by Service Worker caching.
-  - Native mobile bottom navigation bar (`Editor`, `Preview`, `Pages`, `PDF/Print`).
+  - Native mobile bottom navigation bar (`Editor`, `Preview`, `Pages`, `Save PDF`, `Print`).
   - Floating Action Button (FAB) for seamless 1-tap switching between forms and live preview.
-  - Responsive preview canvas that automatically fits mobile screens with 2-finger touch pinch-to-zoom.
-- 🎨 **Material 3 / Google Workspace Dark UI**: Sleek, distraction-free interface with polished micro-interactions and smooth transitions.
+  - Print overlay protection: all mobile sheets, backdrops, and navigation bars are strictly hidden during export and print.
 - 👁️ **Live Interactive Canvas**: Real-time rendering with zoom, pan, and direct-on-canvas editing.
 - 💼 **Multi-Profile Management**: Save and switch business profiles, creator contact info, custom brand logos, and UPI/Payment QR codes.
-- 📊 **Dynamic Itemized Billing**: Add, reorder, and configure line items with automated calculations for discounts, subtotals, taxes (GST/VAT), and grand totals.
-- 📜 **Custom Terms & Agreements**: Rich terms editor with direct support for custom PDF terms attachments via PDF.js.
-- 🖨️ **Print & PDF Ready**: Precision print stylesheets and PDF rendering to ensure standard A4 high-resolution documents without scaling artifacts.
-- 🚀 **Zero External Server Dependencies**: Runs completely in the browser as a standalone web application.
+- 📊 **Dynamic Itemized Billing**: Automated calculations for discounts, subtotals, taxes (GST/VAT), advance deposits, and balances.
+- 🚀 **Zero External Server Dependencies**: Runs completely in the browser as a standalone, offline-ready web application.
 
 ---
 
