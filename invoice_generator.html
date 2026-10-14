@@ -3069,14 +3069,14 @@
 
               <!-- Logo Preview & Actions Box -->
               <div style="display:flex; align-items:center; gap:12px; background:var(--g-bg-input); padding:10px 12px; border-radius:8px; border:1px solid var(--g-border);">
-                <div id="sidebarLogoThumbBox" style="height:52px; width:100px; background:#ffffff; border-radius:6px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:1px solid #444; flex-shrink:0;">
-                  <img id="previewSidebarLogo" src="" style="display:none;" style="max-height:48px; max-width:92px; object-fit:contain;">
+                <div id="sidebarLogoThumbBox" style="height:52px; width:100px; background:#ffffff; border-radius:6px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:1px solid #444; flex-shrink:0; cursor:pointer;" title="Click or drag & drop to upload Studio Logo">
+                  <img id="previewSidebarLogo" src="" style="display:none; max-height:48px; max-width:92px; object-fit:contain;">
                   <span id="lblNoLogoSidebar" style="font-size:10.5px; color:#888; display:none; font-weight:600; text-align:center;">No Logo</span>
                 </div>
 
                 <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
                   <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                    <button type="button" class="btn-app-secondary" id="btnUploadLogo" onclick="document.getElementById('fileUploadLogo').click()" style="font-size:11px; padding:4px 9px; display:inline-flex; align-items:center; gap:4px;">
+                    <button type="button" class="btn-app-secondary" id="btnUploadLogo" style="font-size:11px; padding:4px 9px; display:inline-flex; align-items:center; gap:4px;">
                       <span>📁</span> Upload Logo
                     </button>
                     <input type="file" id="fileUploadLogo" accept="image/*" style="display:none;">
@@ -5586,10 +5586,16 @@
         });
       }
 
-      // Logo upload (profile specific)
-      document.getElementById('fileUploadLogo').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+      // Logo upload & thumbnail controls (profile specific)
+      const fileUploadLogo = document.getElementById('fileUploadLogo');
+      const btnUploadLogo = document.getElementById('btnUploadLogo');
+      const thumbBox = document.getElementById('sidebarLogoThumbBox');
+
+      function handleLogoFile(file) {
+        if (!file || !file.type.startsWith('image/')) {
+          showToast('Please select a valid image file (PNG, JPG, SVG, WebP).', 'warning');
+          return;
+        }
         const reader = new FileReader();
         reader.onload = (evt) => {
           currentLogoSrc = evt.target.result;
@@ -5601,24 +5607,87 @@
           }
           updateLogoElements();
           updatePreview();
-          showToast('Logo uploaded and saved to profile.', 'success');
+          showToast('✅ Logo uploaded and applied to profile!', 'success');
+          if (fileUploadLogo) fileUploadLogo.value = '';
         };
         reader.readAsDataURL(file);
-      });
+      }
+
+      if (btnUploadLogo) {
+        btnUploadLogo.addEventListener('click', (e) => {
+          e.preventDefault();
+          const profiles = getStoredProfiles();
+          const currentP = profiles.find(p => p.id === activeProfileId);
+          if (currentP && currentP.isLocked) {
+            openPinModal();
+            showToast('🔒 Profile is locked. Please enter your 4-digit PIN to edit.', 'warning');
+            return;
+          }
+          if (fileUploadLogo) fileUploadLogo.click();
+        });
+      }
+
+      if (thumbBox) {
+        thumbBox.addEventListener('click', () => {
+          const profiles = getStoredProfiles();
+          const currentP = profiles.find(p => p.id === activeProfileId);
+          if (currentP && currentP.isLocked) {
+            openPinModal();
+            showToast('🔒 Profile is locked. Please enter your 4-digit PIN to edit.', 'warning');
+            return;
+          }
+          if (fileUploadLogo) fileUploadLogo.click();
+        });
+
+        // Drag and Drop Logo
+        thumbBox.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          thumbBox.style.borderColor = 'var(--g-blue)';
+          thumbBox.style.boxShadow = '0 0 8px rgba(26, 115, 232, 0.4)';
+        });
+        thumbBox.addEventListener('dragleave', () => {
+          thumbBox.style.borderColor = '#444';
+          thumbBox.style.boxShadow = 'none';
+        });
+        thumbBox.addEventListener('drop', (e) => {
+          e.preventDefault();
+          thumbBox.style.borderColor = '#444';
+          thumbBox.style.boxShadow = 'none';
+          const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+          if (file) handleLogoFile(file);
+        });
+      }
+
+      if (fileUploadLogo) {
+        fileUploadLogo.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (file) handleLogoFile(file);
+        });
+      }
 
       // Remove Logo (clears logo from profile, shows clean typography)
-      document.getElementById('btnRemoveLogo').addEventListener('click', () => {
-        currentLogoSrc = '';
-        const profiles = getStoredProfiles();
-        const idx = profiles.findIndex(p => p.id === activeProfileId);
-        if (idx !== -1) {
-          profiles[idx].logoSrc = '';
-          saveStoredProfiles(profiles);
-        }
-        updateLogoElements();
-        updatePreview();
-        showToast('Logo removed from profile.', 'info');
-      });
+      const btnRemoveLogo = document.getElementById('btnRemoveLogo');
+      if (btnRemoveLogo) {
+        btnRemoveLogo.addEventListener('click', (e) => {
+          e.preventDefault();
+          const profiles = getStoredProfiles();
+          const currentP = profiles.find(p => p.id === activeProfileId);
+          if (currentP && currentP.isLocked) {
+            openPinModal();
+            showToast('🔒 Profile is locked. Please enter your 4-digit PIN to edit.', 'warning');
+            return;
+          }
+          currentLogoSrc = '';
+          const idx = profiles.findIndex(p => p.id === activeProfileId);
+          if (idx !== -1) {
+            profiles[idx].logoSrc = '';
+            saveStoredProfiles(profiles);
+          }
+          updateLogoElements();
+          updatePreview();
+          showToast('Logo removed from profile.', 'info');
+        });
+      }
 
 
 
@@ -5818,16 +5887,6 @@
         if (el) {
           el.disabled = isLocked;
           el.readOnly = isLocked;
-          if (isLocked) {
-            el.onclick = () => {
-              if (isLocked) {
-                openPinModal();
-                showToast('🔒 Profile is locked. Please enter your 4-digit PIN to edit.', 'warning');
-              }
-            };
-          } else {
-            el.onclick = null;
-          }
         }
       });
 
@@ -6320,8 +6379,7 @@
         'inpClientPhone', 'selectCountryCode', 'inpClientEmail', 'inpClientArea', 'inpClientCity', 'inpClientPincode',
         'inpInvoiceNumber', 'inpInvoiceDate', 'inpInvoiceMonth', 'inpFinancialYear', 'inpPaymentTerms', 'inpDueDate',
         'inpRegistrationText', 'inpDesc1', 'inpItemQuantity', 'inpPaymentStatus',
-        'inpBankNameOfAccount', 'inpBankName', 'inpBankAccountNo', 'inpBankIfsc', 'inpBankUpi', 'inpBankMobile', 'inpSalutation',
-        'inpCustomTermsText'
+        'inpBankNameOfAccount', 'inpBankName', 'inpBankAccountNo', 'inpBankIfsc', 'inpBankUpi', 'inpBankMobile', 'inpSalutation'
       ];
 
       liveInputs.forEach(id => {
@@ -6529,6 +6587,17 @@
       }
 
       // Terms controls
+      const inpCustomTerms = document.getElementById('inpCustomTermsText');
+      if (inpCustomTerms) {
+        inpCustomTerms.addEventListener('input', () => {
+          inpCustomTerms.dataset.userEdited = 'true';
+          const termsSource = document.getElementById('selectTermsSource')?.value;
+          if (termsSource === 'custom_formatted') {
+            renderCustomFormattedTerms(inpCustomTerms.value);
+          }
+        });
+      }
+
       document.getElementById('chkIncludeTerms').addEventListener('change', updateTermsVisibility);
       document.getElementById('selectTermsSource').addEventListener('change', (e) => {
         const val = e.target.value;
@@ -6614,25 +6683,38 @@
     // Helper: Rich Terms Formatting Insert
     function insertTermsFormat(startTag, endTag) {
       const textarea = document.getElementById('inpCustomTermsText');
+      if (!textarea) return;
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const selected = textarea.value.substring(start, end) || 'text';
       textarea.value = textarea.value.substring(0, start) + startTag + selected + endTag + textarea.value.substring(end);
-      updatePreview();
+      textarea.dataset.userEdited = 'true';
+      textarea.focus();
+      textarea.setSelectionRange(start + startTag.length, start + startTag.length + selected.length);
+      renderCustomFormattedTerms(textarea.value);
     }
 
     function insertTermsBullet() {
       const textarea = document.getElementById('inpCustomTermsText');
-      textarea.value += '\n• ';
+      if (!textarea) return;
+      const start = textarea.selectionStart;
+      textarea.value = textarea.value.substring(0, start) + '\n• ' + textarea.value.substring(start);
+      textarea.dataset.userEdited = 'true';
       textarea.focus();
-      updatePreview();
+      textarea.setSelectionRange(start + 3, start + 3);
+      renderCustomFormattedTerms(textarea.value);
     }
 
     function insertTermsClause() {
       const textarea = document.getElementById('inpCustomTermsText');
-      textarea.value += '\n\n**CLAUSE TITLE IN UPPERCASE**\nDetailed agreed clause description goes here.';
+      if (!textarea) return;
+      const start = textarea.selectionStart;
+      const clauseTemplate = '\n\n**NEW CLAUSE TITLE**\n• Specific agreed clause details go here.';
+      textarea.value = textarea.value.substring(0, start) + clauseTemplate + textarea.value.substring(start);
+      textarea.dataset.userEdited = 'true';
       textarea.focus();
-      updatePreview();
+      textarea.setSelectionRange(start + 4, start + 20);
+      renderCustomFormattedTerms(textarea.value);
     }
 
     function escapeHtml(str) {
@@ -7014,7 +7096,7 @@
       safeSetText('previewTermsClientName', clientFullName, 'Client Name');
       safeSetText('previewTermsClientPhone', phoneDisplay, '+91 00000 00000');
       safeSetText('previewTermsClientAddr', combinedAddress, 'Location');
-      safeSetText('previewTermsDate', effectiveDate, todayFormatted); updateDynamicTerms();
+      safeSetText('previewTermsDate', effectiveDate, todayFormatted); updateDynamicTerms(false);
 
       // 10. Custom formatted terms sync if active
       const termsSource = document.getElementById('selectTermsSource').value;
@@ -7753,7 +7835,7 @@
     // ==========================================================================
     // DYNAMIC INTELLIGENT TERMS & CONDITIONS ENGINE
     // ==========================================================================
-    function updateDynamicTerms() {
+    function updateDynamicTerms(forcePopulateCustom = false) {
       const creatorName = document.getElementById('inpCreatorName')?.value.trim() || 'SAKSHAM GOEL';
       const clientName = document.getElementById('inpClientName')?.value.trim() || 'Client Name';
       const projectName = document.getElementById('inpProjectName')?.value.trim() || '';
@@ -7884,9 +7966,9 @@
         `;
       }
 
-      // Also update the markdown version in custom terms box
+      // Only populate custom terms box if forced (e.g. user clicked "Auto-Generate") or if empty
       const customTermsBox = document.getElementById('inpCustomTermsText');
-      if (customTermsBox) {
+      if (customTermsBox && (forcePopulateCustom || !customTermsBox.value.trim())) {
         customTermsBox.value = `**1. SCOPE OF WORK & ENGAGEMENT**
 • Defined Roles: ${phrase}
 ${scopeBullets.map(b => '• ' + b.replace(/<[^>]+>/g, '')).join('\n')}
@@ -7906,12 +7988,20 @@ ${ipBullets.map(b => '• ' + b.replace(/<[^>]+>/g, '')).join('\n')}
 **6. CANCELLATION & KILL FEE**
 • In the event of booking cancellation post-confirmation, the advance deposit is non-refundable to cover pre-production and reserved dates.
 `;
+        const termsSource = document.getElementById('selectTermsSource')?.value;
+        if (termsSource === 'custom_formatted') {
+          renderCustomFormattedTerms(customTermsBox.value);
+        }
       }
     }
 
     function regenerateDynamicTermsUI() {
-      updateDynamicTerms();
-      showToast('🔄 Dynamic terms updated based on current services, amounts & terms!', 2500);
+      updateDynamicTerms(true);
+      const customTermsBox = document.getElementById('inpCustomTermsText');
+      if (customTermsBox) {
+        renderCustomFormattedTerms(customTermsBox.value);
+      }
+      showToast('🔄 Custom terms regenerated from current services, amounts & terms!', 2500);
     }
 
 </script>
