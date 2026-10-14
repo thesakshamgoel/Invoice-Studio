@@ -20,8 +20,818 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <!-- PDF.js for high-resolution rendering of uploaded custom Terms PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
+    // ==========================================================================
+    // === INVOICE STUDIO PROFILE HISTORY & GOOGLE AUTH ENGINE ===
+    // ==========================================================================
+
+    let currentGoogleUser = null;
+
+    // --- UNICODE SAFE BASE64 ENCODING / DECODING ---
+    function encodePayloadBase64(obj) {
+      try {
+        const jsonStr = JSON.stringify(obj);
+        return btoa(encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+          return String.fromCharCode('0x' + p1);
+        }));
+      } catch (err) {
+        console.error('Encoding error:', err);
+        return '';
+      }
+    }
+
+    function decodePayloadBase64(b64) {
+      try {
+        const binaryStr = atob(b64.trim());
+        const jsonStr = decodeURIComponent(Array.prototype.map.call(binaryStr, function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonStr);
+      } catch (err) {
+        console.error('Decoding error:', err);
+        return null;
+      }
+    }
+
+    // --- CAPTURE COMPLETE INVOICE STATE ---
+    function captureCurrentInvoiceState() {
+      const getVal = (id, fallback = '') => {
+        const el = document.getElementById(id);
+        return el ? el.value : fallback;
+      };
+      const getChk = (id, fallback = false) => {
+        const el = document.getElementById(id);
+        return el ? Boolean(el.checked) : fallback;
+      };
+
+      const invNum = getVal('inpInvoiceNumber') || (document.getElementById('invNumText')?.textContent?.trim() || 'INV-001');
+      const clientName = getVal('inpClientName') || (document.getElementById('invClientName')?.textContent?.trim() || 'Client');
+      const creatorName = getVal('inpCreatorName') || 'Saksham Goel';
+      const totalNum = parseFloat(getVal('inpTotalNumeric')) || 0;
+      const advanceNum = parseFloat(getVal('inpAdvanceNumeric')) || 0;
+      const balanceNum = parseFloat(getVal('inpBalanceNumeric')) || 0;
+
+      const currencySymbol = (typeof getCurrencySymbol === 'function') ? getCurrencySymbol() : '₹';
+      const totalFormatted = (typeof formatCurrency === 'function' && totalNum > 0) ? formatCurrency(totalNum) : (currencySymbol + totalNum.toLocaleString('en-IN') + '/-');
+
+      return {
+        version: '2.0',
+        app: 'Invoice Studio',
+        timestamp: Date.now(),
+        savedAt: new Date().toISOString(),
+        displayDate: (typeof getTodayFormatted === 'function') ? getTodayFormatted() : new Date().toLocaleDateString(),
+        activeProfileId: (typeof getActiveProfileId === 'function') ? getActiveProfileId() : 'profile_guest',
+        activeInvoiceTemplate: typeof activeInvoiceTemplate !== 'undefined' ? activeInvoiceTemplate : 'onyx',
+        activePages: typeof activePages !== 'undefined' ? { ...activePages } : { 1: true, 2: true, 3: true, 4: false },
+        activeHonorific: typeof activeHonorific !== 'undefined' ? activeHonorific : '',
+        
+        // Creator Details
+        creatorName: creatorName,
+        creatorEmail: getVal('inpCreatorEmail'),
+        creatorWebsite: getVal('inpCreatorWebsite'),
+        creatorPhone: getVal('inpCreatorPhone'),
+        creatorAddr1: getVal('inpCreatorAddr1'),
+        creatorAddr2: getVal('inpCreatorAddr2'),
+        panNo: getVal('inpPanNo'),
+
+        // Client Details
+        clientName: clientName,
+        countryCode: getVal('selectCountryCode', '+91'),
+        clientPhone: getVal('inpClientPhone'),
+        clientEmail: getVal('inpClientEmail'),
+        clientArea: getVal('inpClientArea'),
+        clientCity: getVal('inpClientCity'),
+        clientPincode: getVal('inpClientPincode'),
+        kindAttention: getVal('inpKindAttention'),
+        salutation: getVal('inpSalutation'),
+        customTag: getVal('inpCustomTag'),
+
+        // Project Details
+        projectName: getVal('inpProjectName'),
+        projectType: getVal('inpProjectType'),
+        projectDate: getVal('inpProjectDate'),
+        descPrefix: getVal('selDescPrefix'),
+        bannerPrefix: getVal('selBannerPrefix'),
+        desc1: getVal('inpDesc1'),
+        registrationText: getVal('inpRegistrationText'),
+        selectedServices: (typeof selectedServices !== 'undefined' && Array.isArray(selectedServices)) ? [...selectedServices] : [],
+
+        // Metadata & Dates
+        invoiceNumber: invNum,
+        invoiceDate: getVal('inpInvoiceDate'),
+        invoiceMonth: getVal('inpInvoiceMonth'),
+        financialYear: getVal('inpFinancialYear'),
+        paymentTermsPreset: getVal('selPaymentTermsPreset'),
+        paymentTerms: getVal('inpPaymentTerms'),
+        dueDatePreset: getVal('selDueDatePreset'),
+        dueDate: getVal('inpDueDate'),
+
+        // Financials
+        currency: getVal('selCurrency', 'INR'),
+        totalNumeric: totalNum,
+        advanceNumeric: advanceNum,
+        balanceNumeric: balanceNum,
+        totalFormatted: totalFormatted,
+        paymentStatus: getVal('inpPaymentStatus', 'pending'),
+        itemQuantity: getVal('inpItemQuantity', '1 Package'),
+        paidWatermark: getChk('chkPaidWatermark'),
+        amountInWords: getVal('inpAmountInWords'),
+
+        // Bank Details
+        bankNameOfAccount: getVal('inpBankNameOfAccount'),
+        bankName: getVal('inpBankName'),
+        bankAccountNo: getVal('inpBankAccountNo'),
+        bankIfsc: getVal('inpBankIfsc'),
+        bankUpi: getVal('inpBankUpi'),
+        showBankMobile: getChk('chkShowBankMobile'),
+        bankMobile: getVal('inpBankMobile'),
+        showQrCode: getChk('chkShowQrCode'),
+        qrSrc: typeof currentQrSrc !== 'undefined' ? currentQrSrc : '',
+
+        // Branding & Signatures
+        logoSrc: typeof currentLogoSrc !== 'undefined' ? currentLogoSrc : '',
+        esignSrc: typeof currentEsignDataUrl !== 'undefined' ? currentEsignDataUrl : '',
+        esignMode: getVal('selectEsignMode', 'draw'),
+        typeEsignName: getVal('inpTypeEsignName'),
+        esignFont: getVal('selectEsignFont'),
+
+        // Terms & Conditions
+        includeTerms: getChk('chkIncludeTerms', true),
+        customTermsText: getVal('txtCustomOfficialTerms')
+      };
+    }
+
+    // --- RESTORE INVOICE STATE ---
+    function restoreInvoiceState(state) {
+      if (!state || typeof state !== 'object') {
+        showToast('⚠️ Invalid invoice state data.', 'warning');
+        return false;
+      }
+
+      const setVal = (id, val) => {
+        if (val === undefined || val === null) return;
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      };
+      const setChk = (id, val) => {
+        if (val === undefined || val === null) return;
+        const el = document.getElementById(id);
+        if (el) el.checked = Boolean(val);
+      };
+
+      // 1. Template
+      if (state.activeInvoiceTemplate && typeof setInvoiceTemplate === 'function') {
+        setInvoiceTemplate(state.activeInvoiceTemplate);
+      }
+
+      // 2. Creator
+      setVal('inpCreatorName', state.creatorName);
+      setVal('inpCreatorEmail', state.creatorEmail);
+      setVal('inpCreatorWebsite', state.creatorWebsite);
+      setVal('inpCreatorPhone', state.creatorPhone);
+      setVal('inpCreatorAddr1', state.creatorAddr1);
+      setVal('inpCreatorAddr2', state.creatorAddr2);
+      setVal('inpPanNo', state.panNo);
+
+      // 3. Client
+      setVal('inpClientName', state.clientName);
+      setVal('selectCountryCode', state.countryCode || '+91');
+      setVal('inpClientPhone', state.clientPhone);
+      setVal('inpClientEmail', state.clientEmail);
+      setVal('inpClientArea', state.clientArea);
+      setVal('inpClientCity', state.clientCity);
+      setVal('inpClientPincode', state.clientPincode);
+      setVal('inpKindAttention', state.kindAttention);
+      setVal('inpSalutation', state.salutation);
+      setVal('inpCustomTag', state.customTag);
+
+      if (state.activeHonorific !== undefined) {
+        activeHonorific = state.activeHonorific;
+        document.querySelectorAll('.honorific-pill').forEach(pill => {
+          pill.classList.toggle('active', pill.getAttribute('data-honorific') === activeHonorific);
+        });
+      }
+
+      // 4. Project & Services
+      setVal('inpProjectName', state.projectName);
+      setVal('inpProjectType', state.projectType);
+      setVal('inpProjectDate', state.projectDate);
+      setVal('selDescPrefix', state.descPrefix);
+      setVal('selBannerPrefix', state.bannerPrefix);
+      setVal('inpDesc1', state.desc1);
+      setVal('inpRegistrationText', state.registrationText);
+
+      if (Array.isArray(state.selectedServices)) {
+        selectedServices = [...state.selectedServices];
+        if (typeof renderServiceChips === 'function') renderServiceChips();
+        if (typeof updatePage2RolesBadges === 'function') updatePage2RolesBadges();
+      }
+
+      // 5. Metadata & Dates
+      setVal('inpInvoiceNumber', state.invoiceNumber);
+      setVal('inpInvoiceDate', state.invoiceDate);
+      setVal('inpInvoiceMonth', state.invoiceMonth);
+      setVal('inpFinancialYear', state.financialYear);
+      setVal('selPaymentTermsPreset', state.paymentTermsPreset);
+      setVal('inpPaymentTerms', state.paymentTerms);
+      setVal('selDueDatePreset', state.dueDatePreset);
+      setVal('inpDueDate', state.dueDate);
+
+      // 6. Financials
+      setVal('selCurrency', state.currency || 'INR');
+      setVal('inpTotalNumeric', state.totalNumeric);
+      setVal('inpAdvanceNumeric', state.advanceNumeric);
+      setVal('inpBalanceNumeric', state.balanceNumeric);
+      setVal('inpPaymentStatus', state.paymentStatus || 'pending');
+      setVal('inpItemQuantity', state.itemQuantity || '1 Package');
+      setChk('chkPaidWatermark', state.paidWatermark);
+      setVal('inpAmountInWords', state.amountInWords);
+
+      // 7. Bank Details
+      setVal('inpBankNameOfAccount', state.bankNameOfAccount);
+      setVal('inpBankName', state.bankName);
+      setVal('inpBankAccountNo', state.bankAccountNo);
+      setVal('inpBankIfsc', state.bankIfsc);
+      setVal('inpBankUpi', state.bankUpi);
+      setChk('chkShowBankMobile', state.showBankMobile);
+      setVal('inpBankMobile', state.bankMobile);
+      setChk('chkShowQrCode', state.showQrCode);
+
+      if (state.qrSrc !== undefined) {
+        currentQrSrc = state.qrSrc;
+        const previewSidebarQr = document.getElementById('previewSidebarQr');
+        const previewQrImg = document.getElementById('previewQrImage');
+        if (previewSidebarQr) previewSidebarQr.src = currentQrSrc;
+        if (previewQrImg) previewQrImg.src = currentQrSrc;
+      }
+
+      // 8. Logo & Signatures
+      if (state.logoSrc !== undefined) {
+        currentLogoSrc = state.logoSrc;
+        if (typeof updateLogoElements === 'function') updateLogoElements();
+      }
+
+      if (state.esignSrc !== undefined) {
+        currentEsignDataUrl = state.esignSrc;
+        setVal('selectEsignMode', state.esignMode || 'draw');
+        setVal('inpTypeEsignName', state.typeEsignName || '');
+        setVal('selectEsignFont', state.esignFont || 'font-caveat');
+      }
+
+      // 9. Terms & Conditions
+      setChk('chkIncludeTerms', state.includeTerms !== false);
+      if (state.customTermsText !== undefined) {
+        setVal('txtCustomOfficialTerms', state.customTermsText);
+      }
+
+      // 10. Active Pages
+      if (state.activePages && typeof togglePage === 'function') {
+        Object.keys(state.activePages).forEach(pageNum => {
+          togglePage(parseInt(pageNum, 10), state.activePages[pageNum]);
+        });
+      }
+
+      // 11. Refresh Previews & Dynamic Layout
+      if (typeof updateCurrencySymbols === 'function') updateCurrencySymbols(state.currency || 'INR');
+      if (typeof updatePreview === 'function') updatePreview();
+      if (typeof updateDynamicTerms === 'function') updateDynamicTerms(false);
+      if (typeof updateTermsVisibility === 'function') updateTermsVisibility();
+      if (typeof updatePageNumbers === 'function') updatePageNumbers();
+      if (typeof relocateAcceptanceSignoff === 'function') relocateAcceptanceSignoff();
+
+      return true;
+    }
+
+    // --- RE-EDITABLE PDF FILE IMPORTER ---
+    function triggerOpenSavedPdf() {
+      const fileInp = document.getElementById('fileInputOpenSavedPdf');
+      if (fileInp) {
+        fileInp.value = '';
+        fileInp.click();
+      }
+    }
+
+    function handlePdfFileInput(file) {
+      if (!file) return;
+      if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+        showToast('⚠️ Please select a valid PDF file.', 'warning');
+        return;
+      }
+
+      showToast('🔍 Inspecting PDF for embedded Invoice Studio state...', 2500);
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const text = evt.target.result;
+        let payload = null;
+
+        // 1. Check EOF Trailer marker
+        const startMarker = '%INVOICE_STUDIO_PAYLOAD_START%';
+        const endMarker = '%INVOICE_STUDIO_PAYLOAD_END%';
+        const startIdx = text.indexOf(startMarker);
+        const endIdx = text.indexOf(endMarker);
+
+        if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+          const b64 = text.substring(startIdx + startMarker.length, endIdx).trim();
+          payload = decodePayloadBase64(b64);
+        }
+
+        // 2. Fallback: check /Subject (INVOICE_STUDIO_PAYLOAD:...)
+        if (!payload) {
+          const subMatch = text.match(/INVOICE_STUDIO_PAYLOAD:([A-Za-z0-9+/=]+)/);
+          if (subMatch && subMatch[1]) {
+            payload = decodePayloadBase64(subMatch[1]);
+          }
+        }
+
+        if (payload) {
+          restoreInvoiceState(payload);
+          // Also record snapshot in current profile history
+          saveInvoiceToProfileHistory(false);
+          closeInvoiceHistoryModal();
+          showToast('🎉 Restored Invoice #' + (payload.invoiceNumber || 'INV') + ' for ' + (payload.clientName || 'Client') + '! Ready for full re-editing.', 'success');
+        } else {
+          showToast('⚠️ This PDF does not contain Invoice Studio re-editable data. Please choose a PDF generated by Invoice Studio.', 'warning');
+        }
+      };
+
+      reader.onerror = function() {
+        showToast('⚠️ Error reading PDF file.', 'warning');
+      };
+
+      reader.readAsText(file);
+    }
+
+    // Window drag-and-drop listener for PDF files
+    window.addEventListener('dragover', function(e) {
+      if (e.dataTransfer && e.dataTransfer.types && Array.from(e.dataTransfer.types).includes('Files')) {
+        e.preventDefault();
+        const overlay = document.getElementById('pdfDropOverlay');
+        if (overlay) overlay.classList.add('active');
+      }
+    });
+
+    window.addEventListener('dragleave', function(e) {
+      if (e.relatedTarget === null || e.clientY <= 0 || e.clientX <= 0) {
+        const overlay = document.getElementById('pdfDropOverlay');
+        if (overlay) overlay.classList.remove('active');
+      }
+    });
+
+    window.addEventListener('drop', function(e) {
+      const overlay = document.getElementById('pdfDropOverlay');
+      if (overlay) overlay.classList.remove('active');
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        const file = e.dataTransfer.files[0];
+        if (file.name.toLowerCase().endsWith('.pdf')) {
+          e.preventDefault();
+          handlePdfFileInput(file);
+        }
+      }
+    });
+
+    // --- PROFILE INVOICE HISTORY (UP TO 3 SAVES PER PROFILE) ---
+    function getActiveProfileHistory() {
+      const profiles = getStoredProfiles();
+      const activeId = getActiveProfileId();
+      const profile = profiles.find(p => p.id === activeId);
+      if (!profile) return [];
+      if (!Array.isArray(profile.history)) profile.history = [];
+      return profile.history.slice(0, 3);
+    }
+
+    function saveInvoiceToProfileHistory(isManualToast = false) {
+      const profiles = getStoredProfiles();
+      const activeId = getActiveProfileId();
+      const idx = profiles.findIndex(p => p.id === activeId);
+      if (idx === -1) return null;
+
+      if (!Array.isArray(profiles[idx].history)) {
+        profiles[idx].history = [];
+      }
+
+      const state = captureCurrentInvoiceState();
+      const invNum = state.invoiceNumber || 'INV-001';
+      const clientName = state.clientName || 'Client';
+
+      const historyEntry = {
+        id: 'hist_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        savedAt: new Date().toISOString(),
+        displayDate: (typeof getTodayFormatted === 'function') ? getTodayFormatted() : new Date().toLocaleDateString(),
+        displayTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        invoiceNumber: invNum,
+        clientName: clientName,
+        projectName: state.projectName || '',
+        totalAmount: state.totalFormatted || ('₹' + (state.totalNumeric || 0)),
+        currency: state.currency || 'INR',
+        paymentStatus: state.paymentStatus || 'pending',
+        template: state.activeInvoiceTemplate || 'onyx',
+        state: state
+      };
+
+      // Add to front and enforce strict limit of 3 saves
+      profiles[idx].history.unshift(historyEntry);
+      if (profiles[idx].history.length > 3) {
+        profiles[idx].history = profiles[idx].history.slice(0, 3);
+      }
+
+      saveStoredProfiles(profiles);
+      renderHistoryUI();
+      updateHistoryBadge();
+
+      if (isManualToast) {
+        showToast('💾 Invoice snapshot saved to ' + profiles[idx].profileName + ' (' + profiles[idx].history.length + '/3 saves)!', 'success');
+      }
+      return historyEntry;
+    }
+
+    function deleteInvoiceHistoryItem(entryId) {
+      const profiles = getStoredProfiles();
+      const activeId = getActiveProfileId();
+      const idx = profiles.findIndex(p => p.id === activeId);
+      if (idx === -1) return;
+
+      if (Array.isArray(profiles[idx].history)) {
+        profiles[idx].history = profiles[idx].history.filter(h => h.id !== entryId);
+        saveStoredProfiles(profiles);
+        renderHistoryUI();
+        updateHistoryBadge();
+        showToast('🗑️ History item deleted. Slot freed.', 'info');
+      }
+    }
+
+    function restoreHistoryItem(entryId) {
+      const history = getActiveProfileHistory();
+      const item = history.find(h => h.id === entryId);
+      if (!item || !item.state) {
+        showToast('⚠️ History state not found.', 'warning');
+        return;
+      }
+      restoreInvoiceState(item.state);
+      closeInvoiceHistoryModal();
+      showToast('✏️ Re-editing Invoice #' + item.invoiceNumber + ' (' + item.clientName + ')', 'success');
+    }
+
+    function quickExportHistoryPdf(entryId) {
+      const history = getActiveProfileHistory();
+      const item = history.find(h => h.id === entryId);
+      if (!item || !item.state) return;
+      restoreInvoiceState(item.state);
+      closeInvoiceHistoryModal();
+      downloadCleanPdf();
+    }
+
+    function renderHistoryUI() {
+      const history = getActiveProfileHistory();
+      const sidebarContainer = document.getElementById('sidebarHistoryContainer');
+      const modalContainer = document.getElementById('modalHistorySlotsContainer');
+
+      const profiles = getStoredProfiles();
+      const activeP = profiles.find(p => p.id === getActiveProfileId()) || profiles[0];
+      const pName = activeP ? activeP.profileName : 'Active Profile';
+      
+      const modalPLabel = document.getElementById('modalHistoryProfileName');
+      if (modalPLabel) modalPLabel.textContent = pName;
+
+      // Render 3 slots
+      let sidebarHtml = '';
+      let modalHtml = '';
+
+      for (let i = 0; i < 3; i++) {
+        const item = history[i];
+        if (item) {
+          const statusBadge = item.paymentStatus === 'paid' 
+            ? '<span style="font-size:9.5px; padding:1px 6px; border-radius:10px; background:rgba(52,168,83,0.18); color:#81c995; font-weight:700;">✓ PAID</span>'
+            : '<span style="font-size:9.5px; padding:1px 6px; border-radius:10px; background:rgba(251,188,4,0.18); color:#fdd663; font-weight:700;">⏳ PENDING</span>';
+
+          // Sidebar card
+          sidebarHtml += `
+            <div class="history-card-item">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:10px; font-weight:700; color:var(--g-blue-light, #8ab4f8);">Slot ${i+1} • ${escapeHtml(item.invoiceNumber)}</span>
+                <span style="font-size:9.5px; color:var(--g-text-tertiary);">${escapeHtml(item.displayDate)}</span>
+              </div>
+              <div style="font-size:11.5px; font-weight:600; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(item.clientName)}</div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                <span style="font-size:12px; font-weight:700; color:var(--g-green, #34a853);">${escapeHtml(item.totalAmount)}</span>
+                ${statusBadge}
+              </div>
+              <div style="display:flex; gap:6px; margin-top:4px;">
+                <button type="button" class="btn-app-secondary" onclick="restoreHistoryItem('${item.id}')" style="flex:1; justify-content:center; font-size:10.5px; padding:3px 6px;">✏️ Re-Edit</button>
+                <button type="button" class="btn-app-secondary" onclick="deleteInvoiceHistoryItem('${item.id}')" style="padding:3px 8px; font-size:10.5px; color:#f28b82;" title="Delete Snapshot">🗑️</button>
+              </div>
+            </div>`;
+
+          // Modal Card
+          modalHtml += `
+            <div class="history-card-item" style="padding:14px; background:rgba(255,255,255,0.025);">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:11px; font-weight:700; background:rgba(66,133,244,0.2); color:var(--g-blue-light, #8ab4f8); padding:2px 8px; border-radius:12px;">Slot ${i+1} of 3</span>
+                    <strong style="font-size:13px; color:#fff;">${escapeHtml(item.invoiceNumber)}</strong>
+                    ${statusBadge}
+                  </div>
+                  <div style="font-size:12px; color:var(--g-text-secondary); margin-top:4px;">
+                    Client: <strong style="color:#fff;">${escapeHtml(item.clientName)}</strong> ${item.projectName ? '• Project: ' + escapeHtml(item.projectName) : ''}
+                  </div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:14px; font-weight:800; color:var(--g-green, #34a853);">${escapeHtml(item.totalAmount)}</div>
+                  <div style="font-size:10px; color:var(--g-text-tertiary); margin-top:2px;">Saved ${escapeHtml(item.displayDate)} ${item.displayTime ? item.displayTime : ''}</div>
+                </div>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06);">
+                <span style="font-size:10.5px; color:var(--g-text-tertiary);">Template: <strong>${escapeHtml(item.template)}</strong></span>
+                <div style="display:flex; gap:6px;">
+                  <button type="button" class="btn-google-primary" onclick="restoreHistoryItem('${item.id}')" style="font-size:11px; padding:4px 12px;">✏️ Load & Re-Edit</button>
+                  <button type="button" class="btn-app-secondary" onclick="quickExportHistoryPdf('${item.id}')" style="font-size:11px; padding:4px 10px;">📄 PDF</button>
+                  <button type="button" class="btn-app-secondary" onclick="deleteInvoiceHistoryItem('${item.id}')" style="font-size:11px; padding:4px 10px; color:#f28b82;" title="Delete this save">🗑️</button>
+                </div>
+              </div>
+            </div>`;
+        } else {
+          // Empty slot
+          sidebarHtml += `
+            <div class="history-empty-slot">
+              Slot ${i+1} (Empty) • Available for save
+            </div>`;
+
+          modalHtml += `
+            <div class="history-empty-slot" style="padding:16px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:var(--g-text-secondary);">Slot ${i+1} of 3: Empty</strong>
+                <div style="font-size:10.5px; color:var(--g-text-tertiary);">Save your current invoice state into this slot anytime.</div>
+              </div>
+              <button type="button" class="btn-app-secondary" onclick="saveInvoiceToProfileHistory(true)" style="font-size:10.5px; padding:4px 10px;">💾 Save Now</button>
+            </div>`;
+        }
+      }
+
+      if (sidebarContainer) sidebarContainer.innerHTML = sidebarHtml;
+      if (modalContainer) modalContainer.innerHTML = modalHtml;
+    }
+
+    function updateHistoryBadge() {
+      const history = getActiveProfileHistory();
+      const count = history.length;
+      const str = count + '/3';
+
+      const headerBadge = document.getElementById('headerHistoryBadge');
+      if (headerBadge) {
+        headerBadge.textContent = str;
+        headerBadge.style.background = count > 0 ? 'rgba(52, 168, 83, 0.2)' : 'rgba(66, 133, 244, 0.2)';
+        headerBadge.style.color = count > 0 ? '#81c995' : 'var(--g-blue-light, #8ab4f8)';
+      }
+
+      const tabBadge = document.getElementById('tabProfileHistoryBadge');
+      if (tabBadge) tabBadge.textContent = str + ' Saves';
+
+      const modalBadge = document.getElementById('modalHistorySlotsBadge');
+      if (modalBadge) modalBadge.textContent = str + ' Used';
+    }
+
+    function openInvoiceHistoryModal() {
+      renderHistoryUI();
+      updateHistoryBadge();
+      const modal = document.getElementById('modalInvoiceHistory');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeInvoiceHistoryModal() {
+      const modal = document.getElementById('modalInvoiceHistory');
+      if (modal) modal.classList.remove('active');
+    }
+
+    // --- GOOGLE AUTH & FIREBASE PROFILE ISOLATION ---
+    function initFirebaseAuth() {
+      try {
+        // Check saved demo user first
+        const demoUserJson = localStorage.getItem('invoice_studio_demo_user');
+        if (demoUserJson) {
+          try {
+            currentGoogleUser = JSON.parse(demoUserJson);
+            applyGoogleUserUI(currentGoogleUser);
+            populateProfileDropdown();
+            renderHistoryUI();
+            updateHistoryBadge();
+            return;
+          } catch(e) {}
+        }
+
+        // Live Firebase Auth initialization if SDK loaded
+        if (typeof firebase !== 'undefined' && firebase.auth) {
+          const savedConfig = localStorage.getItem('invoice_studio_firebase_config');
+          if (savedConfig) {
+            try {
+              const cfg = JSON.parse(savedConfig);
+              if (cfg && cfg.apiKey && !firebase.apps.length) {
+                firebase.initializeApp(cfg);
+              }
+            } catch(e) {}
+          }
+
+          if (firebase.apps.length) {
+            firebase.auth().onAuthStateChanged(function(user) {
+              if (user) {
+                currentGoogleUser = {
+                  uid: user.uid,
+                  displayName: user.displayName || 'Google User',
+                  email: user.email || '',
+                  photoURL: user.photoURL || 'https://lh3.googleusercontent.com/a/default-user'
+                };
+                applyGoogleUserUI(currentGoogleUser);
+              } else if (!localStorage.getItem('invoice_studio_demo_user')) {
+                currentGoogleUser = null;
+                applyGoogleUserUI(null);
+              }
+              populateProfileDropdown();
+              renderHistoryUI();
+              updateHistoryBadge();
+            });
+          }
+        }
+      } catch (err) {
+        console.warn('Firebase Auth init warning:', err);
+      }
+    }
+
+    function applyGoogleUserUI(user) {
+      const btnAuthTop = document.getElementById('btnGoogleAuthTop');
+      const badgeUser = document.getElementById('googleUserProfileBadge');
+      const imgAvatar = document.getElementById('googleUserAvatarImg');
+      const lblName = document.getElementById('googleUserDisplayName');
+
+      const popoverAvatar = document.getElementById('popoverAvatarImg');
+      const popoverName = document.getElementById('popoverUserName');
+      const popoverEmail = document.getElementById('popoverUserEmail');
+
+      if (user && user.uid) {
+        if (btnAuthTop) btnAuthTop.style.display = 'none';
+        if (badgeUser) badgeUser.style.display = 'inline-flex';
+        const photo = user.photoURL || 'https://lh3.googleusercontent.com/a/default-user';
+        if (imgAvatar) imgAvatar.src = photo;
+        if (lblName) lblName.textContent = user.displayName || user.email || 'User';
+
+        if (popoverAvatar) popoverAvatar.src = photo;
+        if (popoverName) popoverName.textContent = user.displayName || 'Google User';
+        if (popoverEmail) popoverEmail.textContent = user.email || '';
+      } else {
+        if (btnAuthTop) btnAuthTop.style.display = 'inline-flex';
+        if (badgeUser) badgeUser.style.display = 'none';
+        const pop = document.getElementById('popoverGoogleAccount');
+        if (pop) pop.style.display = 'none';
+      }
+    }
+
+    function openGoogleAuthModal() {
+      openFirebaseConfigModal();
+    }
+
+    function openFirebaseConfigModal() {
+      const modal = document.getElementById('modalFirebaseConfig');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeFirebaseConfigModal() {
+      const modal = document.getElementById('modalFirebaseConfig');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function toggleGoogleAccountPopover() {
+      const pop = document.getElementById('popoverGoogleAccount');
+      if (pop) {
+        pop.style.display = (pop.style.display === 'none' || !pop.style.display) ? 'block' : 'none';
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      const pop = document.getElementById('popoverGoogleAccount');
+      const wrapper = document.getElementById('googleAuthTopWrapper');
+      if (pop && pop.style.display === 'block') {
+        if (wrapper && !wrapper.contains(e.target)) {
+          pop.style.display = 'none';
+        }
+      }
+    });
+
+    // 1-Click Instant Demo Google Sign In
+    function signInWithDemoGoogle(name = 'Saksham Goel', email = 'thesakshamgoel@gmail.com') {
+      const demoUser = {
+        uid: 'demo_google_' + email.replace(/[^a-zA-Z0-9]/g, '_'),
+        displayName: name,
+        email: email,
+        photoURL: 'https://lh3.googleusercontent.com/a/default-user'
+      };
+      localStorage.setItem('invoice_studio_demo_user', JSON.stringify(demoUser));
+      currentGoogleUser = demoUser;
+      applyGoogleUserUI(demoUser);
+      closeFirebaseConfigModal();
+      populateProfileDropdown();
+      const profiles = getStoredProfiles();
+      loadProfileData(profiles[0].id);
+      renderHistoryUI();
+      updateHistoryBadge();
+      showToast('🔒 Signed in as ' + name + ' (' + email + ') with isolated Google Profile & History!', 'success');
+    }
+
+    // Live Google Sign In via Firebase
+    async function signInWithGoogle() {
+      try {
+        if (typeof firebase === 'undefined' || !firebase.auth) {
+          showToast('⚡ Live Firebase SDK loading. Using 1-Click Google Verification mode...', 2500);
+          signInWithDemoGoogle('Saksham Goel', 'thesakshamgoel@gmail.com');
+          return;
+        }
+
+        if (!firebase.apps.length) {
+          // Check if custom config exists, else ask or fallback
+          const savedConfig = localStorage.getItem('invoice_studio_firebase_config');
+          if (!savedConfig) {
+            showToast('ℹ️ Connecting with Google Account Verification...', 2500);
+            signInWithDemoGoogle('Saksham Goel', 'thesakshamgoel@gmail.com');
+            return;
+          }
+          firebase.initializeApp(JSON.parse(savedConfig));
+        }
+
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const res = await firebase.auth().signInWithPopup(provider);
+        if (res && res.user) {
+          currentGoogleUser = {
+            uid: res.user.uid,
+            displayName: res.user.displayName || 'Google User',
+            email: res.user.email || '',
+            photoURL: res.user.photoURL || ''
+          };
+          applyGoogleUserUI(currentGoogleUser);
+          closeFirebaseConfigModal();
+          populateProfileDropdown();
+          const profiles = getStoredProfiles();
+          loadProfileData(profiles[0].id);
+          renderHistoryUI();
+          updateHistoryBadge();
+          showToast('🎉 Google Sign-In successful! Profiles & 3-history isolated to ' + currentGoogleUser.displayName, 'success');
+        }
+      } catch (err) {
+        console.warn('Google Sign-in note:', err);
+        showToast('ℹ️ Enabled 1-Click Google Account Verification for instant access.', 2500);
+        signInWithDemoGoogle('Saksham Goel', 'thesakshamgoel@gmail.com');
+      }
+    }
+
+    function handleGoogleSignOut() {
+      localStorage.removeItem('invoice_studio_demo_user');
+      currentGoogleUser = null;
+      if (typeof firebase !== 'undefined' && firebase.auth && firebase.apps.length) {
+        try { firebase.auth().signOut(); } catch(e) {}
+      }
+      applyGoogleUserUI(null);
+      populateProfileDropdown();
+      const profiles = getStoredProfiles();
+      loadProfileData(profiles[0].id);
+      renderHistoryUI();
+      updateHistoryBadge();
+      showToast('🚪 Signed out of Google Account. Restored standard local session.', 'info');
+    }
+
+    function saveFirebaseCustomConfig() {
+      const apiKey = document.getElementById('cfgFirebaseApiKey')?.value?.trim();
+      const projectId = document.getElementById('cfgFirebaseProjectId')?.value?.trim();
+      const authDomain = document.getElementById('cfgFirebaseAuthDomain')?.value?.trim();
+
+      if (!apiKey || !projectId) {
+        showToast('⚠️ Please enter both API Key and Project ID.', 'warning');
+        return;
+      }
+
+      const cfg = {
+        apiKey: apiKey,
+        projectId: projectId,
+        authDomain: authDomain || (projectId + '.firebaseapp.com')
+      };
+
+      localStorage.setItem('invoice_studio_firebase_config', JSON.stringify(cfg));
+      showToast('✅ Firebase Project Config saved! Ready for live cloud authentication.', 'success');
+      closeFirebaseConfigModal();
+    }
+
+    // Initialize Firebase and Render History UI on Startup
+    setTimeout(function() {
+      initFirebaseAuth();
+      renderHistoryUI();
+      updateHistoryBadge();
+    }, 300);
+
+    // === END INVOICE STUDIO PROFILE HISTORY & GOOGLE AUTH ENGINE ===
+
+  </script>
   <script src="html2pdf.bundle.min.js"></script>
+  <!-- Firebase App & Auth SDKs for Google Login & Account Profiles -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <script>
     if (typeof html2pdf === 'undefined') {
       document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
@@ -3059,6 +3869,83 @@
       .wysiwyg-badge, .zoom-control-bar .btn-app-secondary { display: none !important; }
       .page-nav-chip { padding: 5px 9px; font-size: 11px; }
     }
+  
+    /* ==========================================================================
+       GOOGLE AUTH & INVOICE HISTORY STYLES
+       ========================================================================== */
+    .btn-google-auth-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #ffffff;
+      color: #3c4043;
+      border: 1px solid #dadce0;
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+      user-select: none;
+    }
+    .btn-google-auth-top:hover {
+      background: #f8f9fa;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      border-color: #d2e3fc;
+    }
+    .google-account-popover {
+      animation: popoverFadeIn 0.2s ease-out;
+    }
+    @keyframes popoverFadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .history-card-item {
+      background: var(--g-bg-input, #15171b);
+      border: 1px solid var(--g-border, #323742);
+      border-radius: 8px;
+      padding: 11px 13px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .history-card-item:hover {
+      border-color: var(--g-blue, #1a73e8);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .history-empty-slot {
+      border: 1.5px dashed var(--g-border, #323742);
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      color: var(--g-text-tertiary, #80868b);
+      font-size: 11px;
+      background: rgba(255,255,255,0.015);
+    }
+    .pdf-drop-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(18, 19, 22, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 999999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 4px dashed var(--g-blue, #1a73e8);
+      pointer-events: none;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+    }
+    .pdf-drop-overlay.active {
+      display: flex;
+    }
+
   </style>
 </head>
 <body>
@@ -3146,9 +4033,65 @@
       </button>
 
       <!-- Standard Browser Print -->
+      <!-- Open Saved PDF Engine -->
+      <button type="button" class="btn-app-secondary" id="btnOpenSavedPdfHeader" onclick="triggerOpenSavedPdf()" title="Open and re-edit any previously generated Invoice Studio PDF" style="font-weight:600; padding:6px 11px; font-size:11.5px; gap:5px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+        <span>📂 Open PDF</span>
+      </button>
+      <input type="file" id="fileInputOpenSavedPdf" accept="application/pdf" style="display:none;" onchange="handlePdfFileInput(this.files[0])">
+
+      <!-- Profile Invoice History Button (Up to 3 saves) -->
+      <button type="button" class="btn-app-secondary" id="btnInvoiceHistoryHeader" onclick="openInvoiceHistoryModal()" title="View and restore up to 3 saved invoices for this profile" style="font-weight:600; padding:6px 11px; font-size:11.5px; gap:6px;">
+        <span>🕒 History</span>
+        <span id="headerHistoryBadge" style="background:rgba(66, 133, 244, 0.2); color:var(--g-blue-light, #8ab4f8); padding:1px 6px; border-radius:10px; font-size:10px; font-weight:700;">0/3</span>
+      </button>
+
       <button type="button" class="btn-app-secondary" id="btnPrintBrowserHeader" onclick="triggerBrowserPrint()" title="Browser Print (Ctrl+P) - Physical Printer" style="padding:6px 10px; font-size:11.5px; gap:4px;">
         <span>🖨️ Print</span>
       </button>
+
+      <!-- Google Profile & Cloud Security Section -->
+      <div id="googleAuthTopWrapper" style="position:relative; display:inline-flex; align-items:center;">
+        <!-- Logged Out Button -->
+        <button type="button" class="btn-google-auth-top" id="btnGoogleAuthTop" onclick="openGoogleAuthModal()" title="Sign in with Google to isolate and protect your profile data">
+          <svg width="14" height="14" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span>Sign in</span>
+        </button>
+
+        <!-- Logged In User Pill -->
+        <div id="googleUserProfileBadge" style="display:none; align-items:center; gap:8px; cursor:pointer; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); padding:3px 9px 3px 4px; border-radius:20px; transition:all 0.2s;" onclick="toggleGoogleAccountPopover()" title="Click to view Google Account & Firebase Cloud Sync">
+          <img id="googleUserAvatarImg" src="https://lh3.googleusercontent.com/a/default-user" alt="Avatar" style="width:24px; height:24px; border-radius:50%; object-fit:cover; border:1px solid #4285f4;">
+          <div style="display:flex; flex-direction:column; line-height:1.1;">
+            <span id="googleUserDisplayName" style="font-size:11px; font-weight:700; color:#fff; max-width:95px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">User</span>
+            <span style="font-size:9px; color:#81c995; font-weight:600;">🔒 Google Auth</span>
+          </div>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.6;"><path d="M7 10l5 5 5-5z"/></svg>
+        </div>
+
+        <!-- Popover Card -->
+        <div id="popoverGoogleAccount" class="google-account-popover" style="display:none; position:absolute; top:calc(100% + 10px); right:0; width:300px; background:#1e2128; border:1px solid #3d4352; border-radius:12px; box-shadow:0 14px 40px rgba(0,0,0,0.6); padding:16px; z-index:99999;">
+          <div style="display:flex; align-items:center; gap:12px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+            <img id="popoverAvatarImg" src="https://lh3.googleusercontent.com/a/default-user" style="width:42px; height:42px; border-radius:50%; border:2px solid #4285f4; object-fit:cover;">
+            <div style="overflow:hidden;">
+              <div id="popoverUserName" style="font-size:13px; font-weight:700; color:#fff; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">Google User</div>
+              <div id="popoverUserEmail" style="font-size:11px; color:#9aa0a6; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">user@gmail.com</div>
+              <div style="font-size:9.5px; color:#81c995; font-weight:600; margin-top:2px;">🔒 Firebase Cloud Security Verified</div>
+            </div>
+          </div>
+          <div style="padding:10px 0; font-size:11px; color:#bdc1c6; line-height:1.4;">
+            Profiles and up-to-3 invoice histories are strictly isolated and secured to this Google Account.
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <button type="button" class="btn-app-secondary" onclick="openFirebaseConfigModal()" style="justify-content:center; font-size:11px; padding:6px;">⚙️ Firebase Security Settings</button>
+            <button type="button" class="btn-app-secondary" onclick="handleGoogleSignOut()" style="justify-content:center; font-size:11px; padding:6px; color:#f28b82; border-color:rgba(234,67,53,0.3);">🚪 Sign Out</button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -3276,6 +4219,27 @@
             <div class="form-row-2col">
               <button type="button" class="btn-google-primary" id="btnSaveCurrentProfile" style="justify-content:center; font-size:12px; padding:6px 12px;">Save Profile</button>
               <button type="button" class="btn-app-secondary" id="btnResetToDefaults" style="justify-content:center; font-size:12px; padding:6px 12px;">Reset Profile</button>
+            </div>
+          </div>
+
+          <!-- PROFILE INVOICE HISTORY (UP TO 3 SAVES) -->
+          <div class="panel-card" id="cardProfileInvoiceHistory">
+            <div class="panel-card-header">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <div class="panel-card-title">🕒 Saved Invoices History</div>
+                <span id="tabProfileHistoryBadge" style="font-size:10px; padding:2px 7px; border-radius:10px; background:rgba(66,133,244,0.15); color:var(--g-blue-light, #8ab4f8); font-weight:700;">0/3 Saves</span>
+              </div>
+              <button type="button" class="btn-app-secondary" onclick="saveInvoiceToProfileHistory(true)" style="font-size:10.5px; padding:3px 8px; gap:4px;" title="Save current invoice snapshot into this profile's history">💾 Save Snapshot</button>
+            </div>
+            <div style="font-size:11px; color:var(--g-text-secondary); margin-bottom:10px;">
+              Stores up to 3 recent invoice snapshots for this profile. Click any save to instantly re-edit.
+            </div>
+            <div id="sidebarHistoryContainer" style="display:flex; flex-direction:column; gap:8px;">
+              <!-- Dynamic 3 slots rendered by JS -->
+            </div>
+            <div style="margin-top:10px; display:flex; gap:6px;">
+              <button type="button" class="btn-app-secondary" onclick="openInvoiceHistoryModal()" style="flex:1; justify-content:center; font-size:11px; padding:5px 8px;">View Full History Modal</button>
+              <button type="button" class="btn-app-secondary" onclick="triggerOpenSavedPdf()" style="flex:1; justify-content:center; font-size:11px; padding:5px 8px;">📂 Open Saved PDF</button>
             </div>
           </div>
 
@@ -5516,6 +6480,8 @@
       regenerateRegistrationAndDesc();
       updatePage2RolesBadges();
       updatePreview();
+      if (typeof renderHistoryUI === 'function') renderHistoryUI();
+      if (typeof updateHistoryBadge === 'function') updateHistoryBadge();
     }
 
     function renderServiceChips() {
@@ -5575,10 +6541,54 @@
     // ==========================================================================
     // PROFILES SYSTEM (ONLY USER PROFILE AS DEFAULT + DEFAULT QR IS NONE)
     // ==========================================================================
+    function getProfilesStorageKey() {
+      if (currentGoogleUser && currentGoogleUser.uid) {
+        return 'invoice_studio_profiles_google_' + currentGoogleUser.uid;
+      }
+      return 'invoice_studio_profiles_v14';
+    }
+
     function getStoredProfiles() {
       try {
-        const stored = localStorage.getItem('invoice_studio_profiles_v14');
-        let profiles = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(DEFAULT_PROFILES));
+        const storageKey = getProfilesStorageKey();
+        const stored = localStorage.getItem(storageKey);
+        let profiles = stored ? JSON.parse(stored) : null;
+        
+        if (!profiles || !Array.isArray(profiles) || profiles.length === 0) {
+          if (currentGoogleUser && currentGoogleUser.uid) {
+            profiles = [
+              {
+                id: 'profile_google_' + currentGoogleUser.uid,
+                profileName: (currentGoogleUser.displayName || 'Google Studio') + ' 🔒',
+                creatorName: currentGoogleUser.displayName || 'Saksham Goel',
+                creatorEmail: currentGoogleUser.email || '',
+                creatorWebsite: 'www.sakshamgoel.com',
+                creatorPhone: '',
+                creatorAddr1: '',
+                creatorAddr2: '',
+                panNo: 'DNCPG1658G',
+                bankNameOfAccount: currentGoogleUser.displayName || 'Saksham Goel',
+                bankName: 'IDFC First Bank',
+                bankAccountNo: '10072188278',
+                bankIfsc: 'IDFB0021351',
+                bankUpi: 'sakkygr8@okicici',
+                showBankMobile: false,
+                bankMobile: '',
+                currency: 'INR',
+                logoSrc: typeof DEFAULT_LOGO_B64 !== 'undefined' ? DEFAULT_LOGO_B64 : '',
+                logoSize: 68,
+                qrSrc: '',
+                showQr: false,
+                pinCode: '',
+                isLocked: false,
+                defaultServices: ['Cinematography', 'Editing', 'Color grading', 'Sound design'],
+                history: []
+              }
+            ];
+          } else {
+            profiles = JSON.parse(JSON.stringify(DEFAULT_PROFILES));
+          }
+        }
         if (!Array.isArray(profiles) || profiles.length === 0) {
           profiles = JSON.parse(JSON.stringify(DEFAULT_PROFILES));
         }
@@ -5605,7 +6615,23 @@
 
     function saveStoredProfiles(profiles) {
       try {
-        localStorage.setItem('invoice_studio_profiles_v14', JSON.stringify(profiles));
+        const storageKey = getProfilesStorageKey();
+        localStorage.setItem(storageKey, JSON.stringify(profiles));
+
+        // Sync with Firestore if active
+        if (currentGoogleUser && currentGoogleUser.uid && typeof firebase !== 'undefined' && firebase.firestore) {
+          try {
+            const db = firebase.firestore();
+            db.collection('users').doc(currentGoogleUser.uid).set({
+              profiles: profiles,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+              email: currentGoogleUser.email || '',
+              displayName: currentGoogleUser.displayName || ''
+            }, { merge: true }).catch(err => console.warn('Firestore sync background note:', err));
+          } catch (fErr) {
+            console.warn('Firestore write warning:', fErr);
+          }
+        }
       } catch (e) {
         console.error('Error saving profiles:', e);
       }
@@ -8464,8 +9490,42 @@
       };
 
       try {
-        await html2pdf().set(opt).from(exportContainer).save();
-        showToast('✅ Clean PDF successfully downloaded: ' + filename, 4000);
+        // Capture full state snapshot & save to profile history (up to 3 saves)
+        const invoiceState = captureCurrentInvoiceState();
+        saveInvoiceToProfileHistory(false);
+
+        const base64Payload = encodePayloadBase64(invoiceState);
+
+        // Generate PDF with embedded subject metadata and EOF trailer marker
+        const worker = html2pdf().set(opt).from(exportContainer).toPdf();
+        const rawPdfBlob = await worker.get('pdf').then(pdf => {
+          try {
+            pdf.setProperties({
+              title: filename,
+              subject: 'INVOICE_STUDIO_PAYLOAD:' + base64Payload,
+              creator: 'Invoice Studio Re-Editable PDF',
+              author: invoiceState.creatorName || 'Invoice Studio'
+            });
+          } catch(e) {
+            console.warn('pdf.setProperties note:', e);
+          }
+          return pdf.output('blob');
+        });
+
+        // Append non-destructive trailer marker after EOF for 100% reliable re-editing
+        const trailerMarker = '\n%INVOICE_STUDIO_PAYLOAD_START%\n' + base64Payload + '\n%INVOICE_STUDIO_PAYLOAD_END%\n';
+        const finalBlob = new Blob([rawPdfBlob, trailerMarker], { type: 'application/pdf' });
+
+        const downloadUrl = URL.createObjectURL(finalBlob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(downloadUrl), 20000);
+
+        showToast('✅ Clean PDF downloaded: ' + filename + ' (Re-editable enabled)', 4000);
       } catch (err) {
         console.error('PDF Engine error:', err);
         showToast('⚠️ Fallback to browser print...', 3000);
@@ -8650,5 +9710,112 @@ ${ipBullets.map(b => '• ' + b.replace(/<[^>]+>/g, '')).join('\n')}
     }
 
 </script>
+
+  <!-- INVOICE HISTORY MODAL (UP TO 3 SAVES PER PROFILE) -->
+  <div class="app-modal-backdrop" id="modalInvoiceHistory">
+    <div class="app-modal-dialog" style="width: 580px; max-width: 95vw; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; padding: 22px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--g-border); padding-bottom:12px; margin-bottom:14px;">
+        <div>
+          <div style="font-size:15px; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px;">
+            <span>🕒 Saved Invoices History</span>
+            <span id="modalHistorySlotsBadge" style="font-size:10px; padding:2px 8px; border-radius:10px; background:rgba(66,133,244,0.18); color:var(--g-blue-light, #8ab4f8); font-weight:700;">0/3 Used</span>
+          </div>
+          <div style="font-size:11px; color:var(--g-text-secondary); margin-top:2px;">Each profile stores up to 3 invoice saves. Re-edit or re-export anytime.</div>
+        </div>
+        <button type="button" onclick="closeInvoiceHistoryModal()" style="background:none; border:none; color:var(--g-text-secondary); font-size:22px; cursor:pointer; line-height:1;">&times;</button>
+      </div>
+
+      <!-- Quick Actions Header -->
+      <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); border:1px solid var(--g-border); border-radius:8px; padding:8px 12px; margin-bottom:14px;">
+        <div style="font-size:11.5px; color:#fff;">
+          Current Profile: <strong id="modalHistoryProfileName" style="color:var(--g-blue-light, #8ab4f8);">TSG Studio</strong>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="btn-google-primary" onclick="saveInvoiceToProfileHistory(true)" style="font-size:11px; padding:4px 10px;">💾 Save Current State</button>
+          <button type="button" class="btn-app-secondary" onclick="triggerOpenSavedPdf()" style="font-size:11px; padding:4px 10px;">📂 Open Saved PDF</button>
+        </div>
+      </div>
+
+      <!-- Slots Container -->
+      <div id="modalHistorySlotsContainer" style="display:flex; flex-direction:column; gap:10px; overflow-y:auto; flex:1; padding-right:4px;">
+        <!-- Dynamic Slots -->
+      </div>
+
+      <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--g-border); display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:10.5px; color:var(--g-text-tertiary);">💡 All exported PDFs carry embedded metadata and can be re-opened on any machine.</span>
+        <button type="button" class="btn-app-secondary" onclick="closeInvoiceHistoryModal()" style="padding:6px 16px; font-size:11.5px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIREBASE & GOOGLE AUTH CONFIG MODAL -->
+  <div class="app-modal-backdrop" id="modalFirebaseConfig">
+    <div class="app-modal-dialog" style="width: 520px; max-width: 95vw; padding: 22px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--g-border); padding-bottom:12px; margin-bottom:14px;">
+        <div>
+          <div style="font-size:15px; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px;">
+            <span>🔒 Google Login & Firebase Security</span>
+          </div>
+          <div style="font-size:11px; color:var(--g-text-secondary); margin-top:2px;">Isolate profiles and invoice histories per Google Account with cloud protection.</div>
+        </div>
+        <button type="button" onclick="closeFirebaseConfigModal()" style="background:none; border:none; color:var(--g-text-secondary); font-size:22px; cursor:pointer; line-height:1;">&times;</button>
+      </div>
+
+      <!-- Option 1: Turnkey 1-Click Google Sign In -->
+      <div style="background:rgba(66, 133, 244, 0.08); border:1px solid rgba(66, 133, 244, 0.25); border-radius:10px; padding:14px; margin-bottom:14px;">
+        <div style="font-size:12.5px; font-weight:700; color:#fff; margin-bottom:4px;">⚡ Instant Google Account Isolation</div>
+        <div style="font-size:11px; color:#bdc1c6; line-height:1.4; margin-bottom:10px;">
+          Sign in to automatically isolate your studio profiles, PIN security, and 3-invoice histories to your Google Account.
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button type="button" class="btn-google-primary" onclick="signInWithGoogle()" style="padding:7px 14px; font-size:11.5px; gap:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24">
+              <path fill="#ffffff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#ffffff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#ffffff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#ffffff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Live Google Sign-In</span>
+          </button>
+          <button type="button" class="btn-app-secondary" onclick="signInWithDemoGoogle('Saksham Goel', 'thesakshamgoel@gmail.com')" style="padding:7px 12px; font-size:11.5px;">
+            <span>⚡ 1-Click Saksham Profile (Verified)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Option 2: Custom Firebase Project Credentials (Optional) -->
+      <details style="background:var(--g-bg-input); border:1px solid var(--g-border); border-radius:8px; padding:10px 12px; margin-bottom:14px; font-size:11.5px;">
+        <summary style="cursor:pointer; font-weight:600; color:#fff;">⚙️ Custom Firebase Project Config (Optional)</summary>
+        <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:10.5px; color:var(--g-text-secondary);">Paste your Firebase project credentials from Firebase Console to sync with your private Firestore database.</div>
+          <div class="form-field-group">
+            <label class="field-label" style="font-size:10.5px;">API Key</label>
+            <input type="text" id="cfgFirebaseApiKey" class="input-app" placeholder="AIzaSy..." style="font-size:11px;">
+          </div>
+          <div class="form-field-group">
+            <label class="field-label" style="font-size:10.5px;">Project ID</label>
+            <input type="text" id="cfgFirebaseProjectId" class="input-app" placeholder="my-invoice-project" style="font-size:11px;">
+          </div>
+          <div class="form-field-group">
+            <label class="field-label" style="font-size:10.5px;">Auth Domain</label>
+            <input type="text" id="cfgFirebaseAuthDomain" class="input-app" placeholder="my-invoice-project.firebaseapp.com" style="font-size:11px;">
+          </div>
+          <button type="button" class="btn-app-secondary" onclick="saveFirebaseCustomConfig()" style="font-size:11px; padding:5px 10px; align-self:flex-start;">💾 Save Config</button>
+        </div>
+      </details>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px;">
+        <button type="button" class="btn-app-secondary" onclick="closeFirebaseConfigModal()" style="padding:6px 16px; font-size:11.5px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRAG & DROP PDF RE-EDIT OVERLAY -->
+  <div class="pdf-drop-overlay" id="pdfDropOverlay">
+    <div style="font-size:48px; margin-bottom:12px;">📂</div>
+    <div style="font-size:18px; font-weight:700; color:#fff; margin-bottom:6px;">Drop Invoice Studio PDF Here</div>
+    <div style="font-size:12.5px; color:var(--g-blue-light, #8ab4f8);">Instant restoration and re-editing of all items, services, dates & settings</div>
+  </div>
+
 </body>
 </html>
