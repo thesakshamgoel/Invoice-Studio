@@ -3393,7 +3393,36 @@
       color: #ffffff;
     }
 
-  </style>
+  /* ===== INVOICE STUDIO UPGRADE: extra themes, onboarding, auth ===== */
+.tpl-coral{--tp:#e8590c;--ts:#fff4ec;--tk:#2b1a10;--tf:'Inter',system-ui,sans-serif}
+.tpl-blueprint{--tp:#0b4f8a;--ts:#e8f2fb;--tk:#0a2540;--tf:'Courier New',ui-monospace,monospace}
+.tpl-chambers{--tp:#7a1f2b;--ts:#f7f1ea;--tk:#1a1a1a;--tf:Georgia,'Times New Roman',serif}
+.tpl-violet{--tp:#6d28d9;--ts:#f3edff;--tk:#1e1033;--tf:'Inter',system-ui,sans-serif}
+.tpl-typewriter{--tp:#111;--ts:#f4f1e8;--tk:#111;--tf:'Courier New',ui-monospace,monospace}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .a4-page{background:#fff!important;color:var(--tk)!important;font-family:var(--tf)!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .invoice-header-grid{border-top:5px solid var(--tp)!important;border-bottom:1px solid var(--tp)!important;padding:14px 0!important;margin-bottom:16px!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .invoice-big-title{color:var(--tp)!important;font-family:var(--tf)!important;font-weight:900!important;letter-spacing:.06em!important;text-transform:uppercase!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .invoice-number-tag{background:var(--ts)!important;color:var(--tp)!important;border:1.5px solid var(--tp)!important;font-weight:700!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .items-table{border-top:2px solid var(--tp)!important;border-bottom:2px solid var(--tp)!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .items-table th{background:var(--tp)!important;color:#fff!important;font-weight:700!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .items-table td{border-bottom:1px solid var(--ts)!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .items-table tbody tr:nth-child(even) td{background:var(--ts)!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .total-summary-card{background:var(--ts)!important;border:1.5px solid var(--tp)!important;border-radius:6px!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .banking-header-title,
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .terms-sec-title{color:var(--tp)!important;border-bottom:2px solid var(--tp)!important;text-transform:uppercase!important}
+.tpl-blueprint .a4-page{background-image:linear-gradient(rgba(11,79,138,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(11,79,138,.07) 1px,transparent 1px)!important;background-size:22px 22px!important}
+.tpl-chambers .invoice-big-title{font-style:italic;text-transform:none!important}
+.tpl-chambers .items-table th{font-variant:small-caps}
+.isx-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100000;display:none;align-items:center;justify-content:center;padding:16px}
+.isx-overlay.on{display:flex}
+.isx-box{background:#1e2128;border:1px solid #3d4352;border-radius:16px;padding:22px;width:640px;max-width:100%;max-height:92vh;overflow:auto;color:#e8eaed;font-family:Inter,system-ui,sans-serif}
+.isx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:14px 0}
+.isx-card{background:#262a33;border:1px solid #3d4352;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;color:#e8eaed;font:600 12px Inter,sans-serif}
+.isx-card:hover{border-color:#4285f4;background:rgba(66,133,244,.15)}
+.isx-card span{display:block;font-size:24px;margin-bottom:4px}
+.isx-industry{background:rgba(66,133,244,.08);border:1px solid rgba(66,133,244,.3);border-radius:10px;padding:10px 12px;margin-bottom:12px}
+
+</style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
@@ -11160,5 +11189,277 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     </div>
   </div>
 
+<script>
+// ===== INVOICE STUDIO UPGRADE (real Google auth, gated PDF, themes, professions) =====
+(function () {
+  'use strict';
+  var OWNER_EMAIL = 'thesakshamgoel@gmail.com';
+  // Paste your Google Cloud OAuth "Web client" ID here (or enter it in the sign-in dialog).
+  var GOOGLE_CLIENT_ID = '';
+  var SESSION_MS = 30 * 24 * 3600 * 1000;
+  var pendingAction = null;
+  var $ = function (id) { return document.getElementById(id); };
+  var toast = function (m, t, d) { try { showToast(m, t || 'info', d); } catch (e) {} };
+
+  /* ---------- THEMES ---------- */
+  var NEW_THEMES = [
+    ['coral', 'Sunset Coral', '🍊', 'Coral'], ['blueprint', 'Blueprint', '📐', 'Blueprint'],
+    ['chambers', 'Chambers Classic', '⚖️', 'Chambers'], ['violet', 'Ultraviolet', '🔮', 'Violet'],
+    ['typewriter', 'Typewriter Mono', '⌨️', 'Typewriter']
+  ];
+  var ALL_TPL = ['onyx', 'swiss', 'cobalt', 'vogue', 'mint', 'corporate', 'pro', 'simple', 'advanced', 'terms-invoice', 'quicksheet']
+    .concat(NEW_THEMES.map(function (t) { return t[0]; }));
+  NEW_THEMES.forEach(function (t) { INVOICE_TEMPLATES[t[0]] = t[1]; });
+  var origSetTpl = setInvoiceTemplate;
+  window.setInvoiceTemplate = setInvoiceTemplate = function (k) {
+    var st = $('a4Stage');
+    if (st) ALL_TPL.forEach(function (c) { st.classList.remove('tpl-' + c); });
+    return origSetTpl(k);
+  };
+  function addThemeButtons() {
+    var html = NEW_THEMES.map(function (t) {
+      return '<button type="button" class="tpl-btn" data-tpl="' + t[0] + '" onclick="setInvoiceTemplate(\'' + t[0] + '\')" title="' + t[1] + '"><span class="tpl-icon">' + t[2] + '</span><span>' + t[3] + '</span></button>';
+    }).join('');
+    var corp = '<button type="button" class="tpl-btn" data-tpl="corporate" onclick="setInvoiceTemplate(\'corporate\')"><span class="tpl-icon">👔</span><span>Corporate</span></button>';
+    var mob = document.querySelector('#lblActiveTemplateMobile'); mob = mob && mob.parentNode.nextElementSibling;
+    var grids = [document.querySelector('.template-picker-grid'), mob];
+    grids.forEach(function (g, i) {
+      if (!g || g.querySelector('[data-tpl="coral"]')) return;
+      g.style.gridTemplateColumns = 'repeat(4,1fr)'; g.insertAdjacentHTML('beforeend', (i ? corp : '') + html);
+    });
+    var saved = null; try { saved = localStorage.getItem('selected_invoice_template_v2'); } catch (e) {}
+    if (saved && INVOICE_TEMPLATES[saved]) setInvoiceTemplate(saved);
+  }
+
+  /* ---------- REAL GOOGLE AUTH (ID token verified by Google's tokeninfo endpoint) ---------- */
+  function clientId() { return GOOGLE_CLIENT_ID || localStorage.getItem('invoice_studio_google_client_id') || ''; }
+  function banner(msg, bad) {
+    var b = $('authStatusBanner'); if (!b) return;
+    b.style.display = msg ? 'block' : 'none'; b.textContent = msg || '';
+    b.style.color = bad ? '#f28b82' : '#81c995';
+    b.style.borderColor = bad ? 'rgba(234,67,53,.4)' : 'rgba(52,168,83,.3)';
+    b.style.background = bad ? 'rgba(234,67,53,.1)' : 'rgba(52,168,83,.1)';
+  }
+  window.initGoogleIdentityServices = function () {
+    var id = clientId(), inp = $('inpGoogleClientId'); if (inp) inp.value = id;
+    if (!id) { banner('Google sign-in needs a Client ID. Open "Configure" below and paste the OAuth Web Client ID from Google Cloud Console.', true); return true; }
+    if (!(window.google && google.accounts && google.accounts.id)) return false;
+    google.accounts.id.initialize({ client_id: id, callback: window.handleGoogleCredentialResponse, auto_select: false });
+    var el = $('g_id_onload');
+    if (el) { el.innerHTML = ''; google.accounts.id.renderButton(el, { theme: 'outline', size: 'large', shape: 'pill', text: 'signin_with', width: 300 }); }
+    return true;
+  };
+  window.handleGoogleCredentialResponse = function (resp) {
+    if (!resp || !resp.credential) return;
+    banner('Verifying with Google…');
+    fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + encodeURIComponent(resp.credential))
+      .then(function (r) { if (!r.ok) throw new Error('rejected'); return r.json(); })
+      .then(function (p) {
+        if (p.aud !== clientId() || String(p.email_verified) !== 'true' || !p.email) throw new Error('mismatch');
+        window.handleVerifiedGoogleUser({
+          uid: 'google_' + p.sub, displayName: p.name || p.email.split('@')[0], email: p.email,
+          photoURL: p.picture || '', verified: true, exp: Date.now() + SESSION_MS
+        });
+      })
+      .catch(function () { banner('Google could not verify this sign-in. Check your connection and Client ID, then try again.', true); });
+  };
+  window.triggerOfficialGoogleSignIn = function () {
+    if (!clientId()) { banner('Add your Google Client ID first (Configure ▾).', true); var bx = $('boxFirebaseCustomInputs'); if (bx) bx.style.display = 'flex'; return; }
+    if (window.initGoogleIdentityServices() === false) { banner('Google script is still loading or blocked. Serve the app over https or localhost and retry.', true); return; }
+    try { google.accounts.id.prompt(); } catch (e) {}
+  };
+  window.promptDirectGoogleAuthEntry = window.selectGoogleAccount = window.submitCustomGoogleAccount = function () {
+    toast('Typing an email no longer signs you in. Use "Sign in with Google".', 'warning', 4000);
+  };
+  window.saveCustomGoogleConfig = function () {
+    var v = (($('inpGoogleClientId') || {}).value || '').trim();
+    if (v && !/\.apps\.googleusercontent\.com$/.test(v)) { banner('That does not look like a Google OAuth Client ID.', true); return; }
+    if (v) localStorage.setItem('invoice_studio_google_client_id', v);
+    toast('Client ID saved', 'success'); banner(''); window.initGoogleIdentityServices();
+  };
+  window.openGoogleAuthModal = function (reason) {
+    openFirebaseConfigModal();
+    banner(typeof reason === 'string' ? reason : '');
+    var n = 0, t = setInterval(function () { if (window.initGoogleIdentityServices() !== false || ++n > 30) clearInterval(t); }, 300);
+  };
+  var origVerified = window.handleVerifiedGoogleUser;
+  window.handleVerifiedGoogleUser = function (u) {
+    origVerified(u);
+    decorateUser(!!(u.email && u.email.toLowerCase() === OWNER_EMAIL));
+    var prof = getProfession(u.uid);
+    var go = function () { var a = pendingAction; pendingAction = null; if (a) setTimeout(a, 250); };
+    if (!prof) window.showProfessionModal(go); else { applyProfession(prof, false); go(); }
+  };
+  var origInit = window.initFirebaseAuth;
+  window.initFirebaseAuth = function () {
+    try {
+      var u = JSON.parse(localStorage.getItem('invoice_studio_google_user') || 'null');
+      if (u && (!u.verified || !u.exp || u.exp < Date.now())) localStorage.removeItem('invoice_studio_google_user');
+    } catch (e) { localStorage.removeItem('invoice_studio_google_user'); }
+    origInit();
+    if (currentGoogleUser) decorateUser(!!(currentGoogleUser.email && currentGoogleUser.email.toLowerCase() === OWNER_EMAIL));
+  };
+  var origOut = window.handleGoogleSignOut;
+  window.handleGoogleSignOut = window.signOutGoogleUser = function () {
+    try { google.accounts.id.disableAutoSelect(); } catch (e) {}
+    origOut(); decorateUser(false);
+  };
+  function decorateUser(isOwner) {
+    var pop = $('popoverGoogleAccount'); if (!pop) return;
+    var x = $('isxPopExtra');
+    if (!x) { x = document.createElement('div'); x.id = 'isxPopExtra'; x.style.cssText = 'margin:8px 0;display:flex;flex-direction:column;gap:6px'; pop.insertBefore(x, pop.lastElementChild); }
+    x.innerHTML = (isOwner ? '<div style="font-size:11px;font-weight:700;color:#fbbc04">👑 Owner · TSG Studio</div>' : '') +
+      '<button type="button" class="btn-app-secondary" style="justify-content:center;font-size:11px;padding:6px" onclick="showProfessionModal()">🎯 Change profession / industry</button>';
+  }
+
+  /* ---------- LOGIN-GATED PDF SAVE ---------- */
+  function gate(name) {
+    var orig = window[name]; if (typeof orig !== 'function') return;
+    window[name] = function () {
+      var a = arguments, self = this;
+      if (currentGoogleUser && currentGoogleUser.verified) return orig.apply(self, a);
+      pendingAction = function () { orig.apply(self, a); };
+      window.openGoogleAuthModal('Sign in with Google to save your invoice as PDF. Your profile, history and industry settings are saved to your account.');
+    };
+  }
+  ['downloadCleanPdf', 'quickExportHistoryPdf', 'triggerBrowserPrint'].forEach(gate);
+  document.querySelectorAll('button[onclick="window.print()"]').forEach(function (b) { b.setAttribute('onclick', 'downloadCleanPdf()'); });
+
+  /* ---------- PROFESSIONS ---------- */
+  var BASE = [
+    ['PAYMENT', 'Invoices are payable as per the agreed schedule. Work commences on receipt of the advance, where applicable.'],
+    ['SCOPE OF WORK', 'Only work expressly listed in this invoice is included. Additional requests will be quoted and approved in writing before commencement.'],
+    ['LIMITATION OF LIABILITY', "The Service Provider's total liability is limited to the fees paid under this invoice."],
+    ['GOVERNING LAW', "These terms are governed by the laws of India. Disputes are subject to the courts at the Service Provider's city of registration."]
+  ];
+  var P = {
+    film: { n: 'Filmmaker / Videographer', i: '🎬', tpl: 'onyx', pay: '50% Advance, 50% on Final Delivery',
+      svc: ['Cinematography', 'Editing', 'Color grading', 'Sound design', 'Direction', 'Visual Effects (VFX)'],
+      chips: ['2 rounds of revisions included', 'Raw footage remains property of the Provider', 'Travel & accommodation billed at actuals', 'Overtime beyond 10 shoot hours is billed extra', 'Picture lock before color & sound', 'Reshoot due to client delay is chargeable'],
+      sp: [['REVISIONS', 'Two rounds of consolidated revisions are included. Further rounds are charged hourly. Changes after picture lock are billed separately.'], ['FOOTAGE & OWNERSHIP', 'Raw footage and project files remain with the Provider. Final masters are licensed to the Client on full payment.'], ['SHOOT SCHEDULE', 'Postponement within 48 hours of a shoot forfeits the advance. Overtime beyond agreed hours is billed per hour.']] },
+    photo: { n: 'Photographer', i: '📷', tpl: 'vogue', pay: '50% Advance, 50% on Delivery',
+      svc: ['Photography', 'Retouching', 'Product Shoot', 'Event Coverage', 'Album Design'],
+      chips: ['Edited images delivered in 14 days', 'Usage license limited to agreed media', 'Provider may use images in portfolio', 'Travel billed at actuals', 'RAW files not included'],
+      sp: [['DELIVERY', 'Curated, retouched images are delivered digitally within the agreed time. RAW files are not included unless stated.'], ['LICENSE & USAGE', 'The Client receives a license for the agreed usage. Copyright remains with the Photographer. Portfolio use is permitted.']] },
+    design: { n: 'Graphic / Brand Designer', i: '🎨', tpl: 'violet', pay: '50% Advance, 50% on Final Files',
+      svc: ['Graphic Design', 'Brand Identity', 'Logo Design', 'Pamphlet / Brochure', 'Social Media Content', 'UI/UX Design'],
+      chips: ['3 concept revisions included', 'Final vector files released on full payment', 'Fonts & stock licensed separately', 'Portfolio rights reserved', 'Unused concepts remain Provider property'],
+      sp: [['REVISIONS', 'Up to three rounds of revisions on the chosen concept are included. New directions are billed as new work.'], ['FILES & RIGHTS', "Source and vector files and all rights transfer on full payment. Third-party fonts and stock images are the Client's responsibility to license."]] },
+    dev: { n: 'Web / Software Developer', i: '💻', tpl: 'blueprint', pay: '40% Advance, 30% Mid-Milestone, 30% on Launch',
+      svc: ['Website Design', 'Frontend Development', 'Backend Development', 'UI/UX Design', 'Maintenance & Support', 'SEO'],
+      chips: ['30 days bug-fix warranty after launch', 'Hosting & domain costs borne by Client', 'Source code handed over on full payment', 'Change requests quoted separately', 'Third-party API costs excluded', 'Scope frozen after sign-off'],
+      sp: [['WARRANTY', 'Defects in agreed functionality are fixed free for 30 days after launch. New features or third-party changes are chargeable.'], ['SOURCE & HOSTING', 'Source code is delivered on full payment. Hosting, domains and third-party service fees are paid by the Client.'], ['CHANGE REQUESTS', 'Requirements are frozen at sign-off. Changes are estimated and approved in writing before work.']] },
+    engineer: { n: 'Engineer / Consultant', i: '🛠️', tpl: 'corporate', pay: '30% Advance, 70% on Report Submission',
+      svc: ['Engineering Consultancy', 'Design & Drafting', 'Site Inspection', 'Technical Report', 'Project Management'],
+      chips: ['Site visit expenses billed at actuals', 'Drawings valid for the agreed project only', 'Client to supply accurate site data', 'Statutory approvals excluded', 'Professional indemnity limited to fees'],
+      sp: [['CLIENT INPUTS', 'The Client shall provide accurate data, access and approvals in time. Delays from missing inputs may revise the schedule and fees.'], ['DELIVERABLES & RELIANCE', 'Drawings and reports are for the stated project only. Statutory approvals and execution supervision are excluded unless listed.']] },
+    lawyer: { n: 'Lawyer / Legal Professional', i: '⚖️', tpl: 'chambers', pay: '100% Retainer on Engagement',
+      svc: ['Legal Consultation', 'Drafting & Vetting', 'Court Appearance', 'Legal Notice', 'Contract Review', 'Retainership'],
+      chips: ['Fees are professional fees, not a guarantee of outcome', 'Court fees & stamp duty paid by Client', 'Privileged & confidential communication', 'Retainer is non-refundable once work begins', 'Out-of-pocket expenses billed at actuals'],
+      sp: [['NATURE OF ENGAGEMENT', 'Fees are for professional services rendered and are not contingent on, nor a guarantee of, any outcome.'], ['CONFIDENTIALITY', 'All communication is privileged and confidential. Information is disclosed only as required by law.'], ['DISBURSEMENTS', 'Court fees, stamp duty, travel and other out-of-pocket expenses are borne by the Client in addition to professional fees.']] },
+    ca: { n: 'Accountant / CA / Tax', i: '🧮', tpl: 'corporate', pay: '50% Advance, 50% on Filing',
+      svc: ['Bookkeeping', 'GST Filing', 'Income Tax Filing', 'Audit Support', 'Payroll', 'Advisory'],
+      chips: ['Client responsible for accuracy of records', 'Statutory penalties borne by Client', 'Filing after complete documents received', 'Fees exclude government fees', 'Records retained as per law'],
+      sp: [['CLIENT RECORDS', 'The Client is responsible for the completeness and accuracy of information supplied. Work is based on documents provided.'], ['STATUTORY LIABILITIES', "Taxes, interest, penalties and government fees are the Client's responsibility and are not part of professional fees."]] },
+    writer: { n: 'Writer / Copywriter', i: '✍️', tpl: 'typewriter', pay: '50% Advance, 50% on Delivery',
+      svc: ['Copywriting', 'Content Writing', 'Scriptwriting', 'Editing & Proofreading', 'Blog / SEO Articles'],
+      chips: ['2 revision rounds included', 'By-line credit unless waived in writing', 'Rights transfer on full payment', 'Client to supply briefs & facts', 'Kill fee of 30% if project is cancelled'],
+      sp: [['REVISIONS', 'Two revision rounds are included. Rewrites to a new brief are charged as new work.'], ['RIGHTS & CREDIT', "Rights in the final text transfer on full payment. The Writer may be credited unless agreed otherwise. Drafts remain the Writer's property."]] },
+    marketing: { n: 'Marketing / Agency', i: '📣', tpl: 'coral', pay: '50% Advance, Monthly Retainer Thereafter',
+      svc: ['Social Media Management', 'Content Creation', 'Performance Marketing', 'SEO', 'Brand Strategy', 'Influencer Outreach'],
+      chips: ['Ad spend is billed separately to Client', 'No guaranteed results or rankings', 'Monthly retainer billed in advance', '30 days notice to terminate', 'Client provides account access'],
+      sp: [['AD SPEND & RESULTS', 'Advertising spend is paid directly by the Client. Results depend on market factors and are not guaranteed.'], ['RETAINER & TERMINATION', 'Retainers are billed monthly in advance. Either party may end the engagement with 30 days written notice.']] },
+    company: { n: 'Company / Business', i: '🏢', tpl: 'corporate', pay: 'Net 15 days from invoice date',
+      svc: ['Products', 'Professional Services', 'Maintenance', 'Supply & Installation', 'Annual Contract'],
+      chips: ['Net 15 payment terms', 'Late payment interest 1.5% per month', 'Goods remain Provider property until paid', 'Warranty as per manufacturer', 'GST extra as applicable', 'Disputes raised within 7 days of delivery'],
+      sp: [['TITLE & DELIVERY', 'Ownership of goods passes to the Client only on full payment. Delivery timelines are estimates unless stated.'], ['LATE PAYMENT', 'Amounts unpaid after the due date attract interest at 1.5% per month. Goods and services may be withheld until dues are cleared.'], ['DISPUTES', 'Any dispute with an invoice must be raised in writing within 7 days of receipt.']] },
+    audio: { n: 'Musician / Audio', i: '🎧', tpl: 'cobalt', pay: '50% Advance, 50% on Master Delivery',
+      svc: ['Music Composition', 'Mixing', 'Mastering', 'Sound design', 'Voice-over', 'Live Performance'],
+      chips: ['2 mix revisions included', 'Stems delivered on full payment', 'Composer retains publishing unless assigned', 'Session overtime billed hourly', 'Cancellation within 72h forfeits advance'],
+      sp: [['REVISIONS & STEMS', 'Two mix revisions are included. Stems and masters are released on full payment.'], ['RIGHTS', 'Publishing and performance rights remain with the creator unless assigned in writing. The Client receives a license for the agreed use.']] },
+    other: { n: 'Other / Freelancer', i: '✨', tpl: 'swiss', pay: '50% Advance, 50% on Final Delivery',
+      svc: ['Consulting', 'Creative Services', 'Project Work', 'Support'],
+      chips: ['2 revision rounds included', 'Late payment interest 1.5% per month', 'Rights transfer on full payment', 'Cancellation after start forfeits advance'],
+      sp: [['REVISIONS', 'Two rounds of reasonable revisions are included. Further changes are billed separately.'], ['OWNERSHIP', 'Final work transfers to the Client on full payment. The Provider may showcase non-confidential work.']] }
+  };
+  function termsMd(p) {
+    return [BASE[0], BASE[1]].concat(p.sp, [BASE[2], BASE[3]]).map(function (c, i) { return '**' + (i + 1) + '. ' + c[0] + '**\n• ' + c[1]; }).join('\n\n');
+  }
+  var curIndustry = null;
+  function getProfession(uid) { try { return localStorage.getItem('isx_prof_' + (uid || (currentGoogleUser && currentGoogleUser.uid))) || ''; } catch (e) { return ''; } }
+  function fire(el) { el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }
+  function applyProfession(key, full) {
+    var p = P[key]; if (!p) return; curIndustry = key;
+    var wrap = document.querySelector('#tabProject .suggestion-chips-wrap');
+    if (wrap) {
+      wrap.innerHTML = p.svc.map(function (s) { return '<button type="button" class="chip-btn" data-s="' + s.replace(/"/g, '&quot;') + '">+ ' + s + '</button>'; }).join('');
+      wrap.querySelectorAll('.chip-btn').forEach(function (b) { b.onclick = function () { addServiceTag(b.getAttribute('data-s')); }; });
+    }
+    renderIndustryTerms(p);
+    if (full) {
+      selectedServices = p.svc.slice(0, 4);
+      try { renderServiceChips(); } catch (e) {}
+      var pay = $('inpPaymentTerms'); if (pay) { pay.value = p.pay; fire(pay); }
+      setInvoiceTemplate(p.tpl);
+      var sel = $('selectTermsSource'), box = $('inpCustomTermsText');
+      if (sel && box) {
+        sel.value = 'custom_formatted'; fire(sel); box.value = termsMd(p);
+        if (typeof renderCustomFormattedTerms === 'function') renderCustomFormattedTerms(box.value);
+      }
+      toast(p.i + ' Tailored for ' + p.n + ': services, terms, payment & theme updated. Everything is editable.', 'success', 4500);
+      try { regenerateRegistrationAndDesc(); updatePage2RolesBadges(); updatePreview(); } catch (e) {}
+    }
+  }
+  function renderIndustryTerms(p) {
+    var host = $('isxIndustryBox');
+    if (!host) {
+      var anchor = document.querySelector('#tabTerms .terms-suggestions-panel'); if (!anchor) return;
+      host = document.createElement('div'); host.id = 'isxIndustryBox'; host.className = 'isx-industry'; anchor.parentNode.insertBefore(host, anchor);
+    }
+    host.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px"><b style="font-size:11px;color:#8ab4f8">' + p.i + ' Suggested terms for ' + p.n + '</b>' +
+      '<span><button type="button" class="btn-app-secondary" style="font-size:10px;padding:2px 8px" id="isxApplyTerms">Use full suggested set</button> <button type="button" class="btn-app-secondary" style="font-size:10px;padding:2px 8px" onclick="showProfessionModal()">Change industry</button></span></div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:5px">' + p.chips.map(function (c) { return '<span class="terms-chip" onclick="toggleTermsSuggestion(this)">' + c + '</span>'; }).join('') + '</div>';
+    $('isxApplyTerms').onclick = function () { applyProfession(curIndustry, true); };
+  }
+  var cb = null;
+  window.showProfessionModal = function (done) {
+    cb = typeof done === 'function' ? done : null;
+    var m = $('isxProf');
+    if (!m) {
+      m = document.createElement('div'); m.id = 'isxProf'; m.className = 'isx-overlay';
+      m.innerHTML = '<div class="isx-box"><div style="font-size:18px;font-weight:700">What do you do?</div><div style="font-size:12px;color:#9aa0a6;margin-top:4px">We tailor services, terms, payment schedule and theme to your work. Everything stays editable.</div><div class="isx-grid">' +
+        Object.keys(P).map(function (k) { return '<div class="isx-card" data-k="' + k + '"><span>' + P[k].i + '</span>' + P[k].n + '</div>'; }).join('') +
+        '</div><div style="text-align:right"><button type="button" class="btn-app-secondary" id="isxSkip" style="font-size:11px;padding:5px 14px">Skip for now</button></div></div>';
+      document.body.appendChild(m);
+      var uid = function () { return currentGoogleUser && currentGoogleUser.uid; };
+      m.querySelectorAll('.isx-card').forEach(function (c) {
+        c.onclick = function () {
+          var k = c.getAttribute('data-k');
+          try { if (uid()) localStorage.setItem('isx_prof_' + uid(), k); } catch (e) {}
+          m.classList.remove('on'); applyProfession(k, true); finish();
+        };
+      });
+      $('isxSkip').onclick = function () {
+        m.classList.remove('on');
+        try { if (uid() && !getProfession()) localStorage.setItem('isx_prof_' + uid(), 'other'); } catch (e) {}
+        if (!curIndustry) applyProfession(getProfession() || 'other', false);
+        finish();
+      };
+    }
+    try { closeFirebaseConfigModal(); } catch (e) {}
+    m.classList.add('on');
+  };
+  function finish() { var f = cb; cb = null; if (f) f(); }
+
+  /* ---------- BOOT ---------- */
+  setTimeout(function () {
+    addThemeButtons();
+    var p = getProfession(); if (p && currentGoogleUser) applyProfession(p, false);
+  }, 400);
+  window.addEventListener('load', function () {
+    var n = 0, t = setInterval(function () { if (window.initGoogleIdentityServices() !== false || ++n > 20) clearInterval(t); }, 400);
+  });
+})();
+</script>
 </body>
 </html>

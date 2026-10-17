@@ -108,3 +108,9 @@ Then navigate to `http://localhost:8000`.
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
+
+## Google sign-in setup (required for PDF saving)
+1. Google Cloud Console → APIs & Services → Credentials → Create **OAuth client ID** (Web application).
+2. Add your hosting origin (e.g. `https://thesakshamgoel.github.io`) under *Authorized JavaScript origins*. `file://` will not work.
+3. Paste the Client ID into `GOOGLE_CLIENT_ID` near the end of `index.html` (or into the sign-in dialog's Configure box).
+Sign-ins are verified against Google's tokeninfo endpoint; `thesakshamgoel@gmail.com` is treated as the owner and unlocks the TSG Studio profile.

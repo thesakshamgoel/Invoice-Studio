@@ -1,5 +1,5 @@
 // Invoice Studio Service Worker for Offline PWA Capabilities
-const CACHE_NAME = 'invoice-studio-v1.2';
+const CACHE_NAME = 'invoice-studio-v2.0';
 const STATIC_ASSETS = [
   './',
   './index.html',
