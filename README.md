@@ -1,6 +1,6 @@
-# Invoice Studio 🧾✨
+# Shakeslip 🧾✨
 
-**Invoice Studio** is a modern, responsive, Google Workspace / Material 3 inspired professional invoice and agreement generator. Designed for freelancers, creative studios, and independent agencies who need pixel-perfect, print-ready, and PDF invoices with real-time live preview.
+**Shakeslip** is a modern, responsive, Google Workspace / Material 3 inspired professional invoice and agreement generator. Designed for freelancers, creative studios, and independent agencies who need pixel-perfect, print-ready, and PDF invoices with real-time live preview.
 
 Now fully optimized as an **App-like Progressive Web App (PWA)** with native mobile ergonomics, offline support, touch pinch-to-zoom, and 1-tap installation to home screens.
 
@@ -83,7 +83,7 @@ Then navigate to `http://localhost:8000`.
 1. Go to repository **Settings** > **Pages**.
 2. Under **Build and deployment** > **Source**, choose **Deploy from a branch**.
 3. Select the `main` branch and `/ (root)` folder.
-4. Click **Save**. Your Invoice Studio app will be live on the web instantly!
+4. Click **Save**. Your Shakeslip app will be live on the web instantly!
 
 ---
 

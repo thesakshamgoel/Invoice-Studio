@@ -1,13 +1,13 @@
 {
-  "name": "Invoice Studio - Invoice & Agreement Generator",
-  "short_name": "InvoiceStudio",
+  "name": "Shakeslip - Invoice & Agreement Generator",
+  "short_name": "Shakeslip",
   "description": "Professional Material 3 Invoice and Agreement Generator with real-time live preview and high-resolution PDF export.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#121316",
-  "theme_color": "#17181c",
+  "theme_color": "#09090b",
   "categories": ["business", "finance", "productivity", "utilities"],
   "icons": [
     {
