@@ -3833,6 +3833,11 @@ body.isx-hist-open .canvas-pane,body.isx-hist-open .app-canvas{margin-right:0}
 #isxBusy.on{opacity:1;visibility:visible}
 .isx-busy-card{transform:translateY(6px) scale(.98);transition:transform .25s ease}
 #isxBusy.on .isx-busy-card{transform:none}
+/* bigger, longer zoom */
+@keyframes isxZoomW{0%{transform:scale(1);opacity:1}80%{opacity:1}100%{transform:scale(240);opacity:0}}
+#isxSplash.out{animation:isxHole 1.5s cubic-bezier(.7,0,.3,1) forwards!important}
+#isxSplash.out .isx-zw{animation:isxZoomW 1.5s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes isxHole{0%{--r:0px}10%{--r:0px}100%{--r:220vmax}}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13055,7 +13060,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     var loaded = new Promise(function (r) { if (document.readyState === 'complete') r(); else window.addEventListener('load', function () { r(); }); });
     var fonts = (document.fonts && document.fonts.ready) ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 2500); })]) : Promise.resolve();
     Promise.all([loaded, fonts]).then(function () {
-      setTimeout(function () { s.classList.add('out'); setTimeout(function () { if (s.parentNode) s.remove(); }, 1500); }, Math.max(0, 1500 - performance.now()));
+      setTimeout(function () { s.classList.add('out'); setTimeout(function () { if (s.parentNode) s.remove(); }, 1800); }, Math.max(0, 1500 - performance.now()));
     });
   }
 
