@@ -13194,6 +13194,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     var a2 = $('previewAmount2'), a3 = $('previewAmount3'); if (!a2 || !a3) return;
     var r2 = a2.closest('tr'), r3 = a3.closest('tr'), adv = pnum('inpAdvanceNumeric'), tot = pnum('inpTotalNumeric'), on = adv > 0 && tot > 0;
     if (r2) r2.style.display = on ? '' : 'none'; if (r3) r3.style.display = on ? '' : 'none';
+    ['previewItemMonth', 'previewItemRate', 'previewItemQuantity'].forEach(function (id) { var c = $(id); if (c) c.rowSpan = on ? 3 : 1; });
     if (on) {
       var p = adv / tot * 100, d2 = r2 && r2.querySelector('.col-desc'), d3 = r3 && r3.querySelector('.col-desc');
       if (d2 && /^Advance (Payable|received)/i.test(d2.textContent.trim())) d2.textContent = 'Advance received (' + fmtPct(p) + '%) at this stage.';
