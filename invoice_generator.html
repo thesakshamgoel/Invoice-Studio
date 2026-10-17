@@ -3423,7 +3423,7 @@
 .isx-industry{background:rgba(66,133,244,.08);border:1px solid rgba(66,133,244,.3);border-radius:10px;padding:10px 12px;margin-bottom:12px}
 
 </style>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -11231,8 +11231,12 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     if (saved && INVOICE_TEMPLATES[saved]) setInvoiceTemplate(saved);
   }
 
-  /* ---------- REAL GOOGLE AUTH (ID token verified by Google's tokeninfo endpoint) ---------- */
-  function clientId() { return GOOGLE_CLIENT_ID || localStorage.getItem('invoice_studio_google_client_id') || ''; }
+  /* ---------- GOOGLE AUTH VIA FIREBASE ---------- */
+  var FIREBASE_CONFIG = { apiKey: '', authDomain: 'project-886914060511.firebaseapp.com', projectId: 'project-886914060511' };
+  function fbConfig() {
+    var c = {}; try { c = JSON.parse(localStorage.getItem('isx_fb_config') || '{}'); } catch (e) {}
+    return { apiKey: c.apiKey || FIREBASE_CONFIG.apiKey, authDomain: c.authDomain || FIREBASE_CONFIG.authDomain, projectId: c.projectId || FIREBASE_CONFIG.projectId };
+  }
   function banner(msg, bad) {
     var b = $('authStatusBanner'); if (!b) return;
     b.style.display = msg ? 'block' : 'none'; b.textContent = msg || '';
@@ -11240,42 +11244,41 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     b.style.borderColor = bad ? 'rgba(234,67,53,.4)' : 'rgba(52,168,83,.3)';
     b.style.background = bad ? 'rgba(234,67,53,.1)' : 'rgba(52,168,83,.1)';
   }
+  var fbReady = false;
   window.initGoogleIdentityServices = function () {
-    var id = clientId(), inp = $('inpGoogleClientId'); if (inp) inp.value = id;
-    if (!id) { banner('Google sign-in needs a Client ID. Open "Configure" below and paste the OAuth Web Client ID from Google Cloud Console.', true); return true; }
-    if (!(window.google && google.accounts && google.accounts.id)) return false;
-    google.accounts.id.initialize({ client_id: id, callback: window.handleGoogleCredentialResponse, auto_select: false });
-    var el = $('g_id_onload');
-    if (el) { el.innerHTML = ''; google.accounts.id.renderButton(el, { theme: 'outline', size: 'large', shape: 'pill', text: 'signin_with', width: 300 }); }
+    var cfg = fbConfig(), inp = $('inpFirebaseApiKey'); if (inp) inp.value = cfg.apiKey;
+    var gi = $('g_id_onload'); if (gi) gi.style.display = 'none';
+    var gc = $('inpGoogleClientId'); if (gc) gc.style.display = 'none';
+    if (fbReady) return true;
+    if (!cfg.apiKey) { banner('Firebase Web API key missing. Open "Configure" below and paste it (Firebase Console → Project settings → Your apps).', true); return true; }
+    if (!window.firebase || !firebase.auth) return false;
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(cfg);
+      firebase.auth().onAuthStateChanged(function (u) {
+        if (!u || !u.emailVerified || !u.email) return;
+        if (currentGoogleUser && currentGoogleUser.email === u.email) return;
+        window.handleVerifiedGoogleUser({ uid: 'google_' + u.uid, displayName: u.displayName || u.email.split('@')[0], email: u.email, photoURL: u.photoURL || '', verified: true, exp: Date.now() + SESSION_MS });
+      });
+      fbReady = true; banner('');
+    } catch (e) { banner('Firebase init failed: ' + e.message, true); }
     return true;
   };
-  window.handleGoogleCredentialResponse = function (resp) {
-    if (!resp || !resp.credential) return;
-    banner('Verifying with Google…');
-    fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + encodeURIComponent(resp.credential))
-      .then(function (r) { if (!r.ok) throw new Error('rejected'); return r.json(); })
-      .then(function (p) {
-        if (p.aud !== clientId() || String(p.email_verified) !== 'true' || !p.email) throw new Error('mismatch');
-        window.handleVerifiedGoogleUser({
-          uid: 'google_' + p.sub, displayName: p.name || p.email.split('@')[0], email: p.email,
-          photoURL: p.picture || '', verified: true, exp: Date.now() + SESSION_MS
-        });
-      })
-      .catch(function () { banner('Google could not verify this sign-in. Check your connection and Client ID, then try again.', true); });
-  };
   window.triggerOfficialGoogleSignIn = function () {
-    if (!clientId()) { banner('Add your Google Client ID first (Configure ▾).', true); var bx = $('boxFirebaseCustomInputs'); if (bx) bx.style.display = 'flex'; return; }
-    if (window.initGoogleIdentityServices() === false) { banner('Google script is still loading or blocked. Serve the app over https or localhost and retry.', true); return; }
-    try { google.accounts.id.prompt(); } catch (e) {}
+    if (!fbConfig().apiKey) { banner('Add your Firebase Web API key first (Configure ▾).', true); var bx = $('boxFirebaseCustomInputs'); if (bx) bx.style.display = 'flex'; return; }
+    if (window.initGoogleIdentityServices() === false) { banner('Firebase SDK is still loading or blocked. Serve over https/localhost and retry.', true); return; }
+    var prov = new firebase.auth.GoogleAuthProvider(); prov.setCustomParameters({ prompt: 'select_account' });
+    firebase.auth().signInWithPopup(prov).catch(function (e) {
+      banner(e.code === 'auth/unauthorized-domain' ? 'This domain is not in Firebase → Authentication → Authorized domains.' : 'Sign-in failed: ' + (e.message || e.code), true);
+    });
   };
   window.promptDirectGoogleAuthEntry = window.selectGoogleAccount = window.submitCustomGoogleAccount = function () {
     toast('Typing an email no longer signs you in. Use "Sign in with Google".', 'warning', 4000);
   };
   window.saveCustomGoogleConfig = function () {
-    var v = (($('inpGoogleClientId') || {}).value || '').trim();
-    if (v && !/\.apps\.googleusercontent\.com$/.test(v)) { banner('That does not look like a Google OAuth Client ID.', true); return; }
-    if (v) localStorage.setItem('invoice_studio_google_client_id', v);
-    toast('Client ID saved', 'success'); banner(''); window.initGoogleIdentityServices();
+    var v = (($('inpFirebaseApiKey') || {}).value || '').trim();
+    if (!/^AIza[\w-]{30,}$/.test(v)) { banner('That does not look like a Firebase Web API key (starts with AIza).', true); return; }
+    try { var c = JSON.parse(localStorage.getItem('isx_fb_config') || '{}'); c.apiKey = v; localStorage.setItem('isx_fb_config', JSON.stringify(c)); } catch (e) {}
+    toast('Firebase key saved. Reload the page, then sign in.', 'success', 4000); banner('Saved. Reload the page, then sign in.');
   };
   window.openGoogleAuthModal = function (reason) {
     openFirebaseConfigModal();
@@ -11301,7 +11304,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   };
   var origOut = window.handleGoogleSignOut;
   window.handleGoogleSignOut = window.signOutGoogleUser = function () {
-    try { google.accounts.id.disableAutoSelect(); } catch (e) {}
+    try { firebase.auth().signOut(); } catch (e) {}
     origOut(); decorateUser(false);
   };
   function decorateUser(isOwner) {
