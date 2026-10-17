@@ -3437,8 +3437,126 @@
 #a4Stage.tpl-plain .a4-page .invoice-number-tag,#a4Stage.tpl-plain .a4-page .bank-info-table td,#a4Stage.tpl-plain .a4-page .bank-info-table th,#a4Stage.tpl-plain .a4-page .bank-label-cell{background:#fff!important;background-image:none!important;color:#000!important}
 #a4Stage.tpl-plain .a4-page .invoice-number-tag{border:0!important}
 #a4Stage.tpl-plain .a4-page *{transition:none!important}
+
+/* ===== INVOICE STUDIO UI v3: graphite, editorial, hairline ===== */
+:root{
+  --g-bg-base:#09090b;--g-bg-surface:#0f0f11;--g-bg-surface-elevated:#17171a;--g-bg-input:#0b0b0d;
+  --g-border:#232327;--g-border-hover:#3a3a41;--g-border-focus:#a1a1aa;
+  --g-blue:#fafafa;--g-blue-hover:#e4e4e7;--g-blue-light:#d4d4d8;--g-blue-subtle:rgba(255,255,255,.06);
+  --g-green:#4ade80;--g-amber:#e5b567;--g-red:#f87171;
+  --g-text-primary:#fafafa;--g-text-secondary:#a1a1aa;--g-text-tertiary:#71717a;
+  --g-font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --isx-serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+}
+body{font-family:var(--g-font);font-feature-settings:'cv11','ss01','tnum';-webkit-font-smoothing:antialiased;letter-spacing:-.006em}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#2a2a30;border-radius:10px;border:3px solid transparent;background-clip:content-box}::-webkit-scrollbar-thumb:hover{background:#3a3a42;background-clip:content-box;border:3px solid transparent}::-webkit-scrollbar-track{background:transparent}
+/* top bar */
+.app-topbar{background:rgba(9,9,11,.82)!important;backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--g-border)!important;box-shadow:none!important}
+.app-brand-title{font-family:var(--isx-serif)!important;font-size:22px!important;font-weight:400!important;letter-spacing:-.01em!important;color:#fafafa!important}
+.app-brand-icon{border-radius:8px!important;box-shadow:none!important}
+.active-profile-pill,.wysiwyg-badge,.page-nav-pill-group,.zoom-control-bar{background:transparent!important;border:1px solid var(--g-border)!important;border-radius:999px!important;box-shadow:none!important;color:var(--g-text-secondary)!important}
+.wysiwyg-badge{font-size:10.5px!important;font-weight:500!important}
+.page-nav-chip{border-radius:999px!important;font-weight:500!important;color:var(--g-text-secondary)!important}
+.page-nav-chip.active{background:#fafafa!important;color:#09090b!important}
+.btn-zoom-circle{background:transparent!important;border:0!important;color:var(--g-text-secondary)!important}
+.btn-zoom-circle:hover{background:#1c1c20!important;color:#fff!important}
+/* buttons */
+.btn-app-secondary,.btn-google-auth-top{background:transparent!important;border:1px solid var(--g-border)!important;color:var(--g-text-primary)!important;border-radius:8px!important;font-weight:500!important;font-size:12px!important;box-shadow:none!important;transition:background .15s,border-color .15s!important}
+.btn-app-secondary:hover,.btn-google-auth-top:hover{background:#17171a!important;border-color:var(--g-border-hover)!important}
+.btn-google-primary{background:#fafafa!important;color:#09090b!important;border:1px solid #fafafa!important;border-radius:8px!important;font-weight:600!important;box-shadow:none!important;letter-spacing:-.005em}
+.btn-google-primary:hover{background:#e4e4e7!important;box-shadow:none!important}
+.btn-google-primary svg{fill:#09090b}
+/* sidebar */
+.app-sidebar{background:var(--g-bg-surface)!important;border-right:1px solid var(--g-border)!important}
+.sidebar-nav-header{background:transparent!important;border-bottom:1px solid var(--g-border)!important}
+.tab-icon-btn{border-radius:8px!important;background:transparent!important;border:1px solid transparent!important;color:var(--g-text-tertiary)!important;box-shadow:none!important;display:flex;align-items:center;justify-content:center}
+.tab-icon-btn:hover{background:#17171a!important;color:#fafafa!important}
+.tab-icon-btn.active{background:#1c1c20!important;border-color:var(--g-border-hover)!important;color:#fafafa!important}
+.tab-icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tab-tooltip{background:#fafafa!important;color:#09090b!important;border-radius:6px!important;font-weight:500!important}
+.panel-card{background:transparent!important;border:1px solid var(--g-border)!important;border-radius:12px!important;box-shadow:none!important}
+.panel-card-header{border-bottom:1px solid var(--g-border)!important}
+.panel-card-title{font-family:var(--isx-serif)!important;font-size:18px!important;font-weight:400!important;letter-spacing:0!important;text-transform:none!important;color:#fafafa!important}
+.field-label{font-size:11px!important;font-weight:500!important;letter-spacing:.01em!important;color:var(--g-text-tertiary)!important;text-transform:none!important}
+.input-app,select.input-app,textarea.input-app{background:var(--g-bg-input)!important;border:1px solid var(--g-border)!important;border-radius:8px!important;color:#fafafa!important;box-shadow:none!important;transition:border-color .15s,box-shadow .15s!important}
+.input-app:hover{border-color:var(--g-border-hover)!important}
+.input-app:focus{border-color:#a1a1aa!important;box-shadow:0 0 0 3px rgba(255,255,255,.07)!important;outline:0!important}
+.chip-btn,.terms-chip,.service-tag{background:transparent!important;border:1px solid var(--g-border)!important;border-radius:999px!important;color:var(--g-text-secondary)!important;font-weight:500!important;box-shadow:none!important;transition:all .15s!important}
+.chip-btn:hover,.terms-chip:hover{border-color:#52525b!important;color:#fafafa!important;background:#141416!important}
+.terms-chip.active,.chip-btn.selected{background:#fafafa!important;color:#09090b!important;border-color:#fafafa!important}
+.service-tag{background:#17171a!important;color:#fafafa!important}
+.wizard-footer-nav{border-top:1px solid var(--g-border)!important;background:transparent!important}
+.wizard-step-label{color:var(--g-text-tertiary)!important;font-weight:500!important}
+/* blue-tinted inline blocks -> neutral */
+[style*="66,133,244"],[style*="66, 133, 244"]{background:rgba(255,255,255,.03)!important;border-color:var(--g-border)!important}
+[style*="#8ab4f8"],[style*="#4285f4;"]{color:#d4d4d8!important}
+.terms-suggestions-panel{background:transparent!important;border:1px solid var(--g-border)!important;border-radius:12px!important}
+.terms-cat-title{color:#fafafa!important}
+/* canvas */
+.canvas-scroll-stage{background:#0c0c0e radial-gradient(circle at 1px 1px,#1c1c20 1px,transparent 0) 0 0/22px 22px!important}
+.a4-page{box-shadow:0 1px 2px rgba(0,0,0,.4),0 24px 60px -12px rgba(0,0,0,.65)!important}
+/* modals */
+.app-modal-backdrop{background:rgba(5,5,6,.7)!important;backdrop-filter:blur(8px)}
+.app-modal-dialog,.isx-box,.google-account-popover{background:#111113!important;border:1px solid var(--g-border)!important;border-radius:16px!important;box-shadow:0 40px 100px -20px rgba(0,0,0,.85)!important;color:#fafafa}
+[style*="#1e2128"]{background:#111113!important}
+[style*="#3d4352"]{border-color:var(--g-border)!important}
+/* toast */
+#toastContainer>*{background:#fafafa!important;color:#09090b!important;border:0!important;border-radius:10px!important;box-shadow:0 12px 40px rgba(0,0,0,.5)!important;font-weight:500!important}
+/* theme swatches */
+.template-picker-card{background:transparent!important;border:1px solid var(--g-border)!important;border-radius:12px!important}
+.template-picker-title{font-family:var(--isx-serif)!important;font-size:17px!important;font-weight:400!important;text-transform:none!important;letter-spacing:0!important}
+.tpl-active-badge{background:#17171a!important;color:#d4d4d8!important;border:1px solid var(--g-border)!important;font-weight:500!important}
+.tpl-btn{background:transparent!important;border:1px solid var(--g-border)!important;border-radius:8px!important;color:var(--g-text-secondary)!important;font-weight:500!important;box-shadow:none!important}
+.tpl-btn:hover{border-color:#52525b!important;color:#fafafa!important}
+.tpl-btn.active{border-color:#fafafa!important;color:#fafafa!important;background:#17171a!important;box-shadow:none!important}
+.tpl-btn .tpl-icon{display:block!important;width:20px;height:20px;border-radius:50%;font-size:0!important;margin:0 auto 5px;border:1px solid rgba(255,255,255,.18)}
+.tpl-btn[data-tpl=onyx] .tpl-icon{background:linear-gradient(135deg,#0b0b0d 50%,#c9a24b 50%)}
+.tpl-btn[data-tpl=swiss] .tpl-icon{background:linear-gradient(135deg,#fff 50%,#111 50%)}
+.tpl-btn[data-tpl=cobalt] .tpl-icon{background:linear-gradient(135deg,#1d4ed8 50%,#22d3ee 50%)}
+.tpl-btn[data-tpl=vogue] .tpl-icon{background:linear-gradient(135deg,#f3e9dc 50%,#3b2a1e 50%)}
+.tpl-btn[data-tpl=mint] .tpl-icon{background:linear-gradient(135deg,#d1fae5 50%,#059669 50%)}
+.tpl-btn[data-tpl=corporate] .tpl-icon{background:linear-gradient(135deg,#1e3a8a 50%,#cbd5e1 50%)}
+.tpl-btn[data-tpl=coral] .tpl-icon{background:linear-gradient(135deg,#e8590c 50%,#fff4ec 50%)}
+.tpl-btn[data-tpl=blueprint] .tpl-icon{background:linear-gradient(135deg,#0b4f8a 50%,#e8f2fb 50%)}
+.tpl-btn[data-tpl=chambers] .tpl-icon{background:linear-gradient(135deg,#7a1f2b 50%,#f7f1ea 50%)}
+.tpl-btn[data-tpl=violet] .tpl-icon{background:linear-gradient(135deg,#6d28d9 50%,#f3edff 50%)}
+.tpl-btn[data-tpl=typewriter] .tpl-icon{background:linear-gradient(135deg,#111 50%,#f4f1e8 50%)}
+.tpl-btn[data-tpl=plain] .tpl-icon{background:#fff;box-shadow:inset 0 0 0 5px #fff,inset 0 0 0 6px #000}
+/* profession picker + industry box */
+.isx-box h2{font-family:var(--isx-serif);font-weight:400;font-size:30px;letter-spacing:-.01em;margin:0}
+.isx-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))!important}
+.isx-card{text-align:left!important;background:transparent!important;border:1px solid var(--g-border)!important;border-radius:12px!important;padding:14px!important;transition:all .15s}
+.isx-card:hover{border-color:#fafafa!important;background:#17171a!important}
+.isx-card b{display:block;font-size:13px;font-weight:600;color:#fafafa}
+.isx-card small{display:block;margin-top:4px;font-size:11px;line-height:1.4;color:var(--g-text-tertiary);font-weight:400}
+.isx-industry{background:transparent!important;border:1px solid var(--g-border)!important;border-radius:12px!important}
+.isx-industry b{color:#fafafa!important;font-weight:600!important}
+.isx-hint{font-size:10.5px;color:var(--g-text-tertiary);margin-top:8px}
+/* payment status stamp */
+#stampInvoicePaid{display:none!important}
+.isx-stamp{position:absolute;top:326px;right:44px;z-index:6;display:flex;align-items:center;gap:14px;padding:12px 24px 12px 14px;border:5px solid var(--sc);border-radius:18px;color:var(--sc);transform:rotate(-9deg);opacity:.93;pointer-events:none;background:rgba(255,255,255,.4);box-shadow:inset 0 0 0 2px #fff,inset 0 0 0 3.5px var(--sc);font-family:Arial,Helvetica,sans-serif}
+.isx-stamp-ic{width:62px;height:62px;border-radius:50%;border:5px solid var(--sc);display:grid;place-items:center;flex:none}
+.isx-stamp-ic svg{width:34px;height:34px}
+.isx-stamp.k-paid{padding:14px 30px 14px 16px}
+.isx-stamp.k-paid .isx-stamp-ic{background:var(--sc);color:#fff;width:78px;height:78px}
+.isx-stamp.k-paid .isx-stamp-ic svg{width:46px;height:46px;stroke-width:3.2}
+.isx-stamp.k-paid .isx-stamp-tx b{font-size:56px}
+.isx-stamp-tx b{display:block;font-size:34px;line-height:1;font-weight:900;letter-spacing:.07em}
+.isx-stamp-tx small{display:block;margin-top:6px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;max-width:230px;line-height:1.3}
+.isx-seg{display:flex;flex-wrap:wrap;gap:6px}
+.isx-seg button{background:transparent;border:1px solid var(--g-border);color:var(--g-text-secondary);border-radius:999px;padding:5px 12px;font:500 11.5px var(--g-font);cursor:pointer;transition:all .15s}
+.isx-seg button:hover{border-color:#52525b;color:#fafafa}
+.isx-seg button.on{color:#fff;border-color:transparent}
+.isx-st-pending.on{background:#3f3f46}.isx-st-paid.on{background:#15803d}.isx-st-partial.on{background:#b45309}.isx-st-overdue.on{background:#b91c1c}
+.isx-st-due.on{background:#c2410c}.isx-st-draft.on{background:#52525b}.isx-st-void.on{background:#27272a}.isx-st-refunded.on{background:#6d28d9}
+.wysiwyg-badge{display:none!important}
+.active-profile-pill{max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.app-brand-title{letter-spacing:0!important;font-size:21px!important}
+.active-profile-pill{display:none!important}
+#toastContainer{left:50%!important;right:auto!important;transform:translateX(-50%);width:max-content;max-width:92vw;align-items:center}
+#toastContainer>*{width:auto!important;max-width:min(460px,92vw);padding:10px 16px!important}
 </style>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -4737,7 +4855,7 @@
                       </tr>
                       <tr>
                         <td class="meta-label">PAN No. :</td>
-                        <td class="meta-value canvas-editable" id="previewPanNo" data-bind-input="inpPanNo" data-bind-tab="tabProfile" contenteditable="true" spellcheck="false" title="Click to edit PAN Number">DNCPG1658G</td>
+                        <td class="meta-value canvas-editable" id="previewPanNo" data-bind-input="inpPanNo" data-bind-tab="tabProfile" contenteditable="true" spellcheck="false" title="Click to edit PAN Number">ABCDE1234F</td>
                       </tr>
                       <tr>
                         <td class="meta-label">Financial Year :</td>
@@ -4823,19 +4941,19 @@
                     </tr>
                     <tr>
                       <td class="bank-label-cell">Bank Name</td>
-                      <td class="bank-value-cell canvas-editable" id="previewBankName" data-bind-input="inpBankName" data-bind-tab="tabBank" contenteditable="true" spellcheck="false" title="Click to edit Bank Name">IDFC First Bank</td>
+                      <td class="bank-value-cell canvas-editable" id="previewBankName" data-bind-input="inpBankName" data-bind-tab="tabBank" contenteditable="true" spellcheck="false" title="Click to edit Bank Name">HDFC Bank</td>
                     </tr>
                     <tr>
                       <td class="bank-label-cell">Current Account No.</td>
-                      <td class="bank-value-cell canvas-editable" id="previewBankAccountNo" data-bind-input="inpBankAccountNo" data-bind-tab="tabBank" contenteditable="true" spellcheck="false" title="Click to edit Account Number">10072188278</td>
+                      <td class="bank-value-cell canvas-editable" id="previewBankAccountNo" data-bind-input="inpBankAccountNo" data-bind-tab="tabBank" contenteditable="true" spellcheck="false" title="Click to edit Account Number">50100012345678</td>
                     </tr>
                     <tr>
                       <td class="bank-label-cell">RTGS/NEFT IFSC</td>
-                      <td class="bank-value-cell canvas-editable" id="previewBankIfsc" data-bind-input="inpBankIfsc" data-bind-tab="tabBank" contenteditable="true" spellcheck="false" title="Click to edit IFSC Code">IDFB0021351</td>
+                      <td class="bank-value-cell canvas-editable" id="previewBankIfsc" data-bind-input="inpBankIfsc" data-bind-tab="tabBank" contenteditable="true" spellcheck="false" title="Click to edit IFSC Code">HDFC0001234</td>
                     </tr>
                     <tr>
                       <td class="bank-label-cell">UPI ID</td>
-                      <td class="bank-value-cell canvas-editable" id="previewBankUpi" data-bind-input="inpBankUpi" data-bind-tab="tabBank" contenteditable="true" spellcheck="false" title="Click to edit UPI ID">sakkygr8@okicici</td>
+                      <td class="bank-value-cell canvas-editable" id="previewBankUpi" data-bind-input="inpBankUpi" data-bind-tab="tabBank" contenteditable="true" spellcheck="false" title="Click to edit UPI ID">yourname@upi</td>
                     </tr>
                     <tr id="rowBankMobile" style="display:none;">
                       <td class="bank-label-cell">Mobile Number</td>
@@ -5367,12 +5485,12 @@
         creatorPhone: '',
         creatorAddr1: '',
         creatorAddr2: '',
-        panNo: 'DNCPG1658G',
+        panNo: 'ABCDE1234F',
         bankNameOfAccount: 'Saksham Goel',
-        bankName: 'IDFC First Bank',
-        bankAccountNo: '10072188278',
-        bankIfsc: 'IDFB0021351',
-        bankUpi: 'sakkygr8@okicici',
+        bankName: 'HDFC Bank',
+        bankAccountNo: '50100012345678',
+        bankIfsc: 'HDFC0001234',
+        bankUpi: 'yourname@upi',
         showBankMobile: false,
         bankMobile: '',
         currency: 'INR',
@@ -5380,7 +5498,7 @@
         logoSize: 68,
         qrSrc: '',
         showQr: false,
-        pinCode: '2686',
+        pinCode: '',
         isLocked: true,
         authRequiredEmail: 'thesakshamgoel@gmail.com',
         defaultTemplate: 'onyx',
@@ -6206,12 +6324,12 @@
                 creatorPhone: '',
                 creatorAddr1: '',
                 creatorAddr2: '',
-                panNo: 'DNCPG1658G',
+                panNo: 'ABCDE1234F',
                 bankNameOfAccount: currentGoogleUser.displayName || 'Saksham Goel',
-                bankName: 'IDFC First Bank',
-                bankAccountNo: '10072188278',
-                bankIfsc: 'IDFB0021351',
-                bankUpi: 'sakkygr8@okicici',
+                bankName: 'HDFC Bank',
+                bankAccountNo: '50100012345678',
+                bankIfsc: 'HDFC0001234',
+                bankUpi: 'yourname@upi',
                 showBankMobile: false,
                 bankMobile: '',
                 currency: 'INR',
@@ -6412,7 +6530,7 @@
         btnSubmitUnlock.addEventListener('click', () => {
           const pinInp = document.getElementById('inpPinVerification').value.trim();
           if (pendingTsgSwitch || getActiveProfileId() === 'profile_tsg') {
-            if (pinInp === '2686') {
+            if (false) {
               const profiles = getStoredProfiles();
               const tsg = profiles.find(p => p.id === 'profile_tsg');
               if (tsg) {
@@ -6820,7 +6938,7 @@
 
     function handleProfileSelectionChange(profileId) {
       if (profileId === 'profile_tsg') {
-        // ALWAYS require Pass 2686 each time someone switches to TSG Studio!
+        // ALWAYS require a passcode each time someone switches to TSG Studio!
         pendingTsgSwitch = true;
         openPinModalForTsg();
         return;
@@ -7981,7 +8099,7 @@
       if (skipElementId !== 'previewItemMonth') safeSetText('previewItemMonth', (inpMonth && inpMonth.value) ? inpMonth.value : computedMonth, computedMonth);
 
       const panVal = document.getElementById('inpPanNo').value.trim();
-      if (skipElementId !== 'previewPanNo') safeSetText('previewPanNo', panVal, 'DNCPG1658G');
+      if (skipElementId !== 'previewPanNo') safeSetText('previewPanNo', panVal, 'ABCDE1234F');
 
       // Dynamic Financial Year calculation
       const inpFy = document.getElementById('inpFinancialYear');
@@ -8065,10 +8183,10 @@
       }
 
       if (skipElementId !== 'previewBankNameOfAccount') safeSetText('previewBankNameOfAccount', document.getElementById('inpBankNameOfAccount').value, creatorName);
-      if (skipElementId !== 'previewBankName') safeSetText('previewBankName', document.getElementById('inpBankName').value, 'IDFC First Bank');
-      if (skipElementId !== 'previewBankAccountNo') safeSetText('previewBankAccountNo', document.getElementById('inpBankAccountNo').value, '10072188278');
-      if (skipElementId !== 'previewBankIfsc') safeSetText('previewBankIfsc', document.getElementById('inpBankIfsc').value, 'IDFB0021351');
-      if (skipElementId !== 'previewBankUpi') safeSetText('previewBankUpi', document.getElementById('inpBankUpi').value, 'sakkygr8@okicici');
+      if (skipElementId !== 'previewBankName') safeSetText('previewBankName', document.getElementById('inpBankName').value, 'HDFC Bank');
+      if (skipElementId !== 'previewBankAccountNo') safeSetText('previewBankAccountNo', document.getElementById('inpBankAccountNo').value, '50100012345678');
+      if (skipElementId !== 'previewBankIfsc') safeSetText('previewBankIfsc', document.getElementById('inpBankIfsc').value, 'HDFC0001234');
+      if (skipElementId !== 'previewBankUpi') safeSetText('previewBankUpi', document.getElementById('inpBankUpi').value, 'yourname@upi');
 
       if (showBankMobile && skipElementId !== 'previewBankMobile') {
         const customBankMobile = (document.getElementById('inpBankMobile') ? document.getElementById('inpBankMobile').value : '').trim();
@@ -11226,10 +11344,13 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     .concat(NEW_THEMES.map(function (t) { return t[0]; }));
   NEW_THEMES.forEach(function (t) { INVOICE_TEMPLATES[t[0]] = t[1]; });
   var origSetTpl = setInvoiceTemplate;
+  function tplKey() { return 'isx_tpl_' + (currentGoogleUser && currentGoogleUser.uid ? currentGoogleUser.uid : 'guest'); }
   window.setInvoiceTemplate = setInvoiceTemplate = function (k) {
     var st = $('a4Stage');
     if (st) ALL_TPL.forEach(function (c) { st.classList.remove('tpl-' + c); });
-    return origSetTpl(k);
+    var r = origSetTpl(k);
+    try { localStorage.removeItem('selected_invoice_template_v2'); if (INVOICE_TEMPLATES[k]) { localStorage.setItem(tplKey(), k); cloudSet({ template: k }); } } catch (e) {}
+    return r;
   };
   function addThemeButtons() {
     var html = NEW_THEMES.map(function (t) {
@@ -11242,7 +11363,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
       if (!g || g.querySelector('[data-tpl="coral"]')) return;
       g.style.gridTemplateColumns = 'repeat(4,1fr)'; g.insertAdjacentHTML('beforeend', (i ? corp : '') + html);
     });
-    var saved = null; try { saved = localStorage.getItem('selected_invoice_template_v2'); } catch (e) {}
+    var saved = null; try { saved = localStorage.getItem(tplKey()); } catch (e) {}
     if (saved && INVOICE_TEMPLATES[saved]) setInvoiceTemplate(saved);
   }
 
@@ -11303,10 +11424,15 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   var origVerified = window.handleVerifiedGoogleUser;
   window.handleVerifiedGoogleUser = function (u) {
     origVerified(u);
-    decorateUser(!!(u.email && u.email.toLowerCase() === OWNER_EMAIL));
-    var prof = getProfession(u.uid);
+    decorateUser(isOwner());
     var go = function () { var a = pendingAction; pendingAction = null; if (a) setTimeout(a, 250); };
-    if (!prof) window.showProfessionModal(go); else { applyProfession(prof, false); go(); }
+    pullCloud(function () {
+      try { populateProfileDropdown(); var ps = getStoredProfiles(); loadProfileData(isOwner() ? 'profile_tsg' : ps[0].id); renderHistoryUI(); updateHistoryBadge(); } catch (e) {}
+      var t = null; try { t = localStorage.getItem(tplKey()); } catch (e) {}
+      if (t && INVOICE_TEMPLATES[t]) setInvoiceTemplate(t);
+      var prof = getProfession(u.uid);
+      if (!prof) window.showProfessionModal(go); else { applyProfession(prof, false); go(); }
+    });
   };
   var origInit = window.initFirebaseAuth;
   window.initFirebaseAuth = function () {
@@ -11401,7 +11527,8 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
       sp: [['REVISIONS', 'Two rounds of reasonable revisions are included. Further changes are billed separately.'], ['OWNERSHIP', 'Final work transfers to the Client on full payment. The Provider may showcase non-confidential work.']] }
   };
   function termsMd(p) {
-    return [BASE[0], BASE[1]].concat(p.sp, [BASE[2], BASE[3]]).map(function (c, i) { return '**' + (i + 1) + '. ' + c[0] + '**\n• ' + c[1]; }).join('\n\n');
+    var parties = ['PARTIES & PROJECT', 'This agreement is between {{provider}} (the "Service Provider") and {{client}} (the "Client") for {{project}}. Details update automatically from the invoice.'];
+    return [parties, BASE[0], BASE[1]].concat(p.sp, [BASE[2], BASE[3]]).map(function (c, i) { return '**' + (i + 1) + '. ' + c[0] + '**\n• ' + c[1]; }).join('\n\n');
   }
   var curIndustry = null;
   function getProfession(uid) { try { return localStorage.getItem('isx_prof_' + (uid || (currentGoogleUser && currentGoogleUser.uid))) || ''; } catch (e) { return ''; } }
@@ -11436,7 +11563,8 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     }
     host.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px"><b style="font-size:11px;color:#8ab4f8">' + p.i + ' Suggested terms for ' + p.n + '</b>' +
       '<span><button type="button" class="btn-app-secondary" style="font-size:10px;padding:2px 8px" id="isxApplyTerms">Use full suggested set</button> <button type="button" class="btn-app-secondary" style="font-size:10px;padding:2px 8px" onclick="showProfessionModal()">Change industry</button></span></div>' +
-      '<div style="display:flex;flex-wrap:wrap;gap:5px">' + p.chips.map(function (c) { return '<span class="terms-chip" onclick="toggleTermsSuggestion(this)">' + c + '</span>'; }).join('') + '</div>';
+      '<div style="display:flex;flex-wrap:wrap;gap:5px">' + p.chips.map(function (c) { return '<span class="terms-chip" onclick="toggleTermsSuggestion(this)">' + c + '</span>'; }).join('') + '</div><div class="isx-hint">Each suggestion is filed under its own numbered heading (e.g. Payment Schedule &amp; Late Fees). Use {{client}}, {{provider}} and {{project}} in your text to keep names live.</div>';
+    syncChips();
     $('isxApplyTerms').onclick = function () { applyProfession(curIndustry, true); };
   }
   var cb = null;
@@ -11445,15 +11573,15 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     var m = $('isxProf');
     if (!m) {
       m = document.createElement('div'); m.id = 'isxProf'; m.className = 'isx-overlay';
-      m.innerHTML = '<div class="isx-box"><div style="font-size:18px;font-weight:700">What do you do?</div><div style="font-size:12px;color:#9aa0a6;margin-top:4px">We tailor services, terms, payment schedule and theme to your work. Everything stays editable.</div><div class="isx-grid">' +
-        Object.keys(P).map(function (k) { return '<div class="isx-card" data-k="' + k + '"><span>' + P[k].i + '</span>' + P[k].n + '</div>'; }).join('') +
+      m.innerHTML = '<div class="isx-box"><h2>What do you do?</h2><div style="font-size:12px;color:#9aa0a6;margin-top:4px">We tailor services, terms, payment schedule and theme to your work. Everything stays editable.</div><div class="isx-grid">' +
+        Object.keys(P).map(function (k) { return '<div class="isx-card" data-k="' + k + '"><b>' + P[k].n + '</b><small>' + P[k].svc.slice(0, 3).join(' · ') + '</small></div>'; }).join('') +
         '</div><div style="text-align:right"><button type="button" class="btn-app-secondary" id="isxSkip" style="font-size:11px;padding:5px 14px">Skip for now</button></div></div>';
       document.body.appendChild(m);
       var uid = function () { return currentGoogleUser && currentGoogleUser.uid; };
       m.querySelectorAll('.isx-card').forEach(function (c) {
         c.onclick = function () {
           var k = c.getAttribute('data-k');
-          try { if (uid()) localStorage.setItem('isx_prof_' + uid(), k); } catch (e) {}
+          try { if (uid()) { localStorage.setItem('isx_prof_' + uid(), k); cloudSet({ profession: k }); } } catch (e) {}
           m.classList.remove('on'); applyProfession(k, true); finish();
         };
       });
@@ -11469,9 +11597,265 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   };
   function finish() { var f = cb; cb = null; if (f) f(); }
 
+  /* ---------- PRIVACY: each ID sees only its own profiles ---------- */
+  function isOwner() {
+    return !!(currentGoogleUser && currentGoogleUser.verified && currentGoogleUser.email && currentGoogleUser.email.toLowerCase() === OWNER_EMAIL);
+  }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function blankProfile(u) {
+    return { id: 'profile_' + u.uid, profileName: (u.displayName || 'My Studio') + ' (My Studio)', creatorName: u.displayName || '', creatorEmail: u.email || '',
+      creatorWebsite: '', creatorPhone: '', creatorAddr1: '', creatorAddr2: '', panNo: '', currency: 'INR', bankNameOfAccount: u.displayName || '',
+      bankName: '', bankAccountNo: '', bankIfsc: '', bankUpi: '', showBankMobile: false, bankMobile: '', logoSrc: '', logoSize: 68, qrSrc: '', showQr: false,
+      pinCode: '', isLocked: false, defaultTemplate: 'onyx', defaultServices: ['Creative Services'], history: [] };
+  }
+  window.getStoredProfiles = getStoredProfiles = function () {
+    var list = null;
+    try { list = JSON.parse(localStorage.getItem(getProfilesStorageKey()) || 'null'); } catch (e) {}
+    if (!Array.isArray(list)) list = [];
+    var own = isOwner(), u = currentGoogleUser && currentGoogleUser.uid ? currentGoogleUser : null;
+    list = list.filter(function (p) { return p && p.id !== 'profile_guest' && (p.id !== 'profile_tsg' || own); });
+    list.forEach(function (p) {
+      if (!own && (p.bankAccountNo === '50100012345678' || p.panNo === 'ABCDE1234F' || p.bankUpi === 'yourname@upi')) { p.bankAccountNo = ''; p.panNo = ''; p.bankUpi = ''; p.bankIfsc = ''; p.bankName = ''; }
+      if (p.id === 'profile_tsg') { p.isLocked = false; p.pinCode = ''; }
+    });
+    if (own && !list.some(function (p) { return p.id === 'profile_tsg'; })) {
+      var seed = DEFAULT_PROFILES.filter(function (p) { return p.id === 'profile_tsg'; })[0];
+      if (seed) { seed = clone(seed); seed.isLocked = false; seed.pinCode = ''; seed.history = seed.history || []; list.unshift(seed); }
+    }
+    if (u && !list.length) list.push(blankProfile(u));
+    list.push(clone(GUEST_PROFILE_DEFAULTS));
+    if (!u) list.sort(function (a, b) { return a.id === 'profile_guest' ? -1 : b.id === 'profile_guest' ? 1 : 0; });
+    return list;
+  };
+  var origSel = handleProfileSelectionChange;
+  window.handleProfileSelectionChange = handleProfileSelectionChange = function (id) {
+    if (id === 'profile_tsg') {
+      if (!isOwner()) { toast('That profile belongs to its owner.', 'warning'); return; }
+      return switchActiveProfile(id);
+    }
+    return origSel(id);
+  };
+
+  /* ---------- CLOUD SYNC (Firestore, users/<uid>, owner-only rules) ---------- */
+  function fsDoc() {
+    try { if (window.firebase && firebase.firestore && currentGoogleUser && currentGoogleUser.uid) return firebase.firestore().collection('users').doc(currentGoogleUser.uid); } catch (e) {}
+    return null;
+  }
+  function cloudSet(obj) { var d = fsDoc(); if (d) d.set(obj, { merge: true }).catch(function () {}); }
+  function pullCloud(done) {
+    var d = fsDoc(), fin = function () { try { done(); } catch (e) {} };
+    if (!d) return fin();
+    d.get().then(function (s) {
+      if (s.exists) {
+        var x = s.data(), uid = currentGoogleUser.uid;
+        try {
+          if (Array.isArray(x.profiles) && x.profiles.length) localStorage.setItem(getProfilesStorageKey(), JSON.stringify(x.profiles));
+          if (x.profession) localStorage.setItem('isx_prof_' + uid, x.profession);
+          if (x.template) localStorage.setItem(tplKey(), x.template);
+        } catch (e) {}
+      }
+      fin();
+    }).catch(fin);
+  }
+
+  /* ---------- TERMS: every suggestion gets its own numbered heading ---------- */
+  var HEAD = { pay: 'PAYMENT SCHEDULE & LATE FEES', rev: 'REVISIONS & APPROVALS', ip: 'OWNERSHIP & LICENSING', deliv: 'DELIVERABLES & HANDOVER',
+    law: 'CANCELLATION, CONFIDENTIALITY & DISPUTES', client: 'CLIENT RESPONSIBILITIES', gen: 'SPECIAL CONDITIONS' };
+  function catOf(el, text) {
+    var m = /^(pay|rev|ip|deliv|law)_/.exec(el.getAttribute('data-clause-id') || ''); if (m) return m[1];
+    if (/cancel|kill fee|guarantee|outcome|confiden|dispute|indemn|liabil|privileg|terminat|notice|jurisdiction|nda/i.test(text)) return 'law';
+    if (/client (to|provides|responsible)|client's responsibility|supply/i.test(text)) return 'client';
+    if (/revision|round|approval|frozen|freeze|change request|picture lock|feedback/i.test(text)) return 'rev';
+    if (/right|licen[cs]e|ownership|credit|copyright|portfolio|property|source code|retains/i.test(text)) return 'ip';
+    if (/deliver|stems|files|handed|handover|masters|raw|footage|archive/i.test(text)) return 'deliv';
+    if (/pay|advance|retainer|fee|interest|deposit|invoice|gst|tax|billed|net \d/i.test(text)) return 'pay';
+    return 'gen';
+  }
+  function headTitle(l) {
+    var t = l.trim(), m = /^\*\*(?:\d+\.\s*)?(.+?)\*\*:?$/.exec(t) || /^#{1,4}\s+(?:\d+\.\s*)?(.+)$/.exec(t) || /^\d+\.\s+([A-Z0-9][A-Z0-9\s,&\/\-]{2,}):?$/.exec(t);
+    return m ? m[1].trim() : null;
+  }
+  function parseMd(md) {
+    var secs = [{ t: null, b: [] }];
+    (md || '').split('\n').forEach(function (l) {
+      if (!l.trim()) return; var h = headTitle(l);
+      if (h !== null) secs.push({ t: h, b: [] }); else secs[secs.length - 1].b.push(l.trim());
+    });
+    return secs;
+  }
+  function buildMd(secs) {
+    var n = 0;
+    return secs.map(function (s) {
+      if (s.t === null) return s.b.join('\n');
+      n++; return '**' + n + '. ' + s.t + '**\n' + s.b.join('\n');
+    }).filter(Boolean).join('\n\n');
+  }
+  function termsBox() {
+    var box = $('inpCustomTermsText'); if (!box) return null;
+    var sel = $('selectTermsSource');
+    if (!box.value.trim() && typeof getStandardClausesMarkdown === 'function') box.value = getStandardClausesMarkdown();
+    if (sel && sel.value !== 'custom_formatted') { sel.value = 'custom_formatted'; fire(sel); }
+    return box;
+  }
+  function commitTerms(box) {
+    box.value = buildMd(parseMd(box.value));
+    if (typeof renderCustomFormattedTerms === 'function') renderCustomFormattedTerms(box.value);
+    syncChips();
+  }
+  function addClause(cat, text) {
+    var box = termsBox(); if (!box) return;
+    var secs = parseMd(box.value), title = HEAD[cat] || HEAD.gen, up = title.toUpperCase();
+    var sec = secs.filter(function (s) { return s.t && s.t.toUpperCase() === up; })[0];
+    if (!sec) { sec = { t: title, b: [] }; secs.push(sec); }
+    if (sec.b.indexOf('• ' + text) < 0) sec.b.push('• ' + text);
+    box.value = buildMd(secs); commitTerms(box);
+  }
+  function removeClause(text) {
+    var box = $('inpCustomTermsText'); if (!box) return;
+    var heads = Object.keys(HEAD).map(function (k) { return HEAD[k]; });
+    var secs = parseMd(box.value).filter(function (s) {
+      if (s.t === null) return true;
+      s.b = s.b.filter(function (l) { return l !== '• ' + text; });
+      return s.b.length || heads.indexOf(s.t.toUpperCase()) < 0;
+    });
+    box.value = buildMd(secs); commitTerms(box);
+  }
+  function syncChips() {
+    var box = $('inpCustomTermsText'); var v = box ? box.value : '';
+    document.querySelectorAll('.terms-chip').forEach(function (c) {
+      var t = c.textContent.replace('✓', '').trim();
+      c.classList.toggle('active', !!t && v.indexOf('• ' + t) >= 0);
+    });
+  }
+  window.toggleTermsSuggestion = toggleTermsSuggestion = function (chip) {
+    if (!chip) return;
+    var text = chip.textContent.replace('✓', '').trim();
+    var box = $('inpCustomTermsText'), has = box && box.value.indexOf('• ' + text) >= 0;
+    if (has) { removeClause(text); toast('Removed from terms', 'info', 1600); }
+    else { var cat = catOf(chip, text); addClause(cat, text); toast('Added under "' + HEAD[cat] + '"', 'success', 2200); }
+  };
+  window.addCustomTermsClause = addCustomTermsClause = function () {
+    var inp = $('inpCustomTermsClause'), t = inp && inp.value.trim(); if (!t) return;
+    addClause('gen', t); inp.value = '';
+    toast('Added under "' + HEAD.gen + '"', 'success', 2200);
+  };
+  var origRender = renderCustomFormattedTerms;
+  function subst(md) {
+    var v = function (id, d) { var e = $(id); return (e && e.value.trim()) || d; };
+    return String(md || '').replace(/\{\{provider\}\}/g, v('inpCreatorName', 'the Service Provider')).replace(/\{\{client\}\}/g, v('inpClientName', 'the Client')).replace(/\{\{project\}\}/g, v('inpProjectName', 'the project'));
+  }
+  window.renderCustomFormattedTerms = renderCustomFormattedTerms = function (md) { return origRender(subst(md)); };
+  document.addEventListener('input', function (e) {
+    if (['inpCreatorName', 'inpClientName', 'inpProjectName'].indexOf(e.target.id) < 0) return;
+    var sel = $('selectTermsSource'), box = $('inpCustomTermsText');
+    if (sel && box && sel.value === 'custom_formatted') renderCustomFormattedTerms(box.value);
+  });
+
+  /* ---------- PAYMENT STATUS STAMP ---------- */
+  var ST = {
+    pending: null,
+    paid: { l: 'PAID', c: '#15803d', s: 'Payment received, thank you', i: '<path d="M5 12.5l4.5 4.5L19 7.5"/>' },
+    partial: { l: 'PARTIALLY PAID', c: '#b45309', s: 'Balance outstanding', i: '<path d="M12 4.5a7.5 7.5 0 1 0 0 15z" fill="currentColor"/>' },
+    overdue: { l: 'OVERDUE', c: '#b91c1c', s: 'Payment is past its due date', i: '<path d="M12 6v7.5M12 17.4v.4"/>' },
+    due: { l: 'PAYMENT DUE', c: '#c2410c', s: 'Please remit by the due date', i: '<path d="M12 7v5.2l3.4 2"/>' },
+    draft: { l: 'DRAFT', c: '#52525b', s: 'Not a final invoice', i: '<path d="M7 17l.8-3.6L16 5.2a1.6 1.6 0 0 1 2.3 2.3L10.1 15.7z"/>' },
+    void: { l: 'VOID', c: '#3f3f46', s: 'This invoice is cancelled', i: '<path d="M7 7l10 10M17 7L7 17"/>' },
+    refunded: { l: 'REFUNDED', c: '#6d28d9', s: 'Amount returned to client', i: '<path d="M9.5 8L5.5 12l4 4M5.5 12H14a4.5 4.5 0 0 1 0 9"/>' }
+  };
+  var ST_LABEL = { pending: 'Unpaid', paid: 'Paid', partial: 'Partial', overdue: 'Overdue', due: 'Due', draft: 'Draft', void: 'Void', refunded: 'Refunded' };
+  function curStatus() {
+    var chk = $('chkPaidWatermark'), sel = $('inpPaymentStatus');
+    if (chk && chk.checked) return 'paid';
+    return sel && ST.hasOwnProperty(sel.value) ? sel.value : 'pending';
+  }
+  function setStatus(k) {
+    var sel = $('inpPaymentStatus'), chk = $('chkPaidWatermark'); if (!sel) return;
+    if (chk) chk.checked = false;
+    sel.value = k; fire(sel);
+    if (k === 'paid' && chk) { chk.checked = true; }
+    refreshStamp();
+  }
+  function ensureStatusUI() {
+    var sel = $('inpPaymentStatus'); if (!sel || $('isxSeg')) return;
+    sel.innerHTML = Object.keys(ST_LABEL).map(function (k) { return '<option value="' + k + '">' + ST_LABEL[k] + '</option>'; }).join('');
+    var chk = $('chkPaidWatermark'), lab = chk && chk.closest('label'); if (lab) lab.style.display = 'none';
+    var host = document.createElement('div'); host.className = 'form-field-group';
+    host.innerHTML = '<label class="field-label">Invoice status stamp</label><div class="isx-seg" id="isxSeg">' +
+      Object.keys(ST_LABEL).map(function (k) { return '<button type="button" data-st="' + k + '" class="isx-st-' + k + '">' + ST_LABEL[k] + '</button>'; }).join('') +
+      '</div><input type="text" id="isxStampNote" class="input-app" style="margin-top:8px" placeholder="Stamp note, e.g. Received via UPI on 12/10/2026">';
+    (lab ? lab.parentNode : sel.parentNode).insertAdjacentElement('afterend', host);
+    host.querySelectorAll('button').forEach(function (b) { b.onclick = function () { setStatus(b.getAttribute('data-st')); }; });
+    $('isxStampNote').addEventListener('input', refreshStamp);
+    sel.addEventListener('change', refreshStamp);
+  }
+  function refreshStamp() {
+    var k = curStatus(), cfg = ST[k], page = $('invoiceSheetPage1'), el = $('isxStamp');
+    document.querySelectorAll('#isxSeg button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-st') === k); });
+    var sel = $('inpPaymentStatus'); if (sel && sel.value !== k && k !== 'pending') sel.value = k;
+    if (!page) return;
+    if (!cfg) { if (el) el.remove(); return; }
+    if (!el) { el = document.createElement('div'); el.id = 'isxStamp'; page.appendChild(el); }
+    var note = ($('isxStampNote') || {}).value || '';
+    el.className = 'isx-stamp k-' + k;
+    el.style.setProperty('--sc', cfg.c);
+    el.innerHTML = '<div class="isx-stamp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + cfg.i + '</svg></div>' +
+      '<div class="isx-stamp-tx"><b>' + cfg.l + '</b><small>' + escapeHtml(note.trim() || cfg.s) + '</small></div>';
+  }
+  var origUP = updatePreview;
+  window.updatePreview = updatePreview = function () { var r = origUP.apply(this, arguments); try { refreshStamp(); } catch (e) {} return r; };
+  var origCap = captureCurrentInvoiceState;
+  window.captureCurrentInvoiceState = captureCurrentInvoiceState = function () { var s = origCap.apply(this, arguments); try { s.stampNote = ($('isxStampNote') || {}).value || ''; } catch (e) {} return s; };
+  var origRes = restoreInvoiceState;
+  window.restoreInvoiceState = restoreInvoiceState = function (s) {
+    var r = origRes.apply(this, arguments);
+    try { var n = $('isxStampNote'); if (n) n.value = (s && s.stampNote) || ''; refreshStamp(); } catch (e) {}
+    return r;
+  };
+
+  /* ---------- UI POLISH: line icons, no emoji chrome ---------- */
+  var TABS = {
+    tabProfile: '<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M10 6h4M10 10h4M10 14h4M10 18h4"/>',
+    tabClient: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    tabProject: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+    tabItems: '<path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 1 .7V2l-1 .7L17 2l-3 2-3-2-3 2-3-2z"/><path d="M8 8h8M8 12h8M8 16h4"/>',
+    tabBank: '<path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2 3 8h18z"/>',
+    tabEsign: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+    tabTerms: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>'
+  };
+  function iconify() {
+    document.querySelectorAll('.tab-icon-btn[data-tab]').forEach(function (b) {
+      var s = b.firstElementChild, p = TABS[b.getAttribute('data-tab')];
+      if (s && p && !b.querySelector('svg')) s.innerHTML = '<svg viewBox="0 0 24 24">' + p + '</svg>';
+    });
+  }
+  var EMO = /[\p{Extended_Pictographic}️‍]/gu, EMO1 = /[\p{Extended_Pictographic}]/u;
+  function cleanNode(root) {
+    if (!root || root.nodeType === 8) return;
+    if (root.nodeType === 3) { fixText(root); return; }
+    if (root.nodeType !== 1 || (root.closest && root.closest('#a4Stage,script,style,textarea'))) return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), n, list = [];
+    while ((n = w.nextNode())) list.push(n);
+    list.forEach(fixText);
+  }
+  function fixText(n) {
+    var p = n.parentElement; if (!p || p.closest('#a4Stage,script,style,textarea')) return;
+    if (EMO1.test(n.nodeValue)) { var v = n.nodeValue.replace(EMO, '').replace(/^\s+/, ''); if (v !== n.nodeValue) n.nodeValue = v; }
+  }
+  function startCleaner() {
+    cleanNode(document.body); iconify();
+    var q = [], sched = false;
+    new MutationObserver(function (ms) {
+      ms.forEach(function (m) { if (m.type === 'characterData') q.push(m.target); else m.addedNodes.forEach(function (x) { q.push(x); }); });
+      if (!sched) { sched = true; requestAnimationFrame(function () { sched = false; var l = q.splice(0); l.forEach(cleanNode); }); }
+    }).observe(document.body, { childList: true, subtree: true, characterData: true });
+    var f = document.createElement('link'); f.rel = 'stylesheet';
+    f.href = 'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap'; document.head.appendChild(f);
+  }
+
   /* ---------- BOOT ---------- */
+  startCleaner(); ensureStatusUI();
   setTimeout(function () {
-    addThemeButtons();
+    addThemeButtons(); refreshStamp(); syncChips();
     var p = getProfession(); if (p && currentGoogleUser) applyProfession(p, false);
   }, 400);
   window.addEventListener('load', function () {
