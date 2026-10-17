@@ -911,17 +911,9 @@
       outline: none;
     }
 
-    .canvas-editable:hover {
-      background-color: rgba(26, 115, 232, 0.08);
-      outline: 1.5px dashed #1a73e8;
-      outline-offset: 2px;
-    }
+    .canvas-editable:hover { outline: 1.5px dashed #2563eb; outline-offset: -2px; }
 
-    .canvas-editable:focus {
-      background-color: rgba(26, 115, 232, 0.14);
-      outline: 2px solid #1a73e8;
-      outline-offset: 2px;
-    }
+    .canvas-editable:focus { outline: 2px solid #2563eb; outline-offset: -2px; }
 
     .canvas-clickable {
       cursor: pointer;
@@ -929,11 +921,7 @@
       border-radius: 4px;
     }
 
-    .canvas-clickable:hover {
-      outline: 2px dashed #1a73e8;
-      outline-offset: 3px;
-      filter: brightness(1.05);
-    }
+    .canvas-clickable:hover { outline: 2px dashed #2563eb; outline-offset: -2px; }
 
     /* Top Header Grid: 55% Left / 45% Right */
     .invoice-header-grid {
@@ -1154,13 +1142,13 @@
     /* High contrast highlight & selection on Registration Pill */
     .registration-pill.canvas-editable:hover {
       outline: 2px dashed #ffd700 !important;
-      outline-offset: 3px !important;
+      outline-offset: -3px !important;
       box-shadow: 0 0 12px rgba(255, 215, 0, 0.45) !important;
     }
 
     .registration-pill.canvas-editable:focus {
       outline: 2.5px solid #ffd700 !important;
-      outline-offset: 3px !important;
+      outline-offset: -3px !important;
       box-shadow: 0 0 16px rgba(255, 215, 0, 0.65) !important;
     }
 
@@ -3647,6 +3635,76 @@ body.isx-locked{overflow:hidden}
 .isx-stamp.k-paid .isx-stamp-tx b{font-size:46px!important}
 .isx-stamp.k-paid .isx-stamp-ic{width:66px!important;height:66px!important}
 .isx-stamp.k-paid .isx-stamp-ic svg{width:40px!important;height:40px!important}
+
+/* ===== v4: type, theme icons, themed client/sign-off, quick tab ===== */
+:root{--g-font:'Plus Jakarta Sans','Inter',system-ui,-apple-system,'Segoe UI',sans-serif}
+body{letter-spacing:0!important;font-feature-settings:normal!important}
+.input-app,.btn-app-secondary,.btn-google-primary,.field-label{letter-spacing:0!important}
+.input-app{font-size:13px!important}
+.field-label{font-size:11.5px!important}
+/* highlight never clipped, never recolours cells */
+.canvas-editable:hover,.canvas-clickable:hover{background-color:transparent!important;outline:1.5px dashed rgba(37,99,235,.85)!important;outline-offset:-2px!important;box-shadow:none!important;filter:none!important}
+.canvas-editable:focus{background-color:transparent!important;outline:2px solid #2563eb!important;outline-offset:-2px!important;box-shadow:none!important}
+.registration-pill.canvas-editable:hover,.registration-pill.canvas-editable:focus{outline-offset:-3px!important;box-shadow:none!important}
+.a4-page ::selection{background:#2563eb!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+.a4-page *{-webkit-text-fill-color:currentColor}
+/* theme variables for every theme */
+.tpl-onyx{--tp:#0f172a;--ts:#f8f4e6;--tk:#0f172a}.tpl-swiss{--tp:#000;--ts:#f4f4f4;--tk:#000}.tpl-cobalt{--tp:#1d4ed8;--ts:#eff6ff;--tk:#0f172a}
+.tpl-vogue{--tp:#3b2a1e;--ts:#f6efe4;--tk:#2a1d14}.tpl-mint{--tp:#059669;--ts:#ecfdf5;--tk:#064e3b}.tpl-corporate{--tp:#1e3a8a;--ts:#f1f5f9;--tk:#0f172a}
+.tpl-plain{--tp:#000;--ts:#fff;--tk:#000}
+:is(.tpl-onyx,.tpl-swiss,.tpl-cobalt,.tpl-vogue,.tpl-mint,.tpl-corporate,.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter,.tpl-plain) .bill-to-section{border-left:3px solid var(--tp)!important;padding-left:12px!important}
+:is(.tpl-onyx,.tpl-swiss,.tpl-cobalt,.tpl-vogue,.tpl-mint,.tpl-corporate,.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter,.tpl-plain) :is(.bill-to-label,.kind-attention-label,.registration-label){color:var(--tp)!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:uppercase!important}
+:is(.tpl-onyx,.tpl-swiss,.tpl-cobalt,.tpl-vogue,.tpl-mint,.tpl-corporate,.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter,.tpl-plain) :is(.bill-to-name,.kind-attention-name){color:var(--tk)!important;font-weight:700!important}
+:is(.tpl-onyx,.tpl-swiss,.tpl-cobalt,.tpl-vogue,.tpl-mint,.tpl-corporate,.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter,.tpl-plain) .registration-pill{background:var(--ts)!important;color:var(--tk)!important;border:1px solid var(--tp)!important;border-radius:2px!important}
+:is(.tpl-onyx,.tpl-swiss,.tpl-cobalt,.tpl-vogue,.tpl-mint,.tpl-corporate,.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter,.tpl-plain) .signoff-block{border-top:1.5px solid var(--tp)!important;padding-top:12px!important}
+:is(.tpl-onyx,.tpl-swiss,.tpl-cobalt,.tpl-vogue,.tpl-mint,.tpl-corporate,.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter,.tpl-plain) .signoff-creator-name{color:var(--tp)!important;font-weight:700!important}
+:is(.tpl-onyx,.tpl-swiss,.tpl-cobalt,.tpl-vogue,.tpl-mint,.tpl-corporate,.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter,.tpl-plain) #areaSignoffStamp{border-bottom:1.5px solid var(--tp)!important}
+/* theme icons: tiny invoice previews */
+.tpl-btn{padding:10px 4px 8px!important;display:flex!important;flex-direction:column;align-items:center;gap:7px}
+.tpl-btn .tpl-icon{width:34px!important;height:44px!important;border-radius:4px!important;margin:0!important;border:1px solid rgba(255,255,255,.16)!important;box-shadow:0 4px 10px -4px rgba(0,0,0,.6)!important;
+ background:linear-gradient(var(--ac),var(--ac)) 0 0/100% 8px no-repeat,linear-gradient(var(--a2),var(--a2)) 5px 12px/13px 2.5px no-repeat,linear-gradient(var(--ik),var(--ik)) 5px 17px/9px 1.5px no-repeat,
+ linear-gradient(var(--ac),var(--ac)) 4px 23px/26px 5px no-repeat,linear-gradient(var(--ik),var(--ik)) 4px 31px/26px 1px no-repeat,linear-gradient(var(--ik),var(--ik)) 4px 35px/18px 1px no-repeat,
+ linear-gradient(var(--a2),var(--a2)) 19px 39px/11px 2.5px no-repeat,var(--pa)!important}
+.tpl-btn[data-tpl=onyx]{--pa:#fff;--ac:#0f172a;--ik:#94a3b8;--a2:#c9a24b}
+.tpl-btn[data-tpl=swiss]{--pa:#fff;--ac:#000;--ik:#9ca3af;--a2:#000}
+.tpl-btn[data-tpl=cobalt]{--pa:#fff;--ac:#1d4ed8;--ik:#94a3b8;--a2:#22d3ee}
+.tpl-btn[data-tpl=vogue]{--pa:#fbf6ee;--ac:#3b2a1e;--ik:#a8977f;--a2:#b9a58a}
+.tpl-btn[data-tpl=mint]{--pa:#fff;--ac:#059669;--ik:#9ca3af;--a2:#34d399}
+.tpl-btn[data-tpl=corporate]{--pa:#fff;--ac:#1e3a8a;--ik:#94a3b8;--a2:#64748b}
+.tpl-btn[data-tpl=coral]{--pa:#fff;--ac:#e8590c;--ik:#a8a29e;--a2:#fdba74}
+.tpl-btn[data-tpl=blueprint]{--pa:#eaf3fc;--ac:#0b4f8a;--ik:#6b8fb3;--a2:#0b4f8a}
+.tpl-btn[data-tpl=chambers]{--pa:#f7f1ea;--ac:#7a1f2b;--ik:#9a8f84;--a2:#7a1f2b}
+.tpl-btn[data-tpl=violet]{--pa:#fff;--ac:#6d28d9;--ik:#a1a1aa;--a2:#a78bfa}
+.tpl-btn[data-tpl=typewriter]{--pa:#f4f1e8;--ac:#111;--ik:#78716c;--a2:#111}
+.tpl-btn[data-tpl=plain]{--pa:#fff;--ac:#d4d4d8;--ik:#111;--a2:#111}
+/* quick edit */
+.isx-q .panel-card-header{padding-bottom:12px}
+.isx-q-sec{padding:16px 0;border-top:1px solid var(--g-border)}
+.isx-q-sec:first-of-type{border-top:0}
+.isx-q-h{font:600 11px var(--g-font);color:var(--g-text-tertiary);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px}
+.isx-q-h span{text-transform:none;letter-spacing:0;color:#52525b;margin-left:6px;font-weight:500}
+.isx-q-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.isx-full{grid-column:1/-1}
+.isx-q-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:6px}
+.isx-chip{display:inline-flex;align-items:center;gap:6px;background:#17171a;border:1px solid var(--g-border);border-radius:999px;padding:4px 6px 4px 11px;font-size:12px;color:#fafafa}
+.isx-chip button{background:none;border:0;color:var(--g-text-tertiary);cursor:pointer;font-size:15px;line-height:1;padding:0 4px}
+.isx-chip button:hover{color:#f87171}
+.isx-q-add{display:flex;gap:8px}.isx-q-add .input-app{flex:1}
+.isx-late-box{margin-top:14px;padding-top:14px;border-top:1px dashed var(--g-border)}
+.isx-late-box[hidden]{display:none}
+.isx-other{margin-top:4px;padding-top:14px;border-top:1px solid var(--g-border)}
+.isx-other-row{display:flex;gap:8px;margin-top:6px}.isx-other-row .input-app{flex:1}
+/* late fee on invoice */
+.isx-late-row{display:grid;grid-template-columns:1fr auto;gap:6px 18px;margin:10px 0 4px;padding:10px 14px;border:1.5px solid var(--tp,#000);background:var(--ts,#fff);color:var(--tk,#000);font-size:11.5px;align-items:center}
+.isx-late-row small{display:block;font-size:9.5px;opacity:.7;margin-top:1px}
+.isx-late-row b{text-align:right;font-size:13px}
+.isx-late-total{font-weight:700}
+.isx-late-row>:nth-child(n+3){padding-top:7px;border-top:1px solid var(--tp,#000)}
+.tab-icons-rail{gap:4px!important}
+.isx-stamp{top:240px!important;left:34px!important;transform:rotate(-8deg) scale(.8)!important;transform-origin:left top}
+.isx-stamp.k-paid{transform:rotate(-8deg) scale(.86)!important}
+.template-picker-grid{grid-template-columns:repeat(6,1fr)!important;gap:6px!important}
+.tpl-btn{font-size:9.5px!important;padding:8px 2px 6px!important;min-width:0}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -11707,7 +11765,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     list = list.filter(function (p) { return p && p.id !== 'profile_guest' && (p.id !== 'profile_tsg' || own); });
     list.forEach(function (p) {
       if (!own && (p.bankAccountNo === '50100012345678' || p.panNo === 'ABCDE1234F' || p.bankUpi === 'yourname@upi')) { p.bankAccountNo = ''; p.panNo = ''; p.bankUpi = ''; p.bankIfsc = ''; p.bankName = ''; }
-      if (p.id === 'profile_tsg') { p.isLocked = false; p.pinCode = ''; }
+      p.isLocked = false; p.pinCode = '';
     });
     if (own && !list.some(function (p) { return p.id === 'profile_tsg'; })) {
       var seed = DEFAULT_PROFILES.filter(function (p) { return p.id === 'profile_tsg'; })[0];
@@ -11954,7 +12012,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
       if (!sched) { sched = true; requestAnimationFrame(function () { sched = false; var l = q.splice(0); l.forEach(cleanNode); }); }
     }).observe(document.body, { childList: true, subtree: true, characterData: true });
     var f = document.createElement('link'); f.rel = 'stylesheet';
-    f.href = 'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap'; document.head.appendChild(f);
+    f.href = 'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap'; document.head.appendChild(f);
   }
 
   /* ---------- BUG FIX: page-2 roles row no longer exists in the markup, which broke restore/open-PDF and service chips ---------- */
@@ -12176,11 +12234,201 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   window.addEventListener('online', function () { toast('Back online.', 'success', 2000); });
   window.addEventListener('offline', function () { toast('You are offline. Drafts are still saved on this device.', 'warning'); });
 
+  /* ---------- MORE PROFESSIONS ---------- */
+  function addProf(k, n, tpl, pay, svc, chips, sp) { P[k] = { n: n, i: '', tpl: tpl, pay: pay, svc: svc, chips: chips, sp: sp }; }
+  addProf('architect', 'Architect / Interior Designer', 'chambers', '30% Advance, 40% on Drawings, 30% on Completion',
+    ['Concept Design', 'Working Drawings', '3D Visualisation', 'Site Supervision', 'Interior Styling'],
+    ['Fees are staged by project phase', 'Statutory approvals excluded', 'Drawings remain Provider property until paid', 'Site visits beyond agreed number are billed', 'Client approves each stage in writing'],
+    [['STAGES & APPROVALS', 'Work proceeds in stages. Each stage needs written approval before the next begins. Changes after approval are billed separately.'], ['DRAWINGS & LIABILITY', 'Drawings are for the stated project only. Execution on site is the contractor\'s responsibility unless supervision is listed.']]);
+  addProf('tutor', 'Teacher / Tutor / Coach', 'mint', 'Monthly in advance',
+    ['One-to-one Sessions', 'Group Classes', 'Course Material', 'Assessment & Feedback', 'Workshops'],
+    ['Fees are payable monthly in advance', 'Missed sessions with under 12 hours notice are charged', 'Fees are non-refundable once a month begins', 'Materials are for personal use only', 'No guaranteed exam results'],
+    [['SESSIONS & RESCHEDULING', 'Sessions missed or cancelled with less than 12 hours notice are charged in full. Rescheduling is subject to availability.'], ['RESULTS', 'Progress depends on the learner\'s effort. No particular result or grade is guaranteed.']]);
+  addProf('events', 'Event / Wedding Planner', 'vogue', '50% Advance, 40% Before Event, 10% After Event',
+    ['Event Planning', 'Vendor Coordination', 'Décor & Styling', 'On-day Management', 'Guest Management'],
+    ['Advance is non-refundable', 'Vendor costs are billed at actuals', 'Date changes are subject to availability', 'Final headcount due 7 days before the event', 'Force majeure rescheduling at no extra planning fee'],
+    [['BOOKING & CANCELLATION', 'The date is confirmed on receipt of the advance, which is non-refundable. Cancellation within 30 days of the event is charged in full.'], ['VENDORS & HEADCOUNT', 'Third-party vendor charges are passed through at actuals. The final headcount must be confirmed 7 days before the event.']]);
+  addProf('fitness', 'Fitness / Wellness Trainer', 'coral', 'Monthly in advance',
+    ['Personal Training', 'Diet Plan', 'Group Sessions', 'Online Coaching', 'Assessment'],
+    ['Fees are payable in advance', 'Sessions lapse at the end of the validity period', 'Client confirms fitness to exercise', 'Cancellation under 6 hours is charged', 'Results are not guaranteed'],
+    [['HEALTH DECLARATION', 'The Client confirms they are fit to exercise and will disclose any medical condition. Training is undertaken at the Client\'s own risk.'], ['VALIDITY', 'Packages must be used within the validity period and are non-transferable. Late cancellations are charged.']]);
+  addProf('translator', 'Translator / Language Services', 'typewriter', '50% Advance, 50% on Delivery',
+    ['Translation', 'Proofreading', 'Transcription', 'Interpretation', 'Localisation'],
+    ['Charged per word as quoted', 'Rush delivery carries a surcharge', 'Source text must be final', 'Certified copies billed separately', 'Confidential material is not shared'],
+    [['SOURCE MATERIAL', 'The quote is based on the final source text supplied. Changes to the source after work begins are billed separately.'], ['CONFIDENTIALITY', 'All material is treated as confidential and used only for the engagement.']]);
+  addProf('creator', 'Content Creator / Influencer', 'violet', '50% Advance, 50% on Posting',
+    ['Sponsored Video', 'Reels / Shorts', 'Social Posts', 'Brand Ambassadorship', 'Live Coverage'],
+    ['Usage rights limited to agreed platforms and period', 'Brand approves the script before shooting', 'Paid usage and whitelisting are charged extra', 'Exclusivity is charged separately', 'Content stays live for the agreed period'],
+    [['USAGE RIGHTS', 'The brand may use the content on the agreed platforms for the agreed period. Paid promotion, whitelisting or extended use is charged separately.'], ['APPROVALS & DISCLOSURE', 'The brand approves the script and cut before posting. Sponsored content will be disclosed as required by law.']]);
+  addProf('realestate', 'Real Estate / Broker', 'corporate', 'Brokerage on Deal Closure',
+    ['Property Sourcing', 'Site Visits', 'Negotiation', 'Documentation Support', 'Property Management'],
+    ['Brokerage is payable on deal closure', 'Brokerage is earned once the introduced party transacts', 'Legal verification is the client\'s responsibility', 'Taxes extra as applicable'],
+    [['BROKERAGE', 'Brokerage is earned when a transaction is concluded with a party introduced by the Service Provider, within the agreed period.'], ['DUE DILIGENCE', 'The Client is responsible for title verification and legal checks. The Service Provider does not guarantee title or valuation.']]);
+  addProf('trades', 'Contractor / Technician', 'swiss', '50% Advance, 50% on Completion',
+    ['Installation', 'Repair & Maintenance', 'Site Work', 'Materials Supply', 'Annual Service Contract'],
+    ['Materials billed at actuals', 'Warranty covers workmanship only', 'Client provides site access and power', 'Work outside scope is quoted separately', 'Delays due to site conditions are not chargeable to the Provider'],
+    [['WORKMANSHIP WARRANTY', 'Workmanship is warranted for the stated period. Damage from misuse, third-party work or normal wear is excluded.'], ['SITE & ACCESS', 'The Client provides safe access, power and water. Delays caused by site conditions may extend the schedule.']]);
+  addProf('health', 'Doctor / Therapist / Clinic', 'plain', 'Payable at time of service',
+    ['Consultation', 'Therapy Session', 'Diagnostics', 'Follow-up', 'Procedure'],
+    ['Fees are due at the time of service', 'Missed appointments are charged', 'Insurance claims are the patient\'s responsibility', 'Records are confidential'],
+    [['FEES & INSURANCE', 'Fees are payable at the time of service. Insurance claims and reimbursements are the patient\'s responsibility.'], ['APPOINTMENTS', 'Appointments missed without 24 hours notice may be charged. Clinical outcomes are not guaranteed.']]);
+  function customProf(text) {
+    var o = JSON.parse(JSON.stringify(P.other)); o.n = text; o.custom = true; return o;
+  }
+  var _applyProf = applyProfession;
+  applyProfession = function (key, full) {
+    if (key && key.indexOf('custom:') === 0) { P[key] = customProf(key.slice(7)); }
+    return _applyProf(key, full);
+  };
+  var _showProf = window.showProfessionModal;
+  window.showProfessionModal = function (done) {
+    var m = $('isxProf'); if (m) { m.remove(); }
+    _showProf(done);
+    m = $('isxProf'); var grid = m.querySelector('.isx-grid');
+    if (!m.querySelector('.isx-other')) {
+      var o = document.createElement('div'); o.className = 'isx-other';
+      o.innerHTML = '<label class="field-label">Not listed? Tell us what you do</label><div class="isx-other-row"><input type="text" id="isxOtherInp" class="input-app" maxlength="40"><button type="button" class="btn-google-primary" id="isxOtherGo">Continue</button></div>';
+      grid.insertAdjacentElement('afterend', o);
+      var go = function () {
+        var v = $('isxOtherInp').value.trim(); if (!v) { $('isxOtherInp').focus(); toast('Type your profession first.', 'warning'); return; }
+        var k = 'custom:' + v;
+        try { if (currentGoogleUser && prefsOk()) { localStorage.setItem('isx_prof_' + currentGoogleUser.uid, k); cloudSet({ profession: k }); } } catch (e) {}
+        m.classList.remove('on'); applyProfession(k, true); finish();
+      };
+      $('isxOtherGo').onclick = go; $('isxOtherInp').onkeydown = function (e) { if (e.key === 'Enter') go(); };
+    }
+  };
+
+  /* ---------- LATE FEE ---------- */
+  function lateInfo() {
+    var mode = ($('isxLateMode') || {}).value || 'none', val = parseFloat(($('isxLateVal') || {}).value) || 0;
+    if (curStatus() !== 'overdue' || mode === 'none' || val <= 0) return null;
+    var num = function (id) { var e = $(id); return (e && parseFloat(e.value)) || 0; };
+    var bal = Math.max(0, num('inpTotalNumeric') - num('inpAdvanceNumeric'));
+    var due = $('inpDueDate') ? $('inpDueDate').value.trim() : '', d = /\d/.test(due) ? parseDateFlexible(due) : null;
+    var days = parseInt(($('isxLateDays') || {}).value, 10) || (d && !isNaN(d) ? Math.max(0, Math.floor((Date.now() - d.getTime()) / 864e5)) : 0);
+    var fee = 0, desc = '';
+    if (mode === 'flat') { fee = val; desc = 'Flat charge'; }
+    else if (mode === 'month') { fee = bal * val / 100 * Math.max(days, 30) / 30; desc = val + '% per month' + (days ? ', ' + days + ' days late' : ''); }
+    else { fee = bal * val / 100 * Math.max(days, 1); desc = val + '% per day, ' + Math.max(days, 1) + ' day' + (days > 1 ? 's' : ''); }
+    fee = Math.round(fee);
+    return { fee: fee, bal: bal, days: days, desc: desc, payable: bal + fee };
+  }
+  function renderLate() {
+    var host = $('isxLate'); if (host) host.hidden = curStatus() !== 'overdue';
+    var row = $('isxLateRow'), L = lateInfo(), tbl = document.querySelector('#invoiceSheetPage1 .items-table');
+    if (!L || !tbl) { if (row) row.remove(); return; }
+    if (!row) { row = document.createElement('div'); row.id = 'isxLateRow'; tbl.insertAdjacentElement('afterend', row); }
+    row.className = 'isx-late-row';
+    row.innerHTML = '<div><span>Late payment fee</span><small>' + escapeHtml(L.desc) + '</small></div><b>' + money(L.fee) + '</b>' +
+      '<div class="isx-late-total"><span>Amount payable now</span><small>Outstanding balance + late fee</small></div><b>' + money(L.payable) + '</b>';
+  }
+  var _stampNote = stampNote;
+  stampNote = function (k, cfg) {
+    if (k === 'overdue') { var L = lateInfo(); if (L) return (L.days ? L.days + ' day' + (L.days > 1 ? 's' : '') + ' overdue · ' : 'Overdue · ') + 'Late fee ' + money(L.fee); }
+    return _stampNote(k, cfg);
+  };
+
+  /* ---------- QUICK EDIT TAB ---------- */
+  var QF = [['Client name', 'inpClientName'], ['Work / project title', 'inpProjectName'], ['Invoice date', 'inpInvoiceDate'], ['Due date', 'inpDueDate'],
+    ['Total amount', 'inpTotalNumeric', 'number'], ['Advance received', 'inpAdvanceNumeric', 'number']];
+  function buildQuick() {
+    if ($('tabQuick')) return;
+    var first = $('tabProfile'); if (!first) return;
+    var pane = document.createElement('div'); pane.className = 'tab-pane-content'; pane.id = 'tabQuick';
+    pane.innerHTML = '<div class="panel-card isx-q"><div class="panel-card-header"><div class="panel-card-title">Quick edit</div></div>' +
+      '<div class="isx-q-sec" id="isxQStatus"><div class="isx-q-h">Status</div></div>' +
+      '<div class="isx-q-sec"><div class="isx-q-h">Client and work</div><div class="isx-q-grid">' +
+      QF.slice(0, 4).map(function (f, i) { return '<div class="form-field-group' + (i < 2 ? ' isx-full' : '') + '"><label class="field-label">' + f[0] + '</label><input class="input-app" data-real="' + f[1] + '" type="text"></div>'; }).join('') +
+      '<div class="form-field-group isx-full"><label class="field-label">Work description</label><textarea class="input-app" data-real="inpDesc1" rows="3"></textarea></div></div>' +
+      '<div class="isx-q-h" style="margin-top:14px">Services</div><div id="isxQSvc" class="isx-q-chips"></div><div class="isx-q-add"><input type="text" id="isxQSvcIn" class="input-app" aria-label="Add service"><button type="button" class="btn-app-secondary" id="isxQSvcGo">Add</button></div></div>' +
+      '<div class="isx-q-sec"><div class="isx-q-h">Amounts</div><div class="isx-q-grid">' +
+      QF.slice(4).map(function (f) { return '<div class="form-field-group"><label class="field-label">' + f[0] + '</label><input class="input-app" data-real="' + f[1] + '" type="number" min="0"></div>'; }).join('') + '</div></div></div>';
+    first.parentNode.insertBefore(pane, first);
+    var rail = document.querySelector('.tab-icons-rail');
+    if (rail && !rail.querySelector('[data-tab="tabQuick"]')) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'tab-icon-btn'; b.setAttribute('data-tab', 'tabQuick'); b.title = 'Quick edit';
+      b.innerHTML = '<span><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span class="tab-tooltip">Quick edit</span>';
+      b.onclick = function () { switchTab('tabQuick'); syncQuick(); };
+      rail.insertBefore(b, rail.firstChild);
+    }
+    var st = $('isxQStatus'), seg = $('isxSeg');
+    if (seg && seg.parentNode) st.appendChild(seg.parentNode);
+    pane.querySelectorAll('[data-real]').forEach(function (inp) {
+      inp.addEventListener('input', function () { var r = $(inp.getAttribute('data-real')); if (r) { r.value = inp.value; fire(r); } });
+    });
+    var add = function () { var v = $('isxQSvcIn').value.trim(); if (v) { addServiceTag(v); $('isxQSvcIn').value = ''; renderQSvc(); } };
+    $('isxQSvcGo').onclick = add; $('isxQSvcIn').onkeydown = function (e) { if (e.key === 'Enter') add(); };
+    $('isxQSvc').addEventListener('click', function (e) { var t = e.target.closest('[data-rm]'); if (t) { removeServiceTag(t.getAttribute('data-rm')); renderQSvc(); } });
+    switchTab('tabQuick'); syncQuick();
+  }
+  function syncQuick() {
+    document.querySelectorAll('#tabQuick [data-real]').forEach(function (inp) {
+      var r = $(inp.getAttribute('data-real'));
+      if (r && document.activeElement !== inp && inp.value !== r.value) inp.value = r.value;
+    });
+    renderQSvc();
+  }
+  function renderQSvc() {
+    var h = $('isxQSvc'); if (!h) return;
+    h.innerHTML = (selectedServices || []).map(function (s) { return '<span class="isx-chip">' + escapeHtml(s) + '<button type="button" data-rm="' + escapeHtml(s) + '" aria-label="Remove">&times;</button></span>'; }).join('');
+  }
+  document.addEventListener('input', function (e) { if (e.target.closest && !e.target.closest('#tabQuick')) syncQuick(); });
+  var _up2 = updatePreview;
+  window.updatePreview = updatePreview = function () { var r = _up2.apply(this, arguments); try { renderLate(); syncQuick(); } catch (e) {} return r; };
+  var _rs = refreshStamp;
+  refreshStamp = function () { _rs(); renderLate(); };
+  var _cap3 = captureCurrentInvoiceState;
+  window.captureCurrentInvoiceState = captureCurrentInvoiceState = function () {
+    var s = _cap3.apply(this, arguments);
+    try { s.lateMode = $('isxLateMode').value; s.lateVal = $('isxLateVal').value; s.lateDays = $('isxLateDays').value; } catch (e) {}
+    return s;
+  };
+  var _res3 = restoreInvoiceState;
+  window.restoreInvoiceState = restoreInvoiceState = function (s) {
+    var r = _res3.apply(this, arguments);
+    try { $('isxLateMode').value = (s && s.lateMode) || 'none'; $('isxLateVal').value = (s && s.lateVal) || ''; $('isxLateDays').value = (s && s.lateDays) || ''; refreshStamp(); syncQuick(); } catch (e) {}
+    return r;
+  };
+  function buildLateUI() {
+    var host = $('isxSeg') && $('isxSeg').parentNode; if (!host || $('isxLate')) return;
+    var d = document.createElement('div'); d.id = 'isxLate'; d.hidden = true; d.className = 'isx-late-box';
+    d.innerHTML = '<div class="isx-q-h">Late payment fee <span>optional</span></div><div class="isx-q-grid">' +
+      '<div class="form-field-group"><label class="field-label">Fee type</label><select id="isxLateMode" class="input-app"><option value="none">No late fee</option><option value="flat">Flat amount</option><option value="month">% of balance per month</option><option value="day">% of balance per day</option></select></div>' +
+      '<div class="form-field-group"><label class="field-label">Amount or %</label><input type="number" min="0" step="0.1" id="isxLateVal" class="input-app"></div>' +
+      '<div class="form-field-group isx-full"><label class="field-label">Days late (auto from due date, override if needed)</label><input type="number" min="0" id="isxLateDays" class="input-app"></div></div>';
+    host.appendChild(d);
+    ['isxLateMode', 'isxLateVal', 'isxLateDays'].forEach(function (id) { $(id).addEventListener('input', function () { refreshStamp(); }); $(id).addEventListener('change', function () { refreshStamp(); }); });
+  }
+
+  /* ---------- CLEAN-UP: no PIN, no placeholder text, no helper noise ---------- */
+  var NOISE = ['Stores up to 3 recent', 'Guest Profile: Operates', 'Add an optional 4-digit', 'Saved per profile', 'Appears directly below', 'Automatically switches to', 'Adds a dedicated Mobile', 'Default is None', 'Dynamic Agreement Bindings'];
+  function declutter() {
+    var pin = $('wrapPinSet'), card = pin && pin.closest('.panel-card'); if (card) card.style.display = 'none';
+    ['bannerProfileLocked', 'modalPinUnlock'].forEach(function (id) { var e = $(id); if (e) e.style.display = 'none'; });
+    document.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(function (e) { if (e.type !== 'password') e.removeAttribute('placeholder'); });
+    document.querySelectorAll('.field-helper').forEach(function (e) { e.style.display = 'none'; });
+    document.querySelectorAll('.app-sidebar div, .app-sidebar span').forEach(function (e) {
+      if (e.children.length > 3 || e.querySelector('input,button,select,textarea')) return;
+      var t = (e.textContent || '').trim(); if (t.length > 400) return;
+      for (var i = 0; i < NOISE.length; i++) if (t.indexOf(NOISE[i]) === 0) { e.style.display = 'none'; break; }
+    });
+    document.querySelectorAll('.page-index-pill').forEach(function (p) {
+      Array.prototype.slice.call(p.childNodes).forEach(function (n) { if (n.nodeType === 3) n.remove(); });
+    });
+  }
+  function stripLocks() {
+    try {
+      var k = getProfilesStorageKey(), l = JSON.parse(localStorage.getItem(k) || 'null');
+      if (Array.isArray(l)) { l.forEach(function (p) { p.isLocked = false; p.pinCode = ''; }); localStorage.setItem(k, JSON.stringify(l)); }
+    } catch (e) {}
+  }
+
   /* ---------- BOOT ---------- */
-  rebuildAuthUI(); tidy(); startCleaner(); ensureStatusUI();
+  rebuildAuthUI(); tidy(); startCleaner(); ensureStatusUI(); buildLateUI(); buildQuick(); stripLocks(); declutter();
   var cc = getConsent(); if (!cc || cc.v !== CONSENT_V) showLegal(true);
   setTimeout(function () {
-    addThemeButtons(); refreshStamp(); syncChips();
+    addThemeButtons(); refreshStamp(); syncChips(); declutter();
     var p = getProfession(); if (p && currentGoogleUser) applyProfession(p, false);
   }, 400);
   window.addEventListener('load', function () {
