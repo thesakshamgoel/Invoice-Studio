@@ -11247,10 +11247,10 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   }
 
   /* ---------- GOOGLE AUTH VIA FIREBASE ---------- */
-  var FIREBASE_CONFIG = { apiKey: '', authDomain: 'project-886914060511.firebaseapp.com', projectId: 'project-886914060511' };
+  var FIREBASE_CONFIG = { apiKey: 'AIzaSyAO-5ED1PIIm4SEEg3x_TYlzjsfpgI_ZqA', authDomain: 'invoice-studio-5a6c1.firebaseapp.com', projectId: 'invoice-studio-5a6c1', appId: '1:886914060511:web:d6fff19b871199069e196a' };
   function fbConfig() {
     var c = {}; try { c = JSON.parse(localStorage.getItem('isx_fb_config') || '{}'); } catch (e) {}
-    return { apiKey: c.apiKey || FIREBASE_CONFIG.apiKey, authDomain: c.authDomain || FIREBASE_CONFIG.authDomain, projectId: c.projectId || FIREBASE_CONFIG.projectId };
+    return { apiKey: c.apiKey || FIREBASE_CONFIG.apiKey, authDomain: c.authDomain || FIREBASE_CONFIG.authDomain, projectId: c.projectId || FIREBASE_CONFIG.projectId, appId: FIREBASE_CONFIG.appId };
   }
   function banner(msg, bad) {
     var b = $('authStatusBanner'); if (!b) return;
