@@ -3859,6 +3859,14 @@ body.isx-enter .app-topbar,body.isx-enter .app-workspace{animation:isxApp .8s cu
 /* smoother entrance, no bounce */
 @keyframes isxApp{0%{transform:scale(1.1);opacity:0;filter:blur(8px)}60%{opacity:1;filter:blur(0)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
 body.isx-enter .app-topbar,body.isx-enter .app-workspace{animation:isxApp 1.05s cubic-bezier(.16,1,.3,1) .22s both!important}
+/* v7: feathered star edge, one clean easing, transform/opacity only */
+:root{--isx-star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3Cfilter id='b' x='-30%25' y='-30%25' width='160%25' height='160%25'%3E%3CfeGaussianBlur stdDeviation='3.4'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23b)' transform='translate(50 50)'%3E%3Cpath d='M50 0C53 30 70 47 100 50C70 53 53 70 50 100C47 70 30 53 0 50C30 47 47 30 50 0Z'/%3E%3C/g%3E%3C/svg%3E")}
+#isxSplash.out{-webkit-mask-size:100% 100%,calc(var(--s) * 2) calc(var(--s) * 2)!important;mask-size:100% 100%,calc(var(--s) * 2) calc(var(--s) * 2)!important;
+ animation:isxStar 1.9s cubic-bezier(.62,.02,.18,1) forwards!important}
+#isxSplash.out .isx-zw{animation:isxZoomW 1.9s cubic-bezier(.62,.02,.18,1) forwards!important}
+@keyframes isxZoomW{0%{transform:scale(1);opacity:1}55%{opacity:.9}100%{transform:scale(240);opacity:0}}
+@keyframes isxApp{0%{transform:scale(1.045);opacity:0}100%{transform:scale(1);opacity:1}}
+body.isx-enter .app-topbar,body.isx-enter .app-workspace{animation:isxApp 1.5s cubic-bezier(.22,.61,.12,1) .3s both!important;filter:none!important;will-change:transform,opacity}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13094,8 +13102,8 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
       }
       setTimeout(function () {
         s.classList.add('out'); document.body.classList.add('isx-enter');
-        setTimeout(function () { document.body.classList.remove('isx-enter'); }, 1500);
-        setTimeout(function () { if (s.parentNode) s.remove(); }, 1900);
+        setTimeout(function () { document.body.classList.remove('isx-enter'); }, 2000);
+        setTimeout(function () { if (s.parentNode) s.remove(); }, 2300);
       }, wait);
     });
   }
