@@ -3555,6 +3555,98 @@ body{font-family:var(--g-font);font-feature-settings:'cv11','ss01','tnum';-webki
 .active-profile-pill{display:none!important}
 #toastContainer{left:50%!important;right:auto!important;transform:translateX(-50%);width:max-content;max-width:92vw;align-items:center}
 #toastContainer>*{width:auto!important;max-width:min(460px,92vw);padding:10px 16px!important}
+
+/* toasts */
+#toastContainer{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:24px!important;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;align-items:center;z-index:300000;pointer-events:none;width:max-content;max-width:94vw}
+.isx-toast{pointer-events:auto;display:flex;align-items:flex-start;gap:10px;background:#18181b;color:#fafafa;border:1px solid #2e2e34;border-radius:12px;padding:11px 16px 11px 12px;font:500 13px/1.4 var(--g-font);box-shadow:0 18px 50px -10px rgba(0,0,0,.7);max-width:min(480px,94vw);animation:isxIn .22s ease both}
+.isx-toast.out{opacity:0;transform:translateY(6px);transition:all .25s}
+.isx-toast-ic{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;margin-top:1px}
+.isx-toast-ic svg{width:12px;height:12px}
+.isx-t-success .isx-toast-ic{background:#16a34a;color:#fff}.isx-t-error .isx-toast-ic{background:#dc2626;color:#fff}
+.isx-t-warning .isx-toast-ic{background:#d97706;color:#fff}.isx-t-info .isx-toast-ic{background:#3f3f46;color:#fff}
+.isx-t-error{border-color:#7f1d1d}.isx-t-success{border-color:#14532d}
+@keyframes isxIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* consent gate */
+body.isx-locked{overflow:hidden}
+#isxGate{background:rgba(5,5,6,.92);backdrop-filter:blur(10px)}
+.isx-gate{width:720px!important;padding:0!important;display:flex;flex-direction:column;max-height:92vh}
+.isx-gate-head{padding:26px 28px 14px}
+.isx-gate-head p{margin:8px 0 0;font-size:13px;color:var(--g-text-secondary)}
+.isx-brand{font-family:var(--isx-serif);font-size:15px;color:var(--g-text-tertiary);margin-bottom:6px;letter-spacing:.02em}
+.isx-gate h2,.isx-auth h2{font-family:var(--isx-serif);font-weight:400;font-size:34px;margin:0;letter-spacing:-.01em;color:#fafafa}
+.isx-legal{flex:1;min-height:180px;overflow:auto;margin:0 28px;padding:16px 18px;border:1px solid var(--g-border);border-radius:12px;background:#0b0b0d;font-size:12.5px;line-height:1.6;color:var(--g-text-secondary);user-select:text}
+.isx-legal h3{font-family:var(--isx-serif);font-weight:400;font-size:22px;color:#fafafa;margin:4px 0 8px}
+.isx-legal h4{font-size:12.5px;color:#fafafa;margin:14px 0 4px}
+.isx-legal p,.isx-legal ul{margin:0 0 8px}.isx-legal ul{padding-left:18px}.isx-legal b{color:#e4e4e7}
+.isx-gate-foot{padding:16px 28px 24px}
+.isx-check{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;color:var(--g-text-secondary);cursor:pointer}
+.isx-check input{margin-top:3px;width:16px;height:16px;accent-color:#fafafa;flex:none}
+.isx-gate-btns{display:flex;justify-content:flex-end;gap:10px;margin-top:14px;flex-wrap:wrap}
+.isx-gate-btns button{padding:10px 18px!important;font-size:13px!important}
+.isx-gate-btns button:disabled{opacity:.4;cursor:not-allowed}
+.isx-gate-err{margin-top:10px;font-size:12px;color:#f87171}
+#isxGate.review{background:rgba(5,5,6,.7)}
+/* sign-in dialog */
+.isx-x{position:absolute;top:12px;right:14px;background:none;border:0;color:var(--g-text-tertiary);font-size:24px;cursor:pointer;line-height:1}
+.isx-x:hover{color:#fafafa}
+#modalFirebaseConfig .app-modal-dialog{position:relative;padding:34px 32px 28px!important}
+.isx-auth p{font-size:13px;line-height:1.55;color:var(--g-text-secondary);margin:10px 0 18px}
+.isx-gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fafafa;color:#09090b;border:0;border-radius:10px;padding:12px 16px;font:600 14px var(--g-font);cursor:pointer;transition:background .15s}
+.isx-gbtn:hover{background:#e4e4e7}.isx-gbtn:disabled{opacity:.6;cursor:progress}
+.isx-fine{font-size:11.5px!important;color:var(--g-text-tertiary)!important;margin:14px 0 0!important}
+.isx-fine a{color:#d4d4d8;text-decoration:underline}
+.isx-banner{border:1px solid;border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.45;margin:0 0 14px!important}
+/* account */
+.isx-avatar-btn{align-items:center;justify-content:center;width:34px;height:34px;padding:0;border-radius:50%;cursor:pointer;border:1px solid var(--g-border);background:transparent;overflow:hidden;transition:border-color .15s}
+.isx-avatar-btn:hover{border-color:#a1a1aa}
+.isx-avatar-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.isx-pop-user{display:flex;gap:12px;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--g-border)}
+.isx-pop-user img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+#popoverUserName{font-size:13px;font-weight:600;color:#fafafa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+#popoverUserEmail{font-size:11.5px;color:var(--g-text-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+#isxPopExtra{margin:10px 0 0}
+.isx-pop-actions{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.isx-pop-actions .btn-app-secondary{justify-content:center;padding:8px!important}
+.isx-danger{color:#f87171!important}
+/* local file chip */
+.isx-local{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--g-border);background:transparent;color:var(--g-text-secondary);border-radius:999px;padding:5px 12px;font:500 11.5px var(--g-font);cursor:pointer;max-width:260px;height:34px}
+.isx-local b{color:#fafafa;font-weight:600}.isx-local em{font-style:normal;color:#fafafa}
+.isx-local-n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px}
+.isx-local[hidden]{display:none}
+.isx-dot{width:7px;height:7px;border-radius:50%;background:#71717a}
+.isx-d-paid{background:#22c55e}.isx-d-partial{background:#f59e0b}.isx-d-overdue{background:#ef4444}.isx-d-due{background:#fb923c}.isx-d-refunded{background:#8b5cf6}
+/* QR block */
+.qr-container-cell{width:138px!important;padding:12px!important;text-align:center;vertical-align:middle!important;background:#fff!important}
+.qr-box-inner{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:0!important;height:auto!important}
+.qr-image-display{width:104px!important;height:104px!important;object-fit:contain;display:block;margin:0 auto;padding:6px;background:#fff;border:1px solid rgba(0,0,0,.18);border-radius:6px}
+.qr-label-strip{font-size:8.5px!important;font-weight:700;letter-spacing:.16em;text-align:center;width:100%;padding:0!important;background:none!important;color:inherit!important}
+/* bank / payment details follow every theme */
+.tpl-onyx .bank-label-cell{background:#0f172a!important;color:#f5d98b!important}.tpl-onyx .bank-qr-grid td{border-color:#0f172a!important}
+.tpl-swiss .bank-label-cell{background:#111!important;color:#fff!important}.tpl-swiss .bank-qr-grid td{border-color:#111!important}
+.tpl-cobalt .bank-label-cell{background:#1d4ed8!important;color:#fff!important}.tpl-cobalt .bank-qr-grid td{border-color:#1d4ed8!important}
+.tpl-vogue .bank-label-cell{background:#efe4d3!important;color:#3b2a1e!important;font-family:Georgia,serif}.tpl-vogue .bank-qr-grid td{border-color:#b9a58a!important}
+.tpl-mint .bank-label-cell{background:#059669!important;color:#fff!important}.tpl-mint .bank-qr-grid td{border-color:#059669!important}
+.tpl-corporate .bank-label-cell{background:#1e3a8a!important;color:#fff!important}.tpl-corporate .bank-qr-grid td{border-color:#1e3a8a!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .bank-label-cell{background:var(--tp)!important;color:#fff!important;font-family:var(--tf)!important}
+:is(.tpl-coral,.tpl-blueprint,.tpl-chambers,.tpl-violet,.tpl-typewriter) .bank-qr-grid td{border-color:var(--tp)!important;font-family:var(--tf)!important}
+.tpl-plain .bank-qr-grid td,.tpl-plain .bank-label-cell{background:#fff!important;color:#000!important;border-color:#000!important}
+/* proportions */
+.app-topbar{gap:10px;padding-inline:14px!important}
+.topbar-right{gap:8px!important;flex-shrink:0}
+.topbar-center{min-width:0;flex:1;justify-content:center}
+.page-nav-pill-group{max-width:100%;overflow:hidden}
+.topbar-right .btn-app-secondary,.topbar-right .btn-google-primary{padding:7px 12px!important;height:34px;white-space:nowrap}
+.zoom-control-bar{height:34px;padding:0 6px!important}
+.app-sidebar{width:420px!important}
+@media(max-width:700px){.isx-gate-head{padding:20px 18px 10px}.isx-legal{margin:0 18px}.isx-gate-foot{padding:14px 18px 18px}.isx-gate h2{font-size:28px}}
+.global-profile-bar{display:none!important}
+#btnTopAddPage,#btnTopRemovePage{height:30px!important;padding:0 11px!important;white-space:nowrap;border-radius:8px!important}
+.topbar-center>div{gap:8px!important}
+.isx-avatar-btn{display:inline-flex}
+.isx-stamp{top:214px!important;left:30px!important;right:auto!important}
+.isx-stamp.k-paid .isx-stamp-tx b{font-size:46px!important}
+.isx-stamp.k-paid .isx-stamp-ic{width:66px!important;height:66px!important}
+.isx-stamp.k-paid .isx-stamp-ic svg{width:40px!important;height:40px!important}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -11349,7 +11441,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     var st = $('a4Stage');
     if (st) ALL_TPL.forEach(function (c) { st.classList.remove('tpl-' + c); });
     var r = origSetTpl(k);
-    try { localStorage.removeItem('selected_invoice_template_v2'); if (INVOICE_TEMPLATES[k]) { localStorage.setItem(tplKey(), k); cloudSet({ template: k }); } } catch (e) {}
+    try { localStorage.removeItem('selected_invoice_template_v2'); if (INVOICE_TEMPLATES[k] && prefsOk()) { localStorage.setItem(tplKey(), k); cloudSet({ template: k }); } } catch (e) {}
     return r;
   };
   function addThemeButtons() {
@@ -11452,8 +11544,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     var pop = $('popoverGoogleAccount'); if (!pop) return;
     var x = $('isxPopExtra');
     if (!x) { x = document.createElement('div'); x.id = 'isxPopExtra'; x.style.cssText = 'margin:8px 0;display:flex;flex-direction:column;gap:6px'; pop.insertBefore(x, pop.lastElementChild); }
-    x.innerHTML = (isOwner ? '<div style="font-size:11px;font-weight:700;color:#fbbc04">👑 Owner · TSG Studio</div>' : '') +
-      '<button type="button" class="btn-app-secondary" style="justify-content:center;font-size:11px;padding:6px" onclick="showProfessionModal()">🎯 Change profession / industry</button>';
+    x.innerHTML = isOwner ? '<div style="font-size:11px;font-weight:600;color:#e5b567;text-align:center">Owner workspace</div>' : '';
   }
 
   /* ---------- LOGIN-GATED PDF SAVE ---------- */
@@ -11581,7 +11672,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
       m.querySelectorAll('.isx-card').forEach(function (c) {
         c.onclick = function () {
           var k = c.getAttribute('data-k');
-          try { if (uid()) { localStorage.setItem('isx_prof_' + uid(), k); cloudSet({ profession: k }); } } catch (e) {}
+          try { if (uid() && prefsOk()) { localStorage.setItem('isx_prof_' + uid(), k); cloudSet({ profession: k }); } } catch (e) {}
           m.classList.remove('on'); applyProfession(k, true); finish();
         };
       });
@@ -11755,14 +11846,14 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   var ST = {
     pending: null,
     paid: { l: 'PAID', c: '#15803d', s: 'Payment received, thank you', i: '<path d="M5 12.5l4.5 4.5L19 7.5"/>' },
-    partial: { l: 'PARTIALLY PAID', c: '#b45309', s: 'Balance outstanding', i: '<path d="M12 4.5a7.5 7.5 0 1 0 0 15z" fill="currentColor"/>' },
+    partial: { l: 'ADVANCE PAID', c: '#b45309', s: 'Balance outstanding', i: '<path d="M12 4.5a7.5 7.5 0 1 0 0 15z" fill="currentColor"/>' },
     overdue: { l: 'OVERDUE', c: '#b91c1c', s: 'Payment is past its due date', i: '<path d="M12 6v7.5M12 17.4v.4"/>' },
     due: { l: 'PAYMENT DUE', c: '#c2410c', s: 'Please remit by the due date', i: '<path d="M12 7v5.2l3.4 2"/>' },
     draft: { l: 'DRAFT', c: '#52525b', s: 'Not a final invoice', i: '<path d="M7 17l.8-3.6L16 5.2a1.6 1.6 0 0 1 2.3 2.3L10.1 15.7z"/>' },
     void: { l: 'VOID', c: '#3f3f46', s: 'This invoice is cancelled', i: '<path d="M7 7l10 10M17 7L7 17"/>' },
     refunded: { l: 'REFUNDED', c: '#6d28d9', s: 'Amount returned to client', i: '<path d="M9.5 8L5.5 12l4 4M5.5 12H14a4.5 4.5 0 0 1 0 9"/>' }
   };
-  var ST_LABEL = { pending: 'Unpaid', paid: 'Paid', partial: 'Partial', overdue: 'Overdue', due: 'Due', draft: 'Draft', void: 'Void', refunded: 'Refunded' };
+  var ST_LABEL = { pending: 'Unpaid', paid: 'Paid', partial: 'Advance paid', overdue: 'Overdue', due: 'Due', draft: 'Draft', void: 'Void', refunded: 'Refunded' };
   function curStatus() {
     var chk = $('chkPaidWatermark'), sel = $('inpPaymentStatus');
     if (chk && chk.checked) return 'paid';
@@ -11788,6 +11879,19 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     $('isxStampNote').addEventListener('input', refreshStamp);
     sel.addEventListener('change', refreshStamp);
   }
+  function money(n) { try { return formatCurrency(Math.max(0, n)); } catch (e) { return String(n); } }
+  function stampNote(k, cfg) {
+    var num = function (id) { var e = $(id); return (e && parseFloat(e.value)) || 0; };
+    var total = num('inpTotalNumeric'), adv = num('inpAdvanceNumeric'), bal = Math.max(0, total - adv), due = $('inpDueDate') ? $('inpDueDate').value.trim() : '';
+    if (k === 'paid') return total ? 'Paid in full · ' + money(total) : cfg.s;
+    if (k === 'partial') return adv ? 'Advance ' + money(adv) + ' received · Balance ' + money(bal) : cfg.s;
+    if (k === 'overdue') {
+      var d = /\d/.test(due) ? parseDateFlexible(due) : null, days = d && !isNaN(d) ? Math.floor((Date.now() - d.getTime()) / 864e5) : 0;
+      return (days > 0 ? days + ' day' + (days > 1 ? 's' : '') + ' overdue' : cfg.s) + (bal ? ' · ' + money(bal) + ' due' : '');
+    }
+    if (k === 'due') return (bal ? money(bal) + ' due ' : 'Due ') + (due || 'on receipt');
+    return cfg.s;
+  }
   function refreshStamp() {
     var k = curStatus(), cfg = ST[k], page = $('invoiceSheetPage1'), el = $('isxStamp');
     document.querySelectorAll('#isxSeg button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-st') === k); });
@@ -11798,13 +11902,14 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     var note = ($('isxStampNote') || {}).value || '';
     el.className = 'isx-stamp k-' + k;
     el.style.setProperty('--sc', cfg.c);
+    var dyn = stampNote(k, cfg);
     el.innerHTML = '<div class="isx-stamp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + cfg.i + '</svg></div>' +
-      '<div class="isx-stamp-tx"><b>' + cfg.l + '</b><small>' + escapeHtml(note.trim() || cfg.s) + '</small></div>';
+      '<div class="isx-stamp-tx"><b>' + cfg.l + '</b><small>' + escapeHtml(note.trim() || dyn) + '</small></div>';
   }
   var origUP = updatePreview;
   window.updatePreview = updatePreview = function () { var r = origUP.apply(this, arguments); try { refreshStamp(); } catch (e) {} return r; };
   var origCap = captureCurrentInvoiceState;
-  window.captureCurrentInvoiceState = captureCurrentInvoiceState = function () { var s = origCap.apply(this, arguments); try { s.stampNote = ($('isxStampNote') || {}).value || ''; } catch (e) {} return s; };
+  window.captureCurrentInvoiceState = captureCurrentInvoiceState = function () { var s = origCap.apply(this, arguments); try { s.stampNote = ($('isxStampNote') || {}).value || ''; s.isxLocal = true; s.exportedAt = new Date().toISOString(); s.statusKey = curStatus(); } catch (e) {} return s; };
   var origRes = restoreInvoiceState;
   window.restoreInvoiceState = restoreInvoiceState = function (s) {
     var r = origRes.apply(this, arguments);
@@ -11852,8 +11957,228 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     f.href = 'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap'; document.head.appendChild(f);
   }
 
+  /* ---------- BUG FIX: page-2 roles row no longer exists in the markup, which broke restore/open-PDF and service chips ---------- */
+  var origRoles = updatePage2RolesBadges;
+  window.updatePage2RolesBadges = updatePage2RolesBadges = function () { if ($('previewRolesBadgesRow')) return origRoles(); };
+
+  /* ---------- NOTIFICATIONS ---------- */
+  var TOAST_ICO = {
+    success: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', error: '<path d="M7 7l10 10M17 7L7 17"/>',
+    warning: '<path d="M12 7v6M12 17v.4"/>', info: '<path d="M12 11v6M12 7.5v.4"/>'
+  };
+  function toastType(msg, t) {
+    if (t === 'success' || t === 'error' || t === 'warning' || t === 'info') return t;
+    if (/^\s*(✅|🎉|🔓|🔒)/u.test(msg)) return 'success';
+    if (/could not|couldn't|failed|error|unable/i.test(msg) && /^\s*⚠/u.test(msg)) return 'error';
+    if (/^\s*⚠/u.test(msg)) return 'warning';
+    return 'info';
+  }
+  window.showToast = showToast = function (message, type, duration) {
+    if (typeof type === 'number') { duration = type; type = undefined; }
+    var raw = String(message || ''), t = toastType(raw, type);
+    var host = $('toastContainer'); if (!host) return;
+    var clean = raw.replace(EMO, '').replace(/^\s+/, '');
+    var el = document.createElement('div');
+    el.className = 'isx-toast isx-t-' + t; el.setAttribute('role', t === 'error' ? 'alert' : 'status');
+    el.innerHTML = '<span class="isx-toast-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' + TOAST_ICO[t] + '</svg></span><span class="isx-toast-tx"></span>';
+    el.querySelector('.isx-toast-tx').textContent = clean;
+    host.appendChild(el);
+    var ms = duration || (t === 'error' ? 6000 : 3600);
+    setTimeout(function () { el.classList.add('out'); setTimeout(function () { el.remove(); }, 260); }, ms);
+  };
+
+  /* ---------- CONSENT GATE: terms + cookies before first use ---------- */
+  var CONSENT_V = 1;
+  var LEGAL_HTML =
+    '<h3>Terms of Use</h3><p><i>Last updated: October 2026. Please read carefully.</i></p>' +
+    '<h4>1. What Invoice Studio is</h4><p>Invoice Studio ("the Software") is a free tool that helps you draft invoices and related documents in your browser. It is provided by its owner ("the Owner"), together with any contributors, collaborators, team members and affiliates (together, "the Team"). The Software is a drafting aid only.</p>' +
+    '<h4>2. You are the author of everything you create</h4><p>All invoices, terms, clauses, amounts, tax figures, names, logos, bank details and other content ("Your Content") are created, entered, edited and issued solely by you. The Owner and the Team do not review, verify, approve, endorse or control Your Content, are not a party to any transaction or agreement between you and any other person, and accept no responsibility for it.</p>' +
+    '<h4>3. No professional advice</h4><p>Templates, themes, suggested services, payment schedules and suggested terms or clauses are generic starting points only. They are not legal, tax, accounting, financial or compliance advice and may not suit your circumstances or jurisdiction. You are responsible for checking Your Content, including GST/VAT/TDS and e-invoicing requirements, with a qualified professional before relying on it.</p>' +
+    '<h4>4. Acceptable use</h4><p>You agree not to use the Software to create false, misleading, fraudulent, defamatory, infringing or unlawful documents, to impersonate any person or business, or to evade tax or legal obligations. You must have the right to use any logo, image or text you add.</p>' +
+    '<h4>5. Provided "as is"; no warranty</h4><p>The Software is provided "as is" and "as available", without warranties of any kind, express or implied, including accuracy, fitness for a particular purpose, availability, security or non-infringement. Calculations, number-to-words conversion, date handling and layout may contain errors. Always review every document before sending or signing it.</p>' +
+    '<h4>6. Limitation of liability</h4><p>To the maximum extent permitted by law, the Owner and the Team will not be liable for any direct, indirect, incidental, special, consequential or punitive loss or damage, including lost profits, lost revenue, lost data, tax penalties, disputes with clients, non-payment, or reputational harm, arising from or related to your use of the Software or any document created with it, even if advised of the possibility. Where liability cannot be excluded, it is limited to the amount you paid for the Software, which is zero.</p>' +
+    '<h4>7. Indemnity</h4><p>You agree to defend and hold harmless the Owner and the Team from any claim, loss, liability or expense (including reasonable legal fees) arising from Your Content, your use of the Software, or your breach of these terms.</p>' +
+    '<h4>8. Your data, storage and exported PDFs</h4><p>Your drafts, profiles, themes and settings are stored in your browser (local storage). If you sign in with Google, your profile settings are also stored in your private account space with Google Firebase so they follow you across devices. PDFs are generated on your device. <b>Exported PDFs contain an embedded, re-editable copy of the invoice data (which can include bank, tax and contact details). Anyone who has the PDF file can extract it.</b> Share PDFs only with people you trust. You are responsible for backing up your data; clearing your browser data can erase local drafts.</p>' +
+    '<h4>9. Accounts</h4><p>Sign-in is provided through Google. You are responsible for your account security. The Owner may suspend or remove access to prevent misuse.</p>' +
+    '<h4>10. Intellectual property</h4><p>The Software, its design and code belong to the Owner or its licensors. You keep ownership of Your Content. You grant the Software the limited permission needed to process and store Your Content to provide its features.</p>' +
+    '<h4>11. Changes and termination</h4><p>The Software and these terms may change at any time; continued use after a change means you accept it. Features may be modified or discontinued without notice.</p>' +
+    '<h4>12. Governing law</h4><p>These terms are governed by the laws of India. Courts at Mumbai, Maharashtra have exclusive jurisdiction, subject to any mandatory consumer rights that cannot be waived.</p>' +
+    '<h3>Privacy &amp; Cookie Policy</h3>' +
+    '<p>The Software does not use advertising or third-party tracking cookies. It uses your browser storage (cookies and local storage) for:</p>' +
+    '<ul><li><b>Essential</b> (always on): keeping you signed in, saving your drafts and profiles, remembering this consent, offline app cache.</li>' +
+    '<li><b>Preferences</b> (optional): remembering your chosen theme and profession so the app is tailored each visit.</li></ul>' +
+    '<p>Sign-in and optional cloud sync are handled by Google Firebase, which may set its own technical cookies and process your Google name, email and photo under Google\'s privacy policy. We use these only to identify your account and show your photo. You can clear stored data at any time from your browser settings, and withdraw consent by clearing site data.</p>';
+  function getConsent() { try { return JSON.parse(localStorage.getItem('isx_consent') || 'null'); } catch (e) { return null; } }
+  function prefsOk() { var c = getConsent(); return !c || c.prefs !== false; }
+  function showLegal(gate) {
+    var m = $('isxGate');
+    if (!m) {
+      m = document.createElement('div'); m.id = 'isxGate'; m.className = 'isx-overlay'; m.style.zIndex = 200000;
+      m.innerHTML = '<div class="isx-box isx-gate"><div class="isx-gate-head"><div class="isx-brand">Invoice Studio</div><h2 id="isxGateTitle">Before you start</h2>' +
+        '<p id="isxGateSub">Please review how the software works and how your data is handled. You must accept to continue.</p></div>' +
+        '<div class="isx-legal" tabindex="0">' + LEGAL_HTML + '</div>' +
+        '<div class="isx-gate-foot"><label class="isx-check"><input type="checkbox" id="isxAgree"><span>I have read and agree to the Terms of Use and the Privacy &amp; Cookie Policy. I understand I alone am responsible for the documents I create.</span></label>' +
+        '<div class="isx-gate-btns"><button type="button" class="btn-app-secondary" id="isxEssential" disabled>Essential only</button><button type="button" class="btn-google-primary" id="isxAcceptAll" disabled>Accept all &amp; continue</button></div>' +
+        '<div id="isxGateErr" class="isx-gate-err" hidden>Please tick the box to confirm you agree before continuing.</div></div></div>';
+      document.body.appendChild(m);
+      var agree = $('isxAgree'), a = $('isxAcceptAll'), e = $('isxEssential');
+      agree.onchange = function () { a.disabled = e.disabled = !agree.checked; $('isxGateErr').hidden = true; };
+      var go = function (prefs) {
+        if (!agree.checked) { $('isxGateErr').hidden = false; return; }
+        try { localStorage.setItem('isx_consent', JSON.stringify({ v: CONSENT_V, ts: new Date().toISOString(), prefs: prefs })); } catch (x) {}
+        m.classList.remove('on'); document.body.classList.remove('isx-locked');
+        toast(prefs ? 'Preferences saved. Welcome to Invoice Studio.' : 'Only essential storage will be used.', 'success');
+      };
+      a.onclick = function () { go(true); }; e.onclick = function () { go(false); };
+    }
+    var c = getConsent();
+    if (gate) { m.classList.remove('review'); document.body.classList.add('isx-locked'); }
+    else { m.classList.add('review'); }
+    var agree2 = $('isxAgree'); if (agree2) { agree2.checked = !gate && !!c; agree2.onchange(); }
+    $('isxGateTitle').textContent = gate ? 'Before you start' : 'Terms & privacy';
+    m.classList.add('on');
+  }
+  window.showLegal = function () { showLegal(false); };
+  var legalClose = function (e) { var m = $('isxGate'); if (m && m.classList.contains('review') && (e.target === m || e.key === 'Escape')) m.classList.remove('on'); };
+  document.addEventListener('click', legalClose); document.addEventListener('keydown', legalClose);
+
+  /* ---------- SIGN-IN DIALOG + ACCOUNT MENU ---------- */
+  var G_SVG = '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>';
+  function rebuildAuthUI() {
+    var dlg = document.querySelector('#modalFirebaseConfig .app-modal-dialog');
+    if (dlg) {
+      dlg.style.width = '400px';
+      dlg.innerHTML = '<button type="button" class="isx-x" onclick="closeFirebaseConfigModal()" aria-label="Close">&times;</button>' +
+        '<div class="isx-auth"><div class="isx-brand">Invoice Studio</div><h2>Sign in</h2>' +
+        '<p>Save your invoices as PDF, keep your profile and themes private to your Google account, and pick up where you left off on any device.</p>' +
+        '<div id="authStatusBanner" class="isx-banner" style="display:none"></div>' +
+        '<button type="button" id="btnGenuineGoogleOAuth" class="isx-gbtn" onclick="triggerOfficialGoogleSignIn()">' + G_SVG + '<span>Continue with Google</span></button>' +
+        '<p class="isx-fine">By continuing you agree to the <a href="#" onclick="showLegal();return false">Terms of Use and Privacy Policy</a>.</p></div>';
+    }
+    var pop = $('popoverGoogleAccount');
+    if (pop) {
+      pop.style.cssText = 'display:none;position:absolute;top:calc(100% + 10px);right:0;width:272px;padding:14px;z-index:99999';
+      pop.innerHTML = '<div class="isx-pop-user"><img id="popoverAvatarImg" alt=""><div><div id="popoverUserName"></div><div id="popoverUserEmail"></div></div></div>' +
+        '<div id="isxPopExtra"></div><div class="isx-pop-actions"><button type="button" class="btn-app-secondary" onclick="showProfessionModal()">Change profession</button>' +
+        '<button type="button" class="btn-app-secondary" onclick="showLegal()">Terms &amp; privacy</button>' +
+        '<button type="button" class="btn-app-secondary isx-danger" onclick="handleGoogleSignOut()">Sign out</button></div>';
+    }
+    var wrap = $('googleUserProfileBadge'); if (wrap) { wrap.removeAttribute('style'); wrap.className = 'isx-avatar-btn'; wrap.style.display = 'none'; wrap.title = 'Account'; wrap.innerHTML = '<img id="googleUserAvatarImg" alt="Account">'; }
+    var btn = $('btnGoogleAuthTop'); if (btn) { var sp = btn.querySelector('span'); if (sp) sp.textContent = 'Sign in'; }
+  }
+  function initialAvatar(u) {
+    var ch = ((u && (u.displayName || u.email)) || '?').trim().charAt(0).toUpperCase();
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="#27272a"/><text x="32" y="43" font-family="Arial" font-size="30" fill="#fafafa" text-anchor="middle">' + ch + '</text></svg>');
+  }
+  var origApplyUI = applyGoogleUserUI;
+  window.applyGoogleUserUI = applyGoogleUserUI = function (u) {
+    origApplyUI(u);
+    if (u && u.uid) {
+      ['googleUserAvatarImg', 'popoverAvatarImg'].forEach(function (id) {
+        var im = $(id); if (!im) return; im.referrerPolicy = 'no-referrer';
+        im.onerror = function () { im.onerror = null; im.src = initialAvatar(u); };
+        im.src = u.photoURL || initialAvatar(u);
+      });
+    }
+  };
+  (function () {
+    var oc = window.triggerOfficialGoogleSignIn;
+    window.triggerOfficialGoogleSignIn = function () {
+      var b = $('btnGenuineGoogleOAuth'), sp = b && b.querySelector('span');
+      if (!navigator.onLine) { banner('You appear to be offline. Connect to the internet to sign in.', true); return; }
+      if (b) { b.disabled = true; if (sp) sp.textContent = 'Opening Google…'; }
+      var reset = function () { if (b) { b.disabled = false; if (sp) sp.textContent = 'Continue with Google'; } };
+      var prov;
+      if (!fbConfig().apiKey || window.initGoogleIdentityServices() === false) { reset(); return oc(); }
+      prov = new firebase.auth.GoogleAuthProvider(); prov.setCustomParameters({ prompt: 'select_account' });
+      firebase.auth().signInWithPopup(prov).then(function () { reset(); }).catch(function (e) {
+        reset();
+        var m = {
+          'auth/popup-closed-by-user': ['Sign-in was cancelled. Click Continue with Google to try again.', false],
+          'auth/cancelled-popup-request': ['Sign-in was cancelled. Click Continue with Google to try again.', false],
+          'auth/popup-blocked': ['Your browser blocked the Google window. Allow pop-ups for this site and try again.', true],
+          'auth/network-request-failed': ['Network problem while contacting Google. Check your connection and try again.', true],
+          'auth/unauthorized-domain': ['This website address is not authorised for sign-in yet. Please contact the site owner.', true],
+          'auth/operation-not-allowed': ['Google sign-in is not enabled for this app yet. Please contact the site owner.', true],
+          'auth/too-many-requests': ['Too many attempts. Please wait a minute and try again.', true]
+        }[e.code] || ['Sign-in failed (' + (e.code || 'unknown error') + '). Please try again.', true];
+        banner(m[0], m[1]);
+      });
+    };
+  })();
+  (function () {
+    var ov = window.handleVerifiedGoogleUser;
+    window.handleVerifiedGoogleUser = function (u) {
+      ov(u); banner('');
+      toast('Signed in as ' + (u.displayName || u.email) + (isOwner() ? ' · owner workspace unlocked' : ''), 'success');
+    };
+    var os = window.handleGoogleSignOut;
+    window.handleGoogleSignOut = window.signOutGoogleUser = function () { os(); toast('You have been signed out.', 'info'); };
+  })();
+
+  /* ---------- OPEN / RE-EDIT LOCAL PDF ---------- */
+  window.triggerOpenSavedPdf = triggerOpenSavedPdf = function () {
+    var i = document.createElement('input'); i.type = 'file'; i.accept = '.pdf,application/pdf,.json,application/json'; i.style.display = 'none';
+    i.onchange = function () { var f = i.files && i.files[0]; i.remove(); if (f) handlePdfFileInput(f); };
+    document.body.appendChild(i); i.click();
+  };
+  function setLocal(name, key) {
+    var c = $('isxLocal');
+    if (!c) {
+      c = document.createElement('button'); c.id = 'isxLocal'; c.type = 'button'; c.className = 'isx-local';
+      c.title = 'This document was opened from a file on your device. Click to change its status.';
+      c.onclick = function () { switchTab('tabItems'); };
+      var r = document.querySelector('.topbar-right'); if (r) r.insertBefore(c, r.firstChild);
+    }
+    c.dataset.name = name || c.dataset.name || 'Untitled'; c.hidden = false; updateLocalChip(key);
+  }
+  function updateLocalChip(key) {
+    var c = $('isxLocal'); if (!c || c.hidden) return;
+    var k = key || curStatus();
+    c.innerHTML = '<span class="isx-dot isx-d-' + k + '"></span><b>Local</b><span class="isx-local-n">' + escapeHtml(c.dataset.name) + '</span><em>' + (ST_LABEL[k] || '') + '</em>';
+  }
+  window.handlePdfFileInput = handlePdfFileInput = function (file) {
+    if (!file) return;
+    var n = (file.name || '').toLowerCase();
+    if (!/\.(pdf|json)$/.test(n) && file.type !== 'application/pdf' && file.type !== 'application/json') { toast('That file type is not supported. Choose a PDF exported from Invoice Studio.', 'error'); return; }
+    var rd = new FileReader();
+    rd.onerror = function () { toast('The file could not be read. Check that it is not open elsewhere and try again.', 'error'); };
+    rd.onload = function (ev) {
+      try {
+        var text = new TextDecoder('iso-8859-1').decode(new Uint8Array(ev.target.result)), payload = null, m;
+        if (n.slice(-5) === '.json' || /^\s*\{/.test(text)) { try { payload = JSON.parse(text); } catch (e) {} }
+        if (!payload && (m = /%INVOICE_STUDIO_PAYLOAD_START%([A-Za-z0-9+\/=\s]+?)%INVOICE_STUDIO_PAYLOAD_END%/.exec(text))) payload = decodePayloadBase64(m[1]);
+        if (!payload && (m = /INVOICE_STUDIO_PAYLOAD:([A-Za-z0-9+\/=]+)/.exec(text))) payload = decodePayloadBase64(m[1]);
+        if (!payload || typeof payload !== 'object') { toast('This PDF has no editable data. Only PDFs exported from Invoice Studio can be re-opened (printing or re-saving with another app removes it).', 'error', 7000); return; }
+        restoreInvoiceState(payload);
+        try { closeInvoiceHistoryModal(); } catch (e) {}
+        setLocal(file.name, payload.statusKey);
+        refreshStamp(); updateLocalChip();
+        toast('Opened local file "' + file.name + '". Update its status under Items, then save a new PDF.', 'success', 5500);
+      } catch (err) {
+        console.error(err); window.__impErr = (err && err.stack) || String(err); toast('The file looks damaged and could not be opened.', 'error');
+      }
+    };
+    rd.readAsArrayBuffer(file);
+  };
+  var _rf = refreshStamp;
+  refreshStamp = function () { _rf(); updateLocalChip(); };
+
+  /* ---------- LAYOUT FIXES ---------- */
+  function tidy() {
+    var sel = $('inpPaymentStatus');
+    if (sel) {
+      var g = sel.closest('.form-field-group'); if (g) g.style.display = 'none';
+      var row = g && g.parentElement; if (row && row.classList.contains('form-row-2col')) row.style.gridTemplateColumns = '1fr';
+    }
+    var c = $('isxGate');
+  }
+  window.addEventListener('online', function () { toast('Back online.', 'success', 2000); });
+  window.addEventListener('offline', function () { toast('You are offline. Drafts are still saved on this device.', 'warning'); });
+
   /* ---------- BOOT ---------- */
-  startCleaner(); ensureStatusUI();
+  rebuildAuthUI(); tidy(); startCleaner(); ensureStatusUI();
+  var cc = getConsent(); if (!cc || cc.v !== CONSENT_V) showLegal(true);
   setTimeout(function () {
     addThemeButtons(); refreshStamp(); syncChips();
     var p = getProfession(); if (p && currentGoogleUser) applyProfession(p, false);
