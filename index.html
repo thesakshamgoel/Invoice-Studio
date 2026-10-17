@@ -3421,7 +3421,22 @@
 .isx-card:hover{border-color:#4285f4;background:rgba(66,133,244,.15)}
 .isx-card span{display:block;font-size:24px;margin-bottom:4px}
 .isx-industry{background:rgba(66,133,244,.08);border:1px solid rgba(66,133,244,.3);border-radius:10px;padding:10px 12px;margin-bottom:12px}
-
+/* Plain: simplest look, black on white, hairlines only */
+.tpl-plain .a4-page{background:#fff!important;color:#000!important;font-family:Arial,Helvetica,sans-serif!important}
+.tpl-plain .a4-page *{text-shadow:none!important;box-shadow:none!important}
+.tpl-plain .invoice-header-grid{border:0!important;border-bottom:1px solid #000!important;padding:0 0 12px!important;margin-bottom:14px!important}
+.tpl-plain .invoice-big-title{color:#000!important;font-weight:700!important;letter-spacing:0!important;text-transform:uppercase!important}
+.tpl-plain .invoice-number-tag{background:none!important;color:#000!important;border:0!important;padding:0!important;font-weight:700!important}
+.tpl-plain .items-table{border:1px solid #000!important}
+.tpl-plain .items-table th{background:#fff!important;color:#000!important;border-bottom:1px solid #000!important;font-weight:700!important}
+.tpl-plain .items-table td{background:#fff!important;border-bottom:1px solid #ccc!important}
+.tpl-plain .total-summary-card{background:#fff!important;border:1px solid #000!important;border-radius:0!important}
+.tpl-plain .banking-header-title,.tpl-plain .terms-sec-title{color:#000!important;border-bottom:1px solid #000!important}
+.tpl-plain .invoice-number-tag *,.tpl-plain .bank-info-table td,.tpl-plain .bank-info-table th,.tpl-plain .roles-badges-table td{background:#fff!important;color:#000!important}
+.tpl-plain .bank-info-table,.tpl-plain .bank-info-table td,.tpl-plain .bank-info-table th{border-color:#000!important}
+#a4Stage.tpl-plain .a4-page .invoice-number-tag,#a4Stage.tpl-plain .a4-page .bank-info-table td,#a4Stage.tpl-plain .a4-page .bank-info-table th,#a4Stage.tpl-plain .a4-page .bank-label-cell{background:#fff!important;background-image:none!important;color:#000!important}
+#a4Stage.tpl-plain .a4-page .invoice-number-tag{border:0!important}
+#a4Stage.tpl-plain .a4-page *{transition:none!important}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -11205,7 +11220,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   var NEW_THEMES = [
     ['coral', 'Sunset Coral', '🍊', 'Coral'], ['blueprint', 'Blueprint', '📐', 'Blueprint'],
     ['chambers', 'Chambers Classic', '⚖️', 'Chambers'], ['violet', 'Ultraviolet', '🔮', 'Violet'],
-    ['typewriter', 'Typewriter Mono', '⌨️', 'Typewriter']
+    ['typewriter', 'Typewriter Mono', '⌨️', 'Typewriter'], ['plain', 'Plain', '📄', 'Plain']
   ];
   var ALL_TPL = ['onyx', 'swiss', 'cobalt', 'vogue', 'mint', 'corporate', 'pro', 'simple', 'advanced', 'terms-invoice', 'quicksheet']
     .concat(NEW_THEMES.map(function (t) { return t[0]; }));
