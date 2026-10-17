@@ -3643,8 +3643,8 @@ body{letter-spacing:0!important;font-feature-settings:normal!important}
 .input-app{font-size:13px!important}
 .field-label{font-size:11.5px!important}
 /* highlight never clipped, never recolours cells */
-.canvas-editable:hover,.canvas-clickable:hover{background-color:transparent!important;outline:1.5px dashed rgba(37,99,235,.85)!important;outline-offset:-2px!important;box-shadow:none!important;filter:none!important}
-.canvas-editable:focus{background-color:transparent!important;outline:2px solid #2563eb!important;outline-offset:-2px!important;box-shadow:none!important}
+.canvas-editable:hover,.canvas-clickable:hover{outline:1.5px dashed rgba(37,99,235,.85)!important;outline-offset:-2px!important;box-shadow:none!important;filter:none!important}
+.canvas-editable:focus{outline:2px solid #2563eb!important;outline-offset:-2px!important;box-shadow:none!important}
 .registration-pill.canvas-editable:hover,.registration-pill.canvas-editable:focus{outline-offset:-3px!important;box-shadow:none!important}
 .a4-page ::selection{background:#2563eb!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
 .a4-page *{-webkit-text-fill-color:currentColor}
@@ -3809,6 +3809,7 @@ body.isx-hist-open .canvas-pane,body.isx-hist-open .app-canvas{margin-right:0}
 .app-brand-title>span:first-child::after{content:'STUDIO';display:inline-block;margin-left:8px;padding:3px 6px 2px;border:1px solid rgba(127,147,176,.5);border-radius:5px;font-size:8.5px;font-weight:700;letter-spacing:.2em;line-height:1;-webkit-text-fill-color:#94a3b8;color:#94a3b8;vertical-align:3px;animation:none}
 @media (prefers-reduced-motion:reduce){.app-brand-title>span:first-child{animation:none}}
 @media (max-width:1100px){.app-brand-title>span:first-child::after{display:none}}
+.isx-hint-s{display:block;margin-top:5px;font-size:11px;color:var(--g-text-tertiary)}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -7611,7 +7612,7 @@ body.isx-hist-open .canvas-pane,body.isx-hist-open .app-canvas{margin-right:0}
       const wordsInp = document.getElementById('inpAmountInWords');
 
       // Advance follows the % in Payment Terms until the user types a custom advance
-      let advanceManual = false;
+      let advanceManual = true;
       const termsInp = document.getElementById('inpPaymentTerms');
       function advancePctFromTerms() {
         const t = (termsInp && termsInp.value) || '';
@@ -7636,7 +7637,7 @@ body.isx-hist-open .canvas-pane,body.isx-hist-open .app-canvas{margin-right:0}
 
       if (!totalInp.value) totalInp.value = 50000; // sensible sample instead of ₹00,000 placeholders
       totalInp.addEventListener('input', recalculateAmounts);
-      advanceInp.addEventListener('input', () => { advanceManual = advanceInp.value !== ''; recalculateAmounts(); updateDynamicTerms(); });
+      advanceInp.addEventListener('input', () => { advanceManual = true; recalculateAmounts(); updateDynamicTerms(); });
       if (termsInp) termsInp.addEventListener('input', recalculateAmounts);
       document.addEventListener('change', e => { if (e.target.tagName === 'SELECT') setTimeout(recalculateAmounts, 0); });
       balanceInp.addEventListener('input', updatePreview);
@@ -13049,11 +13050,70 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     });
   }
 
+  /* ---------- PAYMENT TERMS: few options, advance % is calculated for you ---------- */
+  var PT = [['auto', 'Advance and balance (automatic)'], ['full', 'Full advance payment'], ['completion', 'Full payment on completion'],
+    ['Due on Receipt', 'Due on receipt'], ['Net 15 Days', 'Net 15 days'], ['Net 30 Days', 'Net 30 days'], ['custom', 'Custom']];
+  function pnum(id) { var e = $(id); return (e && parseFloat(e.value)) || 0; }
+  function fmtPct(n) { var r = Math.round(n * 10) / 10; return r % 1 === 0 ? r.toFixed(0) : r.toFixed(1); }
+  function payText() {
+    var tot = pnum('inpTotalNumeric'), adv = pnum('inpAdvanceNumeric');
+    if (tot > 0 && adv > 0 && adv < tot) { var p = adv / tot * 100; return 'Advance ' + fmtPct(p) + '%, Balance ' + fmtPct(100 - p) + '% on Completion'; }
+    if (tot > 0 && adv >= tot) return 'Full advance payment (100%)';
+    return 'Full payment on completion';
+  }
+  function syncPay() {
+    var sel = $('selPaymentTermsPreset'), inp = $('inpPaymentTerms'); if (!sel || !inp) return;
+    var t = null;
+    if (sel.value === 'auto') t = payText(); else if (sel.value === 'full') t = 'Full advance payment (100%)'; else if (sel.value === 'completion') t = 'Full payment on completion';
+    if (t !== null && inp.value !== t) inp.value = t;
+  }
+  function payRows() {
+    var a2 = $('previewAmount2'), a3 = $('previewAmount3'); if (!a2 || !a3) return;
+    var r2 = a2.closest('tr'), r3 = a3.closest('tr'), adv = pnum('inpAdvanceNumeric'), tot = pnum('inpTotalNumeric'), on = adv > 0 && tot > 0;
+    if (r2) r2.style.display = on ? '' : 'none'; if (r3) r3.style.display = on ? '' : 'none';
+    if (on) {
+      var p = adv / tot * 100, d2 = r2 && r2.querySelector('.col-desc'), d3 = r3 && r3.querySelector('.col-desc');
+      if (d2 && /^Advance (Payable|received)/i.test(d2.textContent.trim())) d2.textContent = 'Advance received (' + fmtPct(p) + '%) at this stage.';
+      if (d3 && /^Balance (Payable|payable)/i.test(d3.textContent.trim())) d3.textContent = 'Balance payable (' + fmtPct(100 - p) + '%) upon completion of project.';
+    }
+    var n = $('isxAdvNote');
+    if (n) { var tot2 = tot; n.textContent = adv > 0 && tot2 > 0 ? fmtPct(adv / tot2 * 100) + '% of total · balance ' + money(Math.max(0, tot2 - adv)) : 'Leave empty if no advance is taken.'; }
+  }
+  function payUI() {
+    var sel = $('selPaymentTermsPreset'); if (!sel || sel.dataset.isx) return; sel.dataset.isx = '1';
+    var cur = sel.value; sel.innerHTML = PT.map(function (o) { return '<option value="' + o[0] + '">' + o[1] + '</option>'; }).join('');
+    var known = PT.some(function (o) { return o[0] === cur; }); sel.value = known ? cur : 'auto';
+    var inp = $('inpPaymentTerms'); if (inp) inp.addEventListener('input', function (e) { if (e.isTrusted) sel.value = 'custom'; });
+    var advInp = document.querySelector('#tabQuick [data-real="inpAdvanceNumeric"]');
+    if (advInp && !$('isxAdvNote')) {
+      var lab = advInp.parentNode.querySelector('.field-label'); if (lab) lab.textContent = 'Advance received (optional)';
+      var s = document.createElement('small'); s.id = 'isxAdvNote'; s.className = 'isx-hint-s'; advInp.parentNode.appendChild(s);
+    }
+    var advReal = $('inpAdvanceNumeric'); if (advReal) { var pg = advReal.closest('.form-field-group'), l2 = pg && pg.querySelector('.field-label'); if (l2) l2.textContent = 'Advance received (optional)'; }
+    syncPay();
+  }
+  document.addEventListener('change', function (e) {
+    if (!e.target || e.target.id !== 'selPaymentTermsPreset') return;
+    e.stopImmediatePropagation();
+    var sel = e.target, inp = $('inpPaymentTerms');
+    if (sel.value === 'custom') { if (inp) inp.focus(); }
+    else if (['auto', 'full', 'completion'].indexOf(sel.value) < 0 && inp) inp.value = sel.value;
+    syncPay(); updatePreview();
+  }, true);
+  var _up6 = updatePreview;
+  window.updatePreview = updatePreview = function () { try { syncPay(); } catch (e) {} var r = _up6.apply(this, arguments); try { payRows(); } catch (e) {} return r; };
+  var _res6 = restoreInvoiceState;
+  window.restoreInvoiceState = restoreInvoiceState = function (s) {
+    var r = _res6.apply(this, arguments);
+    try { var sel = $('selPaymentTermsPreset'); if (sel && (sel.selectedIndex < 0 || !sel.value)) sel.value = 'custom'; updatePreview(); } catch (e) {}
+    return r;
+  };
+
   /* ---------- BOOT ---------- */
-  rebuildAuthUI(); tidy(); startCleaner(); ensureStatusUI(); buildLateUI(); buildQuick(); stripLocks(); declutter(); buildUndoUI(); buildHist(); renderAssetNote(); buildTermsBar(); tinyText(); updateHistBadge(); logoUI(); hideSidebarHistory();
+  rebuildAuthUI(); tidy(); startCleaner(); ensureStatusUI(); buildLateUI(); buildQuick(); stripLocks(); declutter(); buildUndoUI(); buildHist(); renderAssetNote(); buildTermsBar(); tinyText(); updateHistBadge(); payUI(); logoUI(); hideSidebarHistory();
   var cc = getConsent(); if (!cc || cc.v !== CONSENT_V) showLegal(true);
   setTimeout(function () {
-    addThemeButtons(); refreshStamp(); syncChips(); declutter(); logoUI(); hideSidebarHistory(); addWatermarks(); hideSplash(); buildTermsBar(); tinyText(); renderAssetNote(); updateHistBadge(); pushU();
+    addThemeButtons(); refreshStamp(); syncChips(); declutter(); payUI(); updatePreview(); logoUI(); hideSidebarHistory(); addWatermarks(); hideSplash(); buildTermsBar(); tinyText(); renderAssetNote(); updateHistBadge(); pushU();
     var p = getProfession(); if (p && currentGoogleUser) applyProfession(p, false);
   }, 400);
   window.addEventListener('load', function () {
