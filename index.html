@@ -3842,6 +3842,23 @@ body.isx-hist-open .canvas-pane,body.isx-hist-open .app-canvas{margin-right:0}
 @keyframes isxApp{0%{transform:scale(1.16);opacity:0;filter:blur(8px)}45%{opacity:1;filter:blur(0)}62%{transform:scale(.988)}82%{transform:scale(1.005)}100%{transform:scale(1);opacity:1}}
 body.isx-enter .app-topbar,body.isx-enter .app-workspace{animation:isxApp .8s cubic-bezier(.22,.9,.3,1) .28s both;transform-origin:50% 40%;will-change:transform,opacity}
 @media (prefers-reduced-motion:reduce){body.isx-enter .app-topbar,body.isx-enter .app-workspace{animation:none}}
+/* star reveal: the tool appears through the logo's star as it grows past the screen */
+:root{--isx-star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0C53 30 70 47 100 50C70 53 53 70 50 100C47 70 30 53 0 50C30 47 47 30 50 0Z'/%3E%3C/svg%3E")}
+@property --s{syntax:'<length>';inherits:false;initial-value:32px}
+@keyframes isxStar{from{--s:32px}to{--s:7680px}}
+@keyframes isxZoomW{0%{transform:scale(1);opacity:1}88%{opacity:1}100%{transform:scale(240);opacity:0}}
+#isxSplash .isx-logo-spin.stop{animation:none!important}
+#isxSplash.out{background:#09090b!important;animation:isxStar 1.5s cubic-bezier(.65,0,.35,1) forwards!important;
+ -webkit-mask-image:linear-gradient(#000,#000),var(--isx-star);mask-image:linear-gradient(#000,#000),var(--isx-star);
+ -webkit-mask-composite:xor;mask-composite:exclude;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+ -webkit-mask-position:center,center;mask-position:center,center;-webkit-mask-size:100% 100%,var(--s) var(--s);mask-size:100% 100%,var(--s) var(--s)}
+#isxSplash.out .isx-zw{animation:isxZoomW 1.5s cubic-bezier(.65,0,.35,1) forwards}
+#isxSplash.simple.out{animation:none!important;-webkit-mask:none;mask:none;opacity:0;transition:opacity .6s ease}
+#isxSplash.simple.out .isx-zw{animation:none}
+@media (prefers-reduced-motion:reduce){#isxSplash.out{animation:none!important;-webkit-mask:none;mask:none;opacity:0;transition:opacity .3s}}
+/* smoother entrance, no bounce */
+@keyframes isxApp{0%{transform:scale(1.1);opacity:0;filter:blur(8px)}60%{opacity:1;filter:blur(0)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
+body.isx-enter .app-topbar,body.isx-enter .app-workspace{animation:isxApp 1.05s cubic-bezier(.16,1,.3,1) .22s both!important}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13063,8 +13080,23 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     var s = $('isxSplash'); if (!s) return;
     var loaded = new Promise(function (r) { if (document.readyState === 'complete') r(); else window.addEventListener('load', function () { r(); }); });
     var fonts = (document.fonts && document.fonts.ready) ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 2500); })]) : Promise.resolve();
-    Promise.all([loaded, fonts]).then(function () {
-      setTimeout(function () { s.classList.add('out'); document.body.classList.add('isx-enter'); setTimeout(function () { document.body.classList.remove('isx-enter'); }, 1400); setTimeout(function () { if (s.parentNode) s.remove(); }, 1800); }, Math.max(0, 1500 - performance.now()));
+    var minWait = new Promise(function (r) { setTimeout(r, Math.max(0, 1500 - performance.now())); });
+    Promise.all([loaded, fonts, minWait]).then(function () {
+      var sp = s.querySelector('.isx-logo-spin'), simple = !(window.CSS && CSS.registerProperty), wait = 0;
+      if (simple) s.classList.add('simple');
+      else if (sp) {
+        // settle the mark upright (the star has 90 degree symmetry) so the star-shaped reveal lines up with it
+        var m = getComputedStyle(sp).transform, ang = 0, v = m && /matrix\(([^)]+)\)/.exec(m);
+        if (v) { var p = v[1].split(','); ang = Math.atan2(parseFloat(p[1]), parseFloat(p[0])) * 180 / Math.PI; if (ang < 0) ang += 360; }
+        sp.classList.add('stop'); sp.style.transform = 'rotate(' + ang + 'deg)'; void sp.offsetWidth;
+        sp.style.transition = 'transform .5s cubic-bezier(.25,.8,.25,1)';
+        sp.style.transform = 'rotate(' + (Math.ceil((ang + 25) / 90) * 90) + 'deg)'; wait = 520;
+      }
+      setTimeout(function () {
+        s.classList.add('out'); document.body.classList.add('isx-enter');
+        setTimeout(function () { document.body.classList.remove('isx-enter'); }, 1500);
+        setTimeout(function () { if (s.parentNode) s.remove(); }, 1900);
+      }, wait);
     });
   }
 
