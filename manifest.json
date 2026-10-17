@@ -12,7 +12,7 @@
   "icons": [
     {
       "src": "favicon.png",
-      "sizes": "776x776",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
