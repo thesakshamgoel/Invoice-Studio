@@ -3821,11 +3821,23 @@ body.isx-hist-open .canvas-pane,body.isx-hist-open .app-canvas{margin-right:0}
 #isxSplash.out{animation:isxHole 1.05s cubic-bezier(.6,0,.9,.5) forwards!important;background:radial-gradient(circle at 50% 50%,transparent var(--r),#09090b calc(var(--r) + 2px))}
 #isxSplash.out .isx-logo-spin{animation:isxZoom 1.05s cubic-bezier(.6,0,.9,.5) forwards}
 @media (prefers-reduced-motion:reduce){#isxSplash.out{animation:none!important;opacity:0;transition:opacity .3s}#isxSplash.out .isx-logo-spin{animation:none}}
+/* smooth reveal: the wrapper zooms, the mark keeps rotating without a jump */
+.isx-zw{display:grid;place-items:center;will-change:transform}
+#isxSplash.out{animation:isxHole 1.2s cubic-bezier(.65,0,.35,1) forwards!important}
+#isxSplash.out .isx-zw{animation:isxZoomW 1.2s cubic-bezier(.65,0,.35,1) forwards}
+#isxSplash.out .isx-logo-spin{animation:isxSpin 1.5s linear infinite}
+@keyframes isxZoomW{0%{transform:scale(1);opacity:1}75%{opacity:1}100%{transform:scale(30);opacity:0}}
+@media (prefers-reduced-motion:reduce){#isxSplash.out .isx-zw{animation:none}}
+/* busy overlay: fade, rotate only */
+#isxBusy{display:grid!important;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s}
+#isxBusy.on{opacity:1;visibility:visible}
+.isx-busy-card{transform:translateY(6px) scale(.98);transition:transform .25s ease}
+#isxBusy.on .isx-busy-card{transform:none}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
-<body><div id="isxSplash"><div class="isx-logo-spin"></div></div>
+<body><div id="isxSplash"><div class="isx-zw"><div class="isx-logo-spin"></div></div></div>
 
   <!-- ==========================================================================
        TOP APP BAR
@@ -13043,7 +13055,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     var loaded = new Promise(function (r) { if (document.readyState === 'complete') r(); else window.addEventListener('load', function () { r(); }); });
     var fonts = (document.fonts && document.fonts.ready) ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 2500); })]) : Promise.resolve();
     Promise.all([loaded, fonts]).then(function () {
-      setTimeout(function () { s.classList.add('out'); setTimeout(function () { if (s.parentNode) s.remove(); }, 1200); }, Math.max(0, 1500 - performance.now()));
+      setTimeout(function () { s.classList.add('out'); setTimeout(function () { if (s.parentNode) s.remove(); }, 1500); }, Math.max(0, 1500 - performance.now()));
     });
   }
 
