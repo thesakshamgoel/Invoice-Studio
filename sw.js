@@ -1,5 +1,5 @@
 ﻿// Shakeslip Service Worker for Offline PWA Capabilities
-const CACHE_NAME = 'shakeslip-v8.4-mobile';
+const CACHE_NAME = 'shakeslip-v8.5-mobile';
 const STATIC_ASSETS = [
   './',
   './index.html',

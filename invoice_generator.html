@@ -4186,6 +4186,13 @@ body.isx-paging .isx-undo{opacity:.55;transition:opacity .2s}
 #mSecHead{padding:6px 16px 4px}
 #toastContainer{bottom:calc(var(--m-nav) + 56px)!important}
 }
+
+/* while paging, icon colour follows the pill (nearest icon is dark, every other icon - including the committed one - is light) */
+@media(max-width:900px){
+body.isx-paging .tab-icons-rail .tab-icon-btn.active:not(.under){color:#8b8b95!important}
+body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#09090b!important}
+.tab-icon-btn{transition:color .14s ease!important}
+}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13821,6 +13828,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   function begin() {
     if (anim) return; anim = true; base = idxOf(); if (base < 0) base = 0; geo(); T = base; nearest = base;
     document.body.classList.add('isx-paging'); BODY.style.overflowY = 'hidden';
+    G.bs.forEach(function (b, j) { b.classList.toggle('under', j === base); }); /* icon colours follow the pill, not the committed section */
     if (G.ind) G.ind.style.transition = 'scale .25s cubic-bezier(.3,1.6,.5,1),box-shadow .2s';
     var bp = G.p[base]; if (bp) bp.style.willChange = 'transform';
   }
@@ -13835,7 +13843,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     var f = clampN(v, 0, n - 1), a = Math.floor(f), b2 = Math.min(n - 1, a + 1), fr = f - a;
     if (G.ind) G.ind.style.translate = (G.off[a] + (G.off[b2] - G.off[a]) * fr).toFixed(1) + 'px ' + G.top + 'px';
     var nr = Math.round(f);
-    if (nr !== nearest) { nearest = nr; previewSection(nr, 0, true); tick(7); if (G.rail && G.rail.classList.contains('scrub')) G.bs.forEach(function (b, j) { b.classList.toggle('under', j === nr); }); }
+    if (nr !== nearest) { nearest = nr; previewSection(nr, 0, true); tick(7); G.bs.forEach(function (b, j) { b.classList.toggle('under', j === nr); }); }
   }
   function stopSettle() { if (SP) { cancelAnimationFrame(SP); SP = 0; } }
   function reset() {
