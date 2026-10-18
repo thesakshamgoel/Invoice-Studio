@@ -4262,6 +4262,21 @@ body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#09090b!important}
 @media(min-width:901px){
 #dThemeBtn .dsw{display:block!important;width:28px!important;height:28px!important;min-width:28px;padding:0!important;border:0!important;border-radius:9px!important;background:linear-gradient(135deg,var(--pa,#fff) 50%,var(--ac,#0f172a) 50%)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)!important;flex:none}
 }
+
+@media(min-width:901px){
+.sidebar-scroll-body{position:relative}
+body.isx-paging .tab-icons-rail .tab-icon-btn.active:not(.under){color:#8b8b95!important}
+body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#09090b!important}
+body.isx-paging .tab-icons-rail .tab-tooltip{display:none!important}
+}
+
+@media(min-width:901px){
+body.isx-grab,body.isx-grab *{cursor:grabbing!important;user-select:none!important}
+.sidebar-scroll-body .panel-card{cursor:grab}
+.sidebar-scroll-body .panel-card :is(input,textarea,select,button,a,label){cursor:revert}
+.sidebar-scroll-body .panel-card :is(input,textarea){cursor:text}
+.sidebar-scroll-body .panel-card :is(button,select,a,label[for]){cursor:pointer}
+}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13890,13 +13905,13 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   function clampN(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
   function tick(ms) { var n = performance.now(); if (n - lastTick < 45) return; lastTick = n; hap(ms || 7); }
   function geo() {
-    var bs = tabBtns(); G = { W: BODY.clientWidth, n: bs.length, p: bs.map(function (b) { return $(b.getAttribute('data-tab')); }), off: bs.map(function (b) { return b.offsetLeft; }), top: bs[0] ? bs[0].offsetTop : 5, top0: BODY.scrollTop + 6, ind: document.querySelector('.m-ind'), bs: bs };
+    var bs = tabBtns(); G = { W: BODY.clientWidth, n: bs.length, p: bs.map(function (b) { return $(b.getAttribute('data-tab')); }), off: bs.map(function (b) { return b.offsetLeft; }), top: bs[0] ? bs[0].offsetTop : 5, top0: BODY.scrollTop + (parseFloat(getComputedStyle(BODY).paddingTop) || 6), pl: parseFloat(getComputedStyle(BODY).paddingLeft) || 14, pr: parseFloat(getComputedStyle(BODY).paddingRight) || 14, ind: document.querySelector('.m-ind'), bs: bs };
   }
-  function peekOn(el) { el.__pk = 1; var s = el.style; s.display = 'flex'; s.position = 'absolute'; s.left = '14px'; s.right = '14px'; s.top = G.top0 + 'px'; s.pointerEvents = 'none'; s.willChange = 'transform'; s.visibility = ''; }
+  function peekOn(el) { el.__pk = 1; var s = el.style; s.display = 'flex'; s.position = 'absolute'; s.left = G.pl + 'px'; s.right = G.pr + 'px'; s.top = G.top0 + 'px'; s.pointerEvents = 'none'; s.willChange = 'transform'; s.visibility = ''; }
   function peekOff(el) { el.__pk = 0; var s = el.style; s.display = ''; s.position = ''; s.left = ''; s.right = ''; s.top = ''; s.pointerEvents = ''; s.willChange = ''; s.transform = ''; s.visibility = ''; }
   function begin() {
     if (anim) return; anim = true; base = idxOf(); if (base < 0) base = 0; geo(); T = base; nearest = base;
-    document.body.classList.add('isx-paging'); BODY.style.overflowY = 'hidden';
+    document.body.classList.add('isx-paging'); BODY.style.overflowY = 'hidden'; BODY.style.overflowX = 'hidden';
     G.bs.forEach(function (b, j) { b.classList.toggle('under', j === base); }); /* icon colours follow the pill, not the committed section */
     if (G.ind) G.ind.style.transition = 'scale .25s cubic-bezier(.3,1.6,.5,1),box-shadow .2s';
     var bp = G.p[base]; if (bp) bp.style.willChange = 'transform';
@@ -13918,7 +13933,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   function reset() {
     stopSettle(); if (!G) { anim = false; return; }
     G.p.forEach(function (el) { if (!el) return; if (el.__pk) peekOff(el); el.style.transform = ''; el.style.visibility = ''; el.style.willChange = ''; });
-    BODY.style.overflowY = ''; document.body.classList.remove('isx-paging');
+    BODY.style.overflowY = ''; BODY.style.overflowX = ''; document.body.classList.remove('isx-paging');
     var rail = document.querySelector('.tab-icons-rail'); if (rail) { rail.classList.remove('scrub'); G.bs.forEach(function (b) { b.classList.remove('under'); }); }
     if (G.ind) { G.ind.style.transition = ''; G.ind.classList.remove('lift'); }
     anim = false;
@@ -13940,51 +13955,69 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
       render(x); SP = requestAnimationFrame(step);
     })(last);
   }
-  function goTo(t) { if (!isMob()) return; t = clampN(t, 0, tabBtns().length - 1); if (!anim) { if (t === idxOf()) return; begin(); } settle(t, 0, 230, 27); }
+  function goTo(t) { t = clampN(t, 0, tabBtns().length - 1); if (!anim) { if (t === idxOf()) return; begin(); } settle(t, 0, 230, 27); }
 
   function swipeTabs() {
     BODY = document.querySelector('.sidebar-scroll-body'); if (!BODY) return;
-    BODY.addEventListener('touchstart', function (e) {
-      if (!isMob() || e.touches.length !== 1) { D = null; return; }
-      var s0 = anim ? (SP ? settleTo : Math.round(T)) : idxOf(); /* the section this gesture starts from */
-      if (anim) stopSettle(); /* grab the animation exactly where it is: never locked */
-      var t = e.touches[0];
-      D = { x0: t.clientX, y0: t.clientY, s0: s0, T0: anim ? T : idxOf(), lock: null, pts: [], moved: false, ign: !!e.target.closest('[contenteditable],.isx-fmt,[type=range]') || hasHScroll(e.target, BODY) };
-    }, { passive: true });
-    BODY.addEventListener('touchmove', function (e) {
-      if (!D || D.ign) return; var t = e.touches[0], dx = t.clientX - D.x0, dy = t.clientY - D.y0, now = performance.now();
+    var INTERACTIVE = 'input,textarea,select,button,a,label,[contenteditable],.isx-fmt,[type=range],.m-row,summary';
+    /* shared by touch (phones) and mouse (desktop): one gesture = one page, never locks */
+    function gStart(x, y, ign) {
+      if (anim) { /* grab the animation exactly where it is */ }
+      var s0 = anim ? (SP ? settleTo : Math.round(T)) : idxOf(); if (anim) stopSettle();
+      D = { x0: x, y0: y, s0: s0, T0: anim ? T : idxOf(), lock: null, pts: [], moved: false, ign: ign };
+    }
+    function gMove(x, y, now, ev) {
+      if (!D || D.ign) return; var dx = x - D.x0, dy = y - D.y0;
       if (!D.lock) { if (Math.abs(dx) > 6 || Math.abs(dy) > 6) D.lock = Math.abs(dx) > Math.abs(dy) * .9 ? 'x' : 'y'; else return; }
-      if (D.lock !== 'x') return; if (e.cancelable) e.preventDefault();
+      if (D.lock !== 'x') return; if (ev && ev.cancelable) ev.preventDefault();
       if (!anim) begin();
       var n = G.n, raw = D.T0 - dx / G.W, rel = raw - D.s0;
       if (rel > 1) rel = 1 + (rel - 1) * .25; else if (rel < -1) rel = -1 + (rel + 1) * .25; /* a gesture never travels more than one page */
       raw = D.s0 + rel; var v = raw < 0 ? raw * .32 : raw > n - 1 ? (n - 1) + (raw - (n - 1)) * .32 : raw;
       D.moved = true; render(v);
-      D.pts.push({ x: t.clientX, t: now }); while (D.pts.length > 1 && now - D.pts[0].t > 100) D.pts.shift();
-    }, { passive: false });
-    function end(cancel) {
+      D.pts.push({ x: x, t: now }); while (D.pts.length > 1 && now - D.pts[0].t > 100) D.pts.shift();
+    }
+    function gEnd(cancel) {
       if (!D) return; var d = D; D = null;
       if (!anim) return;
-      if (!d.moved) { settle(d.s0, 0, 230, 27); return; } /* tap/hold while settling: carry on to the nearest page */
-      var a = d.pts[0], b = d.pts[d.pts.length - 1], v = a && b && b.t > a.t ? (b.x - a.x) / ((b.t - a.t) / 1000) : 0, vT = -v / G.W, n = G.n;
-      /* exactly ONE page per gesture, decided from where it started: past 28% of a page, or a deliberate fling in that direction */
+      if (!d.moved) { settle(d.s0, 0, 230, 27); return; } /* tap/hold while settling: carry on to where it was heading */
+      var a = d.pts[0], b = d.pts[d.pts.length - 1], v = a && b && b.t > a.t ? (b.x - a.x) / ((b.t - a.t) / 1000) : 0, n = G.n;
+      /* exactly ONE page per gesture, decided from where it started: past 20% of a page, or a deliberate fling in that direction */
       var rel = T - d.s0, dir = rel > 0 ? 1 : rel < 0 ? -1 : 0, flingDir = v < -380 ? 1 : v > 380 ? -1 : 0, tg = d.s0;
       if (!cancel) { if (Math.abs(rel) > .2) tg = d.s0 + dir; else if (flingDir && flingDir === dir && Math.abs(rel) > .03) tg = d.s0 + flingDir; }
       tg = clampN(tg, 0, n - 1); if (tg !== nearest) tick(12);
-      settle(tg, vT, 220, 26);
+      settle(tg, -v / G.W, 220, 26);
     }
-    BODY.addEventListener('touchend', function () { end(false); }, { passive: true });
-    BODY.addEventListener('touchcancel', function () { end(true); }, { passive: true });
+    /* touch */
+    BODY.addEventListener('touchstart', function (e) {
+      if (!isMob() || e.touches.length !== 1) { D = null; return; }
+      var t = e.touches[0]; gStart(t.clientX, t.clientY, !!e.target.closest('[contenteditable],.isx-fmt,[type=range]') || hasHScroll(e.target, BODY));
+    }, { passive: true });
+    BODY.addEventListener('touchmove', function (e) { if (D && !D.mouse) gMove(e.touches[0].clientX, e.touches[0].clientY, performance.now(), e); }, { passive: false });
+    BODY.addEventListener('touchend', function () { if (D && !D.mouse) gEnd(false); }, { passive: true });
+    BODY.addEventListener('touchcancel', function () { if (D && !D.mouse) gEnd(true); }, { passive: true });
+    /* mouse / pen (desktop): drag the details panel sideways from any non-interactive spot */
+    BODY.addEventListener('pointerdown', function (e) {
+      if (isMob() || e.pointerType === 'touch' || e.button !== 0) return;
+      var ign = !!e.target.closest(INTERACTIVE) || hasHScroll(e.target, BODY);
+      gStart(e.clientX, e.clientY, ign); D.mouse = true;
+    });
+    BODY.addEventListener('mousedown', function (e) { if (!isMob() && !e.target.closest(INTERACTIVE)) e.preventDefault(); }); /* no text-selection while dragging */
+    window.addEventListener('pointermove', function (e) {
+      if (!D || !D.mouse || D.ign) return; gMove(e.clientX, e.clientY, performance.now(), e);
+      if (D.lock === 'x') document.body.classList.add('isx-grab');
+    });
+    function mEnd(c) { if (D && D.mouse) { document.body.classList.remove('isx-grab'); gEnd(c); } }
+    window.addEventListener('pointerup', function () { mEnd(false); }); window.addEventListener('pointercancel', function () { mEnd(true); });
     var rail = document.querySelector('.tab-icons-rail');
     if (rail) {
       rail.addEventListener('click', function (e) { /* taps animate the same pager instead of snapping */
-        if (goingFlag || !isMob()) return; var b = e.target.closest('.tab-icon-btn'); if (!b) return;
+        if (goingFlag || Date.now() < deskSup) return; var b = e.target.closest('.tab-icon-btn'); if (!b) return;
         e.stopPropagation(); e.preventDefault(); hap(6); goTo(tabBtns().indexOf(b));
       }, true);
       scrubDock(rail);
     }
   }
-
   /* ---------- dock: hold and drag; the pages follow the pill, haptic tick per section ---------- */
   function scrubDock(rail) {
     var S2 = null, sup = 0;
@@ -14169,35 +14202,30 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     if (typeof window.triggerPwaInstall !== 'function') return; var orig = window.triggerPwaInstall;
     window.triggerPwaInstall = triggerPwaInstall = function () { var has = false; try { has = !!deferredPrompt; } catch (e) {} if (has) return orig.apply(this, arguments); showInstallHelp(); };
   }
-  /* ---------- desktop: click and drag the pill across the menu (mouse/pen), release to switch ---------- */
+  /* ---------- desktop: click and drag the pill; the sections slide live exactly like on phones ---------- */
+  var deskSup = 0;
   function desktopScrub() {
-    var rail = document.querySelector('.tab-icons-rail'); if (!rail) return; var S3 = null, sup = 0;
-    rail.addEventListener('click', function (e) { if (!goingFlag && Date.now() < sup) { e.stopPropagation(); e.preventDefault(); } }, true);
+    var rail = document.querySelector('.tab-icons-rail'); if (!rail) return; var S3 = null;
+    rail.addEventListener('click', function (e) { if (!goingFlag && Date.now() < deskSup) { e.stopPropagation(); e.preventDefault(); } }, true);
     rail.addEventListener('pointerdown', function (e) {
-      if (isMob() || e.pointerType === 'touch' || e.button !== 0) return;
-      S3 = { x0: e.clientX, moved: false, k: idxOf(), id: e.pointerId };
+      if (isMob() || e.pointerType === 'touch' || e.button !== 0 || !BODY) return;
+      if (anim) stopSettle(); S3 = { x0: e.clientX, moved: false, id: e.pointerId };
     });
     window.addEventListener('pointermove', function (e) {
-      if (!S3) return; var ind = rail.querySelector('.m-ind'), bs = tabBtns(); if (!ind || !bs.length) return;
+      if (!S3) return;
       if (!S3.moved) {
         if (Math.abs(e.clientX - S3.x0) < 5) return; S3.moved = true;
         try { rail.setPointerCapture(S3.id); } catch (x) {}
-        ind.style.transition = 'scale .25s cubic-bezier(.3,1.6,.5,1),box-shadow .2s'; ind.classList.add('lift'); rail.classList.add('scrub'); rail.classList.add('grabbing');
-        bs.forEach(function (b, j) { b.classList.toggle('under', j === S3.k); });
+        if (!anim) begin(); G.rail = rail; rail.classList.add('scrub'); rail.classList.add('grabbing'); if (G.ind) G.ind.classList.add('lift');
       }
       e.preventDefault();
-      var r = rail.getBoundingClientRect(), w = bs[0].offsetWidth, first = bs[0].offsetLeft, last = bs[bs.length - 1].offsetLeft, step = (last - first) / Math.max(1, bs.length - 1);
-      var left = clampN(e.clientX - r.left - rail.clientLeft - w / 2, first - 2, last + 2);
-      ind.style.translate = left.toFixed(1) + 'px ' + bs[0].offsetTop + 'px';
-      var k = clampN(Math.round((left - first) / (step || 1)), 0, bs.length - 1);
-      if (k !== S3.k) { S3.k = k; bs.forEach(function (b, j) { b.classList.toggle('under', j === k); }); previewSection(k, 0, true); }
+      var r = rail.getBoundingClientRect(), w = G.bs[0].offsetWidth, first = G.off[0], last = G.off[G.n - 1], step = (last - first) / Math.max(1, G.n - 1);
+      render(clampN((e.clientX - r.left - rail.clientLeft - w / 2 - first) / (step || 1), 0, G.n - 1)); /* pages + pill + title follow the pointer */
     });
     function end() {
       if (!S3) return; var s = S3; S3 = null; if (!s.moved) return;
-      var ind = rail.querySelector('.m-ind'), bs = tabBtns(); rail.classList.remove('scrub'); rail.classList.remove('grabbing');
-      if (ind) { ind.classList.remove('lift'); ind.style.transition = ''; } bs.forEach(function (b) { b.classList.remove('under'); });
-      if (s.k !== idxOf()) bs[s.k].click(); else moveInd();
-      sup = Date.now() + 400; /* swallow the browser's own click that follows a drag */
+      deskSup = Date.now() + 450; rail.classList.remove('grabbing'); if (G && G.ind) G.ind.classList.remove('lift');
+      settle(Math.round(T), 0, 230, 27);
     }
     window.addEventListener('pointerup', end); window.addEventListener('pointercancel', end);
   }
