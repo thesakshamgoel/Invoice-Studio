@@ -4193,6 +4193,22 @@ body.isx-paging .tab-icons-rail .tab-icon-btn.active:not(.under){color:#8b8b95!i
 body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#09090b!important}
 .tab-icon-btn{transition:color .14s ease!important}
 }
+
+/* ===== install banner: readable popup (was white-on-white from the remapped accent colour) ===== */
+.pwa-install-banner{position:fixed!important;left:12px!important;right:12px!important;top:auto!important;bottom:16px!important;max-width:520px;margin:0 auto;border:1px solid #2c2c33!important;border-radius:16px!important;background:#131316!important;color:#fafafa!important;padding:10px 10px 10px 14px!important;font:500 13px/1.35 var(--g-font)!important;box-shadow:0 18px 50px -12px rgba(0,0,0,.85)!important;z-index:2250!important;gap:12px!important}
+.pwa-install-banner strong{color:#fff}
+.pwa-install-banner span{color:inherit}
+.btn-pwa-install{background:#fafafa!important;color:#09090b!important;border:0!important;border-radius:12px!important;padding:0 16px!important;height:38px;font:700 13px var(--g-font)!important;white-space:nowrap;cursor:pointer}
+.btn-pwa-install:hover,.btn-pwa-install:active{background:#e4e4e7!important;color:#09090b!important}
+.btn-pwa-dismiss{width:34px;height:34px;border-radius:50%!important;background:#2a2a31!important;color:#fafafa!important;font-size:18px!important;line-height:1;display:grid;place-items:center;padding:0!important}
+@media(max-width:900px){.pwa-install-banner{bottom:calc(var(--m-nav,66px) + 76px)!important}}
+.m-steps{margin:2px 0 6px;padding:0;list-style:none;counter-reset:s}
+.m-steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;padding:11px 4px;border-bottom:1px solid #1a1a1f;font:500 14.5px/1.4 var(--g-font);color:#e4e4e7}
+.m-steps li:last-child{border:0}
+.m-steps li::before{content:counter(s);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#2a2a31;color:#fff;font:700 13px var(--g-font)}
+.m-steps b{color:#fff}
+.m-note{font:500 12.5px/1.45 var(--g-font);color:#8b8b95;margin:4px 4px 2px}
+.m-steps li>span{flex:1;min-width:0}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -14086,8 +14102,22 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     var tries = 0, t = setInterval(function () { if (placeUndo() || ++tries > 40) clearInterval(t); }, 250);
     mq.addEventListener ? mq.addEventListener('change', placeUndo) : mq.addListener(placeUndo);
   }
+  /* ---------- install: real prompt when the browser offers one, clear steps otherwise ---------- */
+  function standalone() { return (window.matchMedia && matchMedia('(display-mode:standalone)').matches) || window.navigator.standalone === true; }
+  function showInstallHelp() {
+    if (standalone()) { try { showToast('Shakeslip is already installed', 'success', 2200); } catch (e) {} return; }
+    buildMore(); closeDesign(); var m = $('isxMore'), ios = /iphone|ipad|ipod/i.test(navigator.userAgent), steps = ios
+      ? '<li><span>Tap the <b>Share</b> button in Safari\u2019s toolbar</span></li><li><span>Scroll and choose <b>Add to Home Screen</b></span></li><li><span>Tap <b>Add</b> \u2014 Shakeslip opens like an app</span></li>'
+      : '<li><span>Open your browser\u2019s <b>\u22EE menu</b></span></li><li><span>Choose <b>Install app</b> or <b>Add to Home screen</b></span></li><li><span>Confirm \u2014 Shakeslip opens like an app</span></li>';
+    m.innerHTML = '<div class="mobile-sheet-handle"></div><div class="mobile-sheet-title"><span>Install Shakeslip</span>' + xBtn() + '</div><ol class="m-steps">' + steps + '</ol><p class="m-note">Works offline once installed, and your profiles stay private to your Google account.</p>';
+    $('isxMoreBd').classList.add('on'); requestAnimationFrame(function () { m.classList.add('on'); });
+  }
+  function installInit() {
+    if (typeof window.triggerPwaInstall !== 'function') return; var orig = window.triggerPwaInstall;
+    window.triggerPwaInstall = triggerPwaInstall = function () { var has = false; try { has = !!deferredPrompt; } catch (e) {} if (has) return orig.apply(this, arguments); showInstallHelp(); };
+  }
   function init() {
-    viewportMeta(); buildNav(); hookTabs(); buildHead(); buildProf(); swipeTabs(); zoomInit(); undoInit(); pullRefresh(); toastCap(); hookDesignSheet(); histIcon(); keyboard(); resize();
+    viewportMeta(); buildNav(); hookTabs(); buildHead(); buildProf(); swipeTabs(); zoomInit(); undoInit(); installInit(); pullRefresh(); toastCap(); hookDesignSheet(); histIcon(); keyboard(); resize();
     if (typeof window.setMobileView === 'function') {
       var o = window.setMobileView; window.setMobileView = setMobileView = function (v) { var r = o.apply(this, arguments); restoreNav(); return r; };
     }
