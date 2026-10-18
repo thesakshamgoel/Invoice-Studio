@@ -4781,6 +4781,21 @@ html[data-theme="light"] #dThemeBtn,html[data-theme="light"] .mobile-canvas-zoom
 html[data-theme="light"] .page-wrapper-card .page-index-pill{background:rgba(255,255,255,.92)!important;color:#52525b!important;border-color:#d4d4d8!important}
 html[data-theme="light"] ::selection{background:rgba(59,92,150,.25)}
 html[data-theme="light"] .isx-sw i::after{box-shadow:0 2px 5px rgba(15,23,42,.3)}
+/* --- round-2 light fixes: switch knob, draft banner, active tab icon --- */
+html[data-theme="light"] .isx-sw i{background:#cbd5e1!important}
+html[data-theme="light"] .isx-sw input:checked+i{background:#4a5b7a!important}
+html[data-theme="light"] .isx-sw i::after{background:#fff!important}
+html[data-theme="light"] #draftRecoveryBanner{background:#fff!important;border:1px solid #d4d9e2!important;box-shadow:0 12px 32px -12px rgba(15,23,42,.28)!important}
+html[data-theme="light"] #draftRecoveryBanner>div:nth-child(2)>div:first-child{color:#0f172a!important}
+html[data-theme="light"] #draftRecoveryBanner>div:nth-child(2)>div:last-child{color:#64748b!important}
+html[data-theme="light"] #draftRecoveryBanner button{background:#eef1f6!important;color:#0f172a!important;border:1px solid #d4d9e2!important}
+html[data-theme="light"] #draftRecoveryBanner button:first-of-type{background:#4a5b7a!important;color:#fff!important;border-color:#4a5b7a!important}
+html[data-theme="light"] .tab-icons-rail .tab-icon-btn{color:#64748b!important}
+html[data-theme="light"] .tab-icons-rail .tab-icon-btn:hover{color:#0f172a!important}
+html[data-theme="light"] .tab-icons-rail .tab-icon-btn.active,html[data-theme="light"] .tab-icons-rail .tab-icon-btn.under,html[data-theme="light"] .tab-icons-rail .tab-icon-btn.active:hover,html[data-theme="light"] .tab-icons-rail .tab-icon-btn.under:hover{color:#fff!important}
+html[data-theme="light"] .tab-icons-rail.scrub .tab-icon-btn.active:not(.under),html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.active:not(.under){color:#64748b!important}
+html[data-theme="light"] .m-ind{background:#4a5b7a!important;border-color:#4a5b7a!important}
+html[data-theme="light"] .tab-icons-rail .tab-icon-btn,html[data-theme="light"] .tab-icons-rail .tab-icon-btn.active,html[data-theme="light"] .tab-icons-rail .tab-icon-btn.under,html[data-theme="light"] .tab-icons-rail .tab-icon-btn:hover{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
 
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -13046,6 +13061,114 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
     if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
     if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
     if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
     var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
   }
