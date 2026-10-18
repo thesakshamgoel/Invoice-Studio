@@ -4157,6 +4157,35 @@ body.isx-paging .mprof{pointer-events:none}
 }
 @media(max-width:900px) and (max-height:600px) and (orientation:portrait){#mSecHead small{display:none}#mSecHead{padding-top:8px}.tab-icon-btn{height:40px!important}.sidebar-nav-header{bottom:10px}}
 @media(prefers-reduced-motion:reduce){body.mobile-view-editor .app-sidebar,body.mobile-view-preview .app-canvas-pane{animation:none}}
+
+/* ===== v2 layout: icon menu on top under the bar, undo/redo floating bottom-right ===== */
+@media(max-width:900px){
+.sidebar-nav-header{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;top:auto!important;transform:none!important;width:auto!important;flex:0 0 auto;margin:10px 12px 0!important;z-index:5;background:#101013!important;border:1px solid var(--m-line)!important;border-radius:18px!important;box-shadow:none!important}
+.tab-icons-rail{padding:4px!important;gap:1px!important}
+.tab-icon-btn{height:40px!important;border-radius:14px!important}
+.tab-icon-btn svg{width:20px!important;height:20px!important}
+.m-ind{border-radius:14px;box-shadow:0 3px 10px -4px rgba(159,176,200,.5)}
+#mSecHead{padding:12px 16px 6px}
+#mSecHead small{font-size:10.5px;margin-bottom:3px}
+#mSecHead b{font-size:21px}
+.sidebar-scroll-body{padding:4px 14px 84px!important;scroll-padding-bottom:110px}
+body.isx-kb .sidebar-nav-header,body.isx-kb #mSecHead{display:none!important}
+body.isx-kb .sidebar-scroll-body{padding-bottom:24px!important}
+.isx-undo{position:fixed!important;right:14px;bottom:calc(var(--m-nav) + 14px);z-index:1650;display:inline-flex!important;gap:2px!important;padding:3px!important;height:auto!important;border-radius:22px!important;background:rgba(19,19,22,.96)!important;border:1px solid #2a2a31!important;box-shadow:0 12px 30px -8px rgba(0,0,0,.85)!important}
+.isx-undo button{width:42px!important;height:42px!important;border-radius:18px!important}
+body.isx-kb .isx-undo{bottom:12px}
+body.isx-paging .isx-undo{opacity:.55;transition:opacity .2s}
+#toastContainer{bottom:calc(var(--m-nav) + 70px)!important}
+.google-account-popover{top:calc(var(--m-top) + 8px)!important}
+}
+@media(max-width:900px) and (orientation:landscape) and (max-height:520px){
+.sidebar-nav-header{margin:6px 12px 0!important;left:auto!important;transform:none!important;width:auto!important;bottom:auto!important}
+.tab-icon-btn{height:34px!important}
+.isx-undo{bottom:calc(var(--m-nav) + 8px)}
+.isx-undo button{width:36px!important;height:36px!important}
+#mSecHead{padding:6px 16px 4px}
+#toastContainer{bottom:calc(var(--m-nav) + 56px)!important}
+}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13780,7 +13809,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     return false;
   }
   var calm = window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var BODY = null, G = null, T = 0, base = 0, SP = 0, D = null, anim = false, nearest = 0, lastTick = 0, lastIdx = 0;
+  var BODY = null, G = null, T = 0, base = 0, SP = 0, D = null, anim = false, nearest = 0, lastTick = 0, lastIdx = 0, settleTo = 0;
   function idxOf() { return tabBtns().findIndex(function (b) { return b.classList.contains('active'); }); }
   function clampN(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
   function tick(ms) { var n = performance.now(); if (n - lastTick < 45) return; lastTick = n; hap(ms || 7); }
@@ -13824,7 +13853,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     lastIdx = t; moveInd(); previewSection(t, 0, true);
   }
   function settle(to, v0, k, c) {
-    stopSettle(); to = clampN(Math.round(to), 0, G.n - 1);
+    stopSettle(); to = clampN(Math.round(to), 0, G.n - 1); settleTo = to;
     if (calm) { render(to); finish(to); return; }
     var x = T, v = v0 || 0, last = performance.now();
     (function step(now) {
@@ -13840,26 +13869,30 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     BODY = document.querySelector('.sidebar-scroll-body'); if (!BODY) return;
     BODY.addEventListener('touchstart', function (e) {
       if (!isMob() || e.touches.length !== 1) { D = null; return; }
+      var s0 = anim ? (SP ? settleTo : Math.round(T)) : idxOf(); /* the section this gesture starts from */
       if (anim) stopSettle(); /* grab the animation exactly where it is: never locked */
       var t = e.touches[0];
-      D = { x0: t.clientX, y0: t.clientY, T0: anim ? T : idxOf(), lock: null, pts: [], moved: false, ign: !!e.target.closest('[contenteditable],.isx-fmt,[type=range]') || hasHScroll(e.target, BODY) };
+      D = { x0: t.clientX, y0: t.clientY, s0: s0, T0: anim ? T : idxOf(), lock: null, pts: [], moved: false, ign: !!e.target.closest('[contenteditable],.isx-fmt,[type=range]') || hasHScroll(e.target, BODY) };
     }, { passive: true });
     BODY.addEventListener('touchmove', function (e) {
       if (!D || D.ign) return; var t = e.touches[0], dx = t.clientX - D.x0, dy = t.clientY - D.y0, now = performance.now();
       if (!D.lock) { if (Math.abs(dx) > 6 || Math.abs(dy) > 6) D.lock = Math.abs(dx) > Math.abs(dy) * .9 ? 'x' : 'y'; else return; }
       if (D.lock !== 'x') return; if (e.cancelable) e.preventDefault();
       if (!anim) begin();
-      var n = G.n, raw = D.T0 - dx / G.W, v = raw < 0 ? raw * .32 : raw > n - 1 ? (n - 1) + (raw - (n - 1)) * .32 : raw;
+      var n = G.n, raw = D.T0 - dx / G.W, rel = raw - D.s0;
+      if (rel > 1) rel = 1 + (rel - 1) * .25; else if (rel < -1) rel = -1 + (rel + 1) * .25; /* a gesture never travels more than one page */
+      raw = D.s0 + rel; var v = raw < 0 ? raw * .32 : raw > n - 1 ? (n - 1) + (raw - (n - 1)) * .32 : raw;
       D.moved = true; render(v);
       D.pts.push({ x: t.clientX, t: now }); while (D.pts.length > 1 && now - D.pts[0].t > 100) D.pts.shift();
     }, { passive: false });
     function end(cancel) {
       if (!D) return; var d = D; D = null;
       if (!anim) return;
-      if (!d.moved) { settle(T, 0, 230, 27); return; } /* tap/hold while settling: carry on to the nearest page */
+      if (!d.moved) { settle(d.s0, 0, 230, 27); return; } /* tap/hold while settling: carry on to the nearest page */
       var a = d.pts[0], b = d.pts[d.pts.length - 1], v = a && b && b.t > a.t ? (b.x - a.x) / ((b.t - a.t) / 1000) : 0, vT = -v / G.W, n = G.n;
-      var tg = Math.round(T + vT * .2);
-      if (!cancel && Math.abs(v) > 420) { var extra = Math.floor(Math.abs(v) / 2200); tg = vT > 0 ? Math.max(tg, Math.floor(T) + 1 + extra) : Math.min(tg, Math.ceil(T) - 1 - extra); }
+      /* exactly ONE page per gesture, decided from where it started: past 28% of a page, or a deliberate fling in that direction */
+      var rel = T - d.s0, dir = rel > 0 ? 1 : rel < 0 ? -1 : 0, flingDir = v < -380 ? 1 : v > 380 ? -1 : 0, tg = d.s0;
+      if (!cancel) { if (Math.abs(rel) > .2) tg = d.s0 + dir; else if (flingDir && flingDir === dir && Math.abs(rel) > .03) tg = d.s0 + flingDir; }
       tg = clampN(tg, 0, n - 1); if (tg !== nearest) tick(12);
       settle(tg, vT, 220, 26);
     }
@@ -14032,8 +14065,21 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     mq.addEventListener ? mq.addEventListener('change', onMq) : mq.addListener(onMq);
   }
 
+  /* ---------- undo/redo live in a floating capsule (bottom right) on phones ---------- */
+  var undoHome = null;
+  function placeUndo() {
+    var u = document.querySelector('.isx-undo'); if (!u) return false;
+    if (!undoHome) undoHome = { p: u.parentNode, n: u.nextSibling };
+    if (isMob()) { if (u.parentNode !== document.body) document.body.appendChild(u); }
+    else if (u.parentNode === document.body) undoHome.p.insertBefore(u, undoHome.n && undoHome.n.parentNode === undoHome.p ? undoHome.n : null);
+    return true;
+  }
+  function undoInit() {
+    var tries = 0, t = setInterval(function () { if (placeUndo() || ++tries > 40) clearInterval(t); }, 250);
+    mq.addEventListener ? mq.addEventListener('change', placeUndo) : mq.addListener(placeUndo);
+  }
   function init() {
-    viewportMeta(); buildNav(); hookTabs(); buildHead(); buildProf(); swipeTabs(); zoomInit(); pullRefresh(); toastCap(); hookDesignSheet(); histIcon(); keyboard(); resize();
+    viewportMeta(); buildNav(); hookTabs(); buildHead(); buildProf(); swipeTabs(); zoomInit(); undoInit(); pullRefresh(); toastCap(); hookDesignSheet(); histIcon(); keyboard(); resize();
     if (typeof window.setMobileView === 'function') {
       var o = window.setMobileView; window.setMobileView = setMobileView = function (v) { var r = o.apply(this, arguments); restoreNav(); return r; };
     }
