@@ -4228,6 +4228,40 @@ body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#09090b!important}
 .tab-icon-btn.active{color:#09090b!important}
 .m-ind{border-radius:10px}
 }
+
+/* desktop drag affordance */
+@media(min-width:901px){
+.tab-icons-rail{cursor:grab;user-select:none;-webkit-user-select:none}
+.tab-icons-rail.grabbing,.tab-icons-rail.grabbing *{cursor:grabbing!important}
+.m-ind.lift{scale:1.08;box-shadow:0 10px 26px -6px rgba(159,176,200,.75)}
+.tab-icons-rail.scrub .tab-icon-btn.active:not(.under){color:#8b8b95!important}
+.tab-icons-rail.scrub .tab-icon-btn.under{color:#09090b!important}
+.tab-icons-rail.scrub .tab-tooltip{display:none!important}
+.tab-icon-btn{cursor:inherit!important}
+}
+
+/* ===== design theme: a button at the top-right of the preview opening a card (desktop) ===== */
+#dThemeBtn,#dTheme{display:none}
+@media(min-width:901px){
+.app-canvas-pane{position:relative}
+#dThemeBtn{display:flex;position:absolute;top:14px;right:22px;z-index:40;align-items:center;gap:10px;height:46px;padding:0 12px 0 8px;border-radius:14px;background:rgba(19,19,22,.92);backdrop-filter:blur(10px);border:1px solid var(--g-border);color:#fafafa;cursor:pointer;font-family:var(--g-font);transition:background .15s,border-color .15s,transform .15s cubic-bezier(.3,1.6,.5,1);box-shadow:0 8px 24px -10px rgba(0,0,0,.7)}
+#dThemeBtn:hover{background:#1a1a1f;border-color:#3a3a42}
+#dThemeBtn:active{transform:scale(.97)}
+#dThemeBtn.on{border-color:#7f93b0}
+#dThemeBtn .dsw{all:unset;display:block;width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--pa,#fff) 50%,var(--ac,#0f172a) 50%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+#dThemeBtn .dl{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+#dThemeBtn small{font:600 9.5px var(--g-font);letter-spacing:.1em;text-transform:uppercase;color:#7d7d88}
+#dThemeBtn b{font:700 14px var(--g-font);letter-spacing:-.01em;margin-top:2px}
+#dThemeBtn .dcv{width:14px;height:14px;fill:none;stroke:#8b8b95;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+#dThemeBtn.on .dcv{transform:rotate(180deg)}
+#dTheme{display:block;position:fixed;z-index:1500;width:392px;padding:6px;border-radius:20px;background:#111113;border:1px solid var(--g-border);box-shadow:0 30px 80px -20px rgba(0,0,0,.9);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px) scale(.96);transform-origin:top right;transition:opacity .16s ease,transform .28s cubic-bezier(.3,1.4,.5,1),visibility .16s}
+#dTheme.on{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+#dTheme .template-picker-card{display:block!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;padding:10px!important}
+#dTheme .template-picker-grid{grid-template-columns:repeat(4,1fr)!important;gap:8px!important}
+}
+@media(min-width:901px){
+#dThemeBtn .dsw{display:block!important;width:28px!important;height:28px!important;min-width:28px;padding:0!important;border:0!important;border-radius:9px!important;background:linear-gradient(135deg,var(--pa,#fff) 50%,var(--ac,#0f172a) 50%)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)!important;flex:none}
+}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -14135,8 +14169,61 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     if (typeof window.triggerPwaInstall !== 'function') return; var orig = window.triggerPwaInstall;
     window.triggerPwaInstall = triggerPwaInstall = function () { var has = false; try { has = !!deferredPrompt; } catch (e) {} if (has) return orig.apply(this, arguments); showInstallHelp(); };
   }
+  /* ---------- desktop: click and drag the pill across the menu (mouse/pen), release to switch ---------- */
+  function desktopScrub() {
+    var rail = document.querySelector('.tab-icons-rail'); if (!rail) return; var S3 = null, sup = 0;
+    rail.addEventListener('click', function (e) { if (!goingFlag && Date.now() < sup) { e.stopPropagation(); e.preventDefault(); } }, true);
+    rail.addEventListener('pointerdown', function (e) {
+      if (isMob() || e.pointerType === 'touch' || e.button !== 0) return;
+      S3 = { x0: e.clientX, moved: false, k: idxOf(), id: e.pointerId };
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!S3) return; var ind = rail.querySelector('.m-ind'), bs = tabBtns(); if (!ind || !bs.length) return;
+      if (!S3.moved) {
+        if (Math.abs(e.clientX - S3.x0) < 5) return; S3.moved = true;
+        try { rail.setPointerCapture(S3.id); } catch (x) {}
+        ind.style.transition = 'scale .25s cubic-bezier(.3,1.6,.5,1),box-shadow .2s'; ind.classList.add('lift'); rail.classList.add('scrub'); rail.classList.add('grabbing');
+        bs.forEach(function (b, j) { b.classList.toggle('under', j === S3.k); });
+      }
+      e.preventDefault();
+      var r = rail.getBoundingClientRect(), w = bs[0].offsetWidth, first = bs[0].offsetLeft, last = bs[bs.length - 1].offsetLeft, step = (last - first) / Math.max(1, bs.length - 1);
+      var left = clampN(e.clientX - r.left - rail.clientLeft - w / 2, first - 2, last + 2);
+      ind.style.translate = left.toFixed(1) + 'px ' + bs[0].offsetTop + 'px';
+      var k = clampN(Math.round((left - first) / (step || 1)), 0, bs.length - 1);
+      if (k !== S3.k) { S3.k = k; bs.forEach(function (b, j) { b.classList.toggle('under', j === k); }); previewSection(k, 0, true); }
+    });
+    function end() {
+      if (!S3) return; var s = S3; S3 = null; if (!s.moved) return;
+      var ind = rail.querySelector('.m-ind'), bs = tabBtns(); rail.classList.remove('scrub'); rail.classList.remove('grabbing');
+      if (ind) { ind.classList.remove('lift'); ind.style.transition = ''; } bs.forEach(function (b) { b.classList.remove('under'); });
+      if (s.k !== idxOf()) bs[s.k].click(); else moveInd();
+      sup = Date.now() + 400; /* swallow the browser's own click that follows a drag */
+    }
+    window.addEventListener('pointerup', end); window.addEventListener('pointercancel', end);
+  }
+  /* ---------- desktop: theme picker becomes a button (top-right of the preview) that opens a card ---------- */
+  function themeCard() {
+    var pane = document.querySelector('.app-canvas-pane'), card = document.querySelector('.template-picker-card'); if (!pane || !card || $('dThemeBtn')) return;
+    var btn = document.createElement('button'); btn.type = 'button'; btn.id = 'dThemeBtn'; btn.setAttribute('aria-haspopup', 'dialog'); btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = '<span class="tpl-btn dsw" data-tpl="onyx"></span><span class="dl"><small>Design</small><b id="dThemeName">Onyx</b></span>' + S(IC.chev2, ' class="dcv"');
+    pane.appendChild(btn);
+    var pop = document.createElement('div'); pop.id = 'dTheme'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Invoice design theme'); document.body.appendChild(pop); pop.appendChild(card);
+    function sync() {
+      var a = card.querySelector('.tpl-btn.active'), k = a ? a.getAttribute('data-tpl') : 'onyx', sw = btn.querySelector('.dsw'); if (sw.getAttribute('data-tpl') !== k) sw.setAttribute('data-tpl', k);
+      var nm = a ? (a.querySelector('span:last-child') || a).textContent.trim() : 'Onyx', el = $('dThemeName'); if (el.textContent !== nm) el.textContent = nm;
+    }
+    function place() { var r = btn.getBoundingClientRect(); pop.style.top = (r.bottom + 8) + 'px'; pop.style.right = Math.max(12, innerWidth - r.right) + 'px'; }
+    function open() { place(); pop.classList.add('on'); btn.setAttribute('aria-expanded', 'true'); btn.classList.add('on'); }
+    function close() { pop.classList.remove('on'); btn.setAttribute('aria-expanded', 'false'); btn.classList.remove('on'); }
+    btn.addEventListener('click', function (e) { e.stopPropagation(); pop.classList.contains('on') ? close() : open(); });
+    document.addEventListener('mousedown', function (e) { if (pop.classList.contains('on') && !e.target.closest('#dTheme,#dThemeBtn')) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    window.addEventListener('resize', function () { if (pop.classList.contains('on')) place(); });
+    try { new MutationObserver(sync).observe(card, { attributes: true, attributeFilter: ['class'], subtree: true }); } catch (e) {}
+    sync(); setTimeout(sync, 800); setTimeout(sync, 2500);
+  }
   function init() {
-    viewportMeta(); buildNav(); hookTabs(); buildHead(); buildProf(); swipeTabs(); zoomInit(); undoInit(); installInit(); pullRefresh(); toastCap(); hookDesignSheet(); histIcon(); keyboard(); resize();
+    viewportMeta(); buildNav(); hookTabs(); buildHead(); buildProf(); swipeTabs(); zoomInit(); undoInit(); installInit(); desktopScrub(); themeCard(); pullRefresh(); toastCap(); hookDesignSheet(); histIcon(); keyboard(); resize();
     if (typeof window.setMobileView === 'function') {
       var o = window.setMobileView; window.setMobileView = setMobileView = function (v) { var r = o.apply(this, arguments); restoreNav(); return r; };
     }
