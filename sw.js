@@ -1,5 +1,5 @@
 ﻿// Shakeslip Service Worker for Offline PWA Capabilities
-const CACHE_NAME = 'shakeslip-v8.6-mobile';
+const CACHE_NAME = 'shakeslip-v8.7-desktop';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -41,6 +41,23 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   // Only handle GET requests
   if (event.request.method !== 'GET') return;
+
+  // The app page itself: network-first, so a normal reload always shows the latest deploy
+  // (cache is only the offline fallback). Everything else keeps stale-while-revalidate.
+  let url; try { url = new URL(event.request.url); } catch (e) { url = null; }
+  const isDoc = event.request.mode === 'navigate' || (url && url.origin === self.location.origin && (/\.html?$/.test(url.pathname) || url.pathname.endsWith('/')));
+  if (isDoc) {
+    event.respondWith(
+      fetch(event.request, { cache: 'no-cache' }).then((res) => {
+        if (res && res.status === 200) {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+        return res;
+      }).catch(() => caches.match(event.request).then((r) => r || caches.match('./index.html')))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {

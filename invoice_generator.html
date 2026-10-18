@@ -4209,6 +4209,25 @@ body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#09090b!important}
 .m-steps b{color:#fff}
 .m-note{font:500 12.5px/1.45 var(--g-font);color:#8b8b95;margin:4px 4px 2px}
 .m-steps li>span{flex:1;min-width:0}
+
+/* ===== desktop: the same sliding pill under the section menu ===== */
+@media(min-width:901px){
+.tab-icons-rail{position:relative}
+.tab-icon-btn{position:relative;z-index:1;outline:none}
+.tab-icon-btn.active,.tab-icon-btn.active:hover{background:transparent!important;border-color:transparent!important;color:#09090b!important;box-shadow:none!important;transform:none!important}
+.tab-icon-btn svg{position:relative;z-index:1}
+.m-ind{position:absolute;left:0;top:0;border-radius:10px;background:#fafafa;box-shadow:0 4px 14px -4px rgba(159,176,200,.55);z-index:0;pointer-events:none;will-change:translate;transition:translate .5s cubic-bezier(.22,1.06,.36,1),width .3s cubic-bezier(.2,.9,.25,1)}
+.tab-icon-btn .tab-tooltip{z-index:5}
+}
+
+/* desktop menu: one rounded container, borderless icons, the sliding pill is the only active marker */
+@media(min-width:901px){
+.tab-icons-rail{background:#101013;border:1px solid var(--g-border);border-radius:14px;padding:4px;gap:2px!important}
+.tab-icon-btn{border:0!important;background:transparent!important;border-radius:10px!important;box-shadow:none!important;height:36px!important;transition:color .15s ease,background .15s ease!important}
+.tab-icon-btn:not(.active):hover{background:#1b1b20!important;color:#fafafa!important;transform:none!important}
+.tab-icon-btn.active{color:#09090b!important}
+.m-ind{border-radius:10px}
+}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13687,7 +13706,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
       window.switchTab = switchTab = function () {
         if (anim && !goingFlag) cancelAll();
         var r = orig.apply(this, arguments);
-        if (isMob()) { updHead(0); var sb = document.querySelector('.sidebar-scroll-body'); if (sb) sb.scrollTop = 0; }
+        if (isMob()) { updHead(0); var sb = document.querySelector('.sidebar-scroll-body'); if (sb) sb.scrollTop = 0; } else moveInd();
         return r;
       };
     }
