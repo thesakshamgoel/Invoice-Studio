@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script id="isxEarlyTheme">(function(){try{var m=localStorage.getItem('isx_theme_mode')||'dark',e=m==='system'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):(m==='light'?'light':'dark');document.documentElement.setAttribute('data-theme',e);document.documentElement.setAttribute('data-theme-mode',m)}catch(x){document.documentElement.setAttribute('data-theme','dark')}})();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
   <title>Shakeslip</title>
@@ -4291,10 +4291,456 @@ body.isx-paging .tab-icons-rail .tab-icon-btn,body.isx-paging .tab-icons-rail .t
 .isx-avatar-btn:hover{box-shadow:0 0 0 1.5px #a1a1aa}
 .isx-avatar-btn img,#googleUserAvatarImg{display:block!important;width:100%!important;height:100%!important;border:0!important;border-radius:50%!important;object-fit:cover;aspect-ratio:1}
 }
+
+/* ===== features: tax, e-sign fonts, appearance, single-page fit ===== */
+[hidden]{display:none!important}
+
+/* ---- tax ---- */
+.isx-tax{margin:6px 0 14px;border:1px solid #222228;border-radius:16px;background:#0e0e11;overflow:hidden}
+.isx-tax-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px}
+.isx-tax-head b{display:block;font:700 14px var(--g-font);letter-spacing:-.01em;color:#fafafa}
+.isx-tax-head small{display:block;font:500 12px/1.4 var(--g-font);color:#8b8b95;margin-top:3px}
+.isx-sw{position:relative;flex:none;width:46px;height:28px;cursor:pointer}
+.isx-sw input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer;z-index:2}
+.isx-sw i{position:absolute;inset:0;border-radius:999px;background:#2a2a31;transition:background .2s}
+.isx-sw i::after{content:'';position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fafafa;box-shadow:0 2px 6px rgba(0,0,0,.4);transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+.isx-sw input:checked+i{background:#7f93b0}
+.isx-sw input:checked+i::after{transform:translateX(18px)}
+.isx-tax-body{padding:2px 16px 16px;border-top:1px solid #1d1d22}
+.isx-tax-body>*{margin-top:14px}
+.isx-tax-body .form-row-2col{margin-bottom:0}
+.isx-seg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;border-radius:14px;background:#101013;border:1px solid #222228}
+.isx-seg2 button{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 12px;border:0;border-radius:10px;background:transparent;color:#a1a1aa;text-align:left;cursor:pointer;transition:background .2s,color .2s}
+.isx-seg2 button b{font:700 13px var(--g-font);color:inherit}
+.isx-seg2 button small{font:500 11px/1.3 var(--g-font);color:#71717a}
+.isx-seg2 button.on{background:#fafafa;color:#09090b}
+.isx-seg2 button.on small{color:#52525b}
+.isx-tax-sum{border-radius:14px;background:#101013;border:1px solid #222228;padding:6px 14px}
+.isx-tax-sum .r{display:flex;justify-content:space-between;gap:10px;padding:8px 0;font:500 13px var(--g-font);color:#a1a1aa;border-bottom:1px solid #1b1b20;font-variant-numeric:tabular-nums}
+.isx-tax-sum .r:last-child{border:0}
+.isx-tax-sum .r b{color:#fafafa;font-weight:600}
+.isx-tax-sum .t{font-weight:700;color:#fafafa;font-size:14px}
+.isx-tax-sum .t b{font-size:15px}
+.isx-tax-note{font:500 11.5px/1.45 var(--g-font);color:#7d7d88}
+.field-label .opt{font-weight:500;text-transform:none;letter-spacing:0;color:#71717a;margin-left:6px}
+tr.isx-taxrow td{font-size:11px;padding:5px 9px!important;font-weight:600}
+tr.isx-taxrow td.isx-tl{text-align:right}
+tr.isx-taxrow td.col-amount{white-space:nowrap}
+tr.isx-taxrow.sub td{border-top-width:1px}
+tr.isx-taxid-row .isx-tid{font-weight:600}
+
+/* ---- e-sign: font gallery ---- */
+.isx-fgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:272px;overflow-y:auto;padding:2px;margin:-2px;overscroll-behavior:contain;scrollbar-width:thin}
+.isx-fcard{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:74px;padding:10px 8px;border-radius:12px;border:1px solid #26262b;background:#111114;color:#f4f4f5;cursor:pointer;overflow:hidden;transition:border-color .15s,background .15s,transform .15s cubic-bezier(.3,1.6,.5,1)}
+.isx-fcard:hover{border-color:#3d3d46}
+.isx-fcard:active{transform:scale(.97)}
+.isx-fcard .fn{display:block;max-width:100%;font-size:25px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.isx-fcard small{font:600 9.5px var(--g-font);letter-spacing:.06em;text-transform:uppercase;color:#71717a}
+.isx-fcard.on{border-color:#7f93b0;background:#171a20;box-shadow:0 0 0 3px rgba(127,147,176,.18)}
+.isx-fcard.on::after{content:'';position:absolute;right:8px;top:8px;width:16px;height:16px;border-radius:50%;background:#7f93b0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2309090b' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7'/%3E%3C/svg%3E") center/11px no-repeat}
+.isx-flabel{display:flex;align-items:center;justify-content:space-between}
+.isx-flabel small{font:500 11px var(--g-font);color:#71717a}
+
+/* ---- appearance ---- */
+.isx-appear{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.isx-th{position:relative;display:flex;flex-direction:column;gap:9px;padding:9px 9px 10px;border-radius:14px;border:1px solid #26262b;background:#111114;color:#a1a1aa;cursor:pointer;text-align:left;font:600 12.5px var(--g-font);transition:border-color .15s,transform .15s cubic-bezier(.3,1.6,.5,1)}
+.isx-th:active{transform:scale(.97)}
+.isx-th .mk{position:relative;height:62px;border-radius:9px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.isx-th .mk::before{content:'';position:absolute;left:7px;top:7px;width:46%;height:6px;border-radius:3px;background:var(--mf)}
+.isx-th .mk::after{content:'';position:absolute;left:7px;top:19px;right:7px;bottom:7px;border-radius:6px;background:var(--mc);box-shadow:inset 0 0 0 1px var(--mb)}
+.isx-th .mk.dk{--mf:#fafafa;--mc:#17171a;--mb:#2a2a31;background:#09090b}
+.isx-th .mk.lt{--mf:#18181b;--mc:#ffffff;--mb:#e4e4e7;background:#f4f4f5}
+.isx-th .mk.au{background:linear-gradient(115deg,#09090b 50%,#f4f4f5 50%);--mf:#7f93b0;--mc:rgba(127,147,176,.22);--mb:transparent}
+.isx-th.on{border-color:#7f93b0;color:#fafafa;box-shadow:0 0 0 3px rgba(127,147,176,.2)}
+.isx-th.on::after{content:'';position:absolute;right:9px;top:9px;width:18px;height:18px;border-radius:50%;background:#7f93b0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2309090b' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7'/%3E%3C/svg%3E") center/12px no-repeat}
+.isx-appear-note{font:500 12px/1.45 var(--g-font);color:#7d7d88;margin-top:10px}
+
+/* ---- single-page fit: progressive compaction, never clipped ---- */
+#invoiceSheetPage1.fit-1{padding:11mm 16mm 10mm!important}
+#invoiceSheetPage1.fit-1 .invoice-header-grid{margin-bottom:10px!important;padding-bottom:10px!important}
+#invoiceSheetPage1.fit-1 .bill-to-section{margin-top:8px!important}
+#invoiceSheetPage1.fit-1 .center-subject-block{margin-top:8px!important}
+#invoiceSheetPage1.fit-1 .center-subject-block>div{margin-bottom:4px!important}
+#invoiceSheetPage1.fit-1 .salutation-block{margin:6px 0 5px!important}
+#invoiceSheetPage1.fit-1 .items-table{margin-bottom:6px!important}
+#invoiceSheetPage1.fit-1 .items-table td,#invoiceSheetPage1.fit-1 .items-table th{padding-top:5px!important;padding-bottom:5px!important}
+#invoiceSheetPage1.fit-1 .banking-block{margin-top:6px!important}
+#invoiceSheetPage1.fit-1 .banking-header-title{margin-bottom:3px!important}
+#invoiceSheetPage1.fit-1 .bank-qr-grid td{padding-top:3px!important;padding-bottom:3px!important}
+#invoiceSheetPage1.fit-1 .terms-page3-footer-grid{margin-top:8px!important;padding-top:8px!important}
+#invoiceSheetPage1.fit-1 .acceptance-table{margin-top:5px!important}
+#invoiceSheetPage1.fit-2{padding:9mm 14mm 8mm!important}
+#invoiceSheetPage1.fit-2 .invoice-header-grid{margin-bottom:6px!important;padding-bottom:6px!important}
+#invoiceSheetPage1.fit-2 .creator-detail{margin-bottom:0!important}
+#invoiceSheetPage1.fit-2 .bill-to-section{margin-top:5px!important}
+#invoiceSheetPage1.fit-2 .invoice-number-tag{margin-bottom:6px!important}
+#invoiceSheetPage1.fit-2 .meta-table td{padding-top:3px!important;padding-bottom:3px!important}
+#invoiceSheetPage1.fit-2 .center-subject-block{margin-top:5px!important}
+#invoiceSheetPage1.fit-2 .registration-pill{padding-top:4px!important;padding-bottom:4px!important}
+#invoiceSheetPage1.fit-2 .salutation-block{margin:4px 0 3px!important}
+#invoiceSheetPage1.fit-2 .items-table td,#invoiceSheetPage1.fit-2 .items-table th{padding-top:3px!important;padding-bottom:3px!important}
+#invoiceSheetPage1.fit-2 .bank-qr-grid td{padding-top:2px!important;padding-bottom:2px!important}
+#invoiceSheetPage1.fit-2 .qr-box-inner img{max-height:74px!important;width:auto!important}
+#invoiceSheetPage1.fit-2 .terms-page3-footer-grid{margin-top:5px!important;padding-top:5px!important}
+#invoiceSheetPage1.fit-2 .client-sig-box{height:36px!important}
+.fit-wrap:not(.on){display:contents}
+.fit-wrap.on{width:calc(100% / var(--fz,1));height:calc(100% / var(--fz,1));transform:scale(var(--fz,1));transform-origin:0 0}
+@media(max-width:900px){.isx-appear{grid-template-columns:repeat(3,1fr);gap:8px}.isx-th .mk{height:54px}.isx-fcard .fn{font-size:23px}.isx-tax-head{padding:13px 14px}.isx-tax-body{padding:2px 14px 14px}}
+
+/* LIGHT-GEN START (auto-generated from the dark theme) */
+html[data-theme="light"]{color-scheme:light}
+html[data-theme="light"] .btn-google-auth-top{background-color:#000000!important;color:#7a8085!important;border:1px solid #1f2125!important;box-shadow:0 1px 3px rgba(15,23,42,0.076)!important}
+html[data-theme="light"] .btn-google-auth-top:hover{background-color:#050607!important;box-shadow:0 2px 6px rgba(15,23,42,0.105)!important;border-color:#05142b!important}
+html[data-theme="light"] .history-card-item{background:var(--g-bg-input, #f4f5f6)!important;border:1px solid var(--g-border, #bec3cc)!important}
+html[data-theme="light"] .history-card-item:hover{border-color:var(--g-blue, #2171db)!important;box-shadow:0 2px 8px rgba(15,23,42,0.126)!important}
+html[data-theme="light"] .history-empty-slot{border:1.5px dashed var(--g-border, #bec3cc)!important;color:var(--g-text-tertiary, #757a7e)!important;background-color:rgba(15,23,42,0.013)!important}
+html[data-theme="light"] .pdf-drop-overlay{background-color:rgba(255,255,255,0.92)!important;border:4px dashed var(--g-blue, #2171db)!important;color:#141414!important}
+html[data-theme="light"]{--g-bg-surface:#eff0f2!important;--g-bg-surface-elevated:#e2e4e8!important;--g-bg-input:#f4f5f6!important;--g-border:#bec3cc!important;--g-border-hover:#a1a7b3!important;--g-border-focus:#0c3270!important;--g-blue-hover:#5d93dc!important;--g-blue-light:#0c3270!important;--g-blue-subtle:rgba(12,50,112,0.12)!important;--g-green:#48b766!important;--g-amber:#efb610!important;--g-red:#a8251a!important;--g-text-secondary:#393d42!important;--g-text-tertiary:#757a7e!important}
+html[data-theme="light"] input[type=range]::-webkit-slider-thumb{box-shadow:0 1px 4px rgba(15,23,42,0.168)!important}
+html[data-theme="light"] input[type=range]::-webkit-slider-thumb:hover{background-color:#000000!important}
+html[data-theme="light"] ::-webkit-scrollbar-thumb{background-color:#b8bcc5!important}
+html[data-theme="light"] ::-webkit-scrollbar-thumb:hover{background-color:#959ba7!important}
+html[data-theme="light"] .app-topbar{background-color:#f3f3f5!important}
+html[data-theme="light"] .app-brand-icon{background-image:linear-gradient(135deg, #2171db, #1450b4)!important;color:#141414!important;box-shadow:0 2px 6px rgba(100,116,139,0.16)!important}
+html[data-theme="light"] .active-profile-pill{border:1px solid rgba(12,50,112,0.25)!important}
+html[data-theme="light"] .active-profile-pill:hover{background-color:rgba(12,50,112,0.2)!important}
+html[data-theme="light"] .wysiwyg-badge{background-color:rgba(97,193,123,0.15)!important;color:#3e8451!important;border:1px solid rgba(97,193,123,0.3)!important}
+html[data-theme="light"] .page-nav-pill-group{background-color:#ffffff!important}
+html[data-theme="light"] .page-nav-chip.active{box-shadow:0 1px 3px rgba(15,23,42,0.126)!important}
+html[data-theme="light"] .zoom-control-bar{background-color:#ffffff!important}
+html[data-theme="light"] .btn-app-secondary{background-color:#e4e6e9!important}
+html[data-theme="light"] .btn-app-secondary:hover{background-color:#c6c9d1!important}
+html[data-theme="light"] .btn-google-primary{color:#141414!important;box-shadow:0 1px 3px rgba(15,23,42,0.126)!important}
+html[data-theme="light"] .btn-google-primary:hover{box-shadow:0 4px 10px rgba(100,116,139,0.16)!important}
+html[data-theme="light"] .sidebar-nav-header{background-color:#f1f2f3!important}
+html[data-theme="light"] .tab-icon-btn{background-color:#ffffff!important}
+html[data-theme="light"] .tab-icon-btn:hover{background-color:#e1e3e7!important}
+html[data-theme="light"] .tab-icon-btn.active{color:#141414!important;box-shadow:0 2px 8px rgba(100,116,139,0.16)!important}
+html[data-theme="light"] .tab-icon-btn .tab-tooltip{background-color:#dee0e4!important;color:#141414!important;box-shadow:0 4px 12px rgba(15,23,42,0.21)!important}
+html[data-theme="light"] .panel-card-header{border-bottom:1px solid rgba(15,23,42,0.084)!important}
+html[data-theme="light"] .input-app:focus{box-shadow:0 0 0 2px rgba(100,116,139,0.08)!important}
+html[data-theme="light"] .wizard-footer-nav{border-top:1px solid rgba(15,23,42,0.112)!important}
+html[data-theme="light"] .chip-btn{background-color:#f0f1f3!important}
+html[data-theme="light"] .chip-btn:hover{background-color:#e2e3e7!important}
+html[data-theme="light"] .app-modal-backdrop{background-color:rgba(15,23,42,0.325)!important}
+html[data-theme="light"] .app-modal-dialog{box-shadow:0 16px 40px rgba(15,23,42,0.252)!important}
+html[data-theme="light"] .app-canvas-pane{background-color:#ffffff!important}
+html[data-theme="light"] .page-index-pill{background-color:rgba(234,235,238,0.85)!important}
+html[data-theme="light"] .canvas-clickable:hover{outline:2px dashed #1e56d0!important}
+html[data-theme="light"] .bill-to-label{color:#808080!important}
+html[data-theme="light"] .bill-to-name{color:#808080!important}
+html[data-theme="light"] .bill-to-detail{color:#808080!important}
+html[data-theme="light"] .bill-to-email{color:#177be8!important}
+html[data-theme="light"] .bill-to-email.canvas-link{color:#177be8!important}
+html[data-theme="light"] .meta-label{color:#808080!important}
+html[data-theme="light"] .meta-value{color:#808080!important}
+html[data-theme="light"] #inpRegistrationText:focus{border-color:#0c3270!important;box-shadow:0 0 0 3px rgba(100,116,139,0.1)!important}
+html[data-theme="light"] .banking-header-title{color:#808080!important}
+html[data-theme="light"] .roles-badges-table td{background-color:rgba(164,175,190,0.08)!important;color:#808080!important}
+html[data-theme="light"] .template-picker-card{box-shadow:0 2px 6px rgba(15,23,42,0.105)!important}
+html[data-theme="light"] .tpl-btn{background-color:#ffffff!important}
+html[data-theme="light"] .tpl-btn:hover{background-color:#eeeff2!important}
+html[data-theme="light"] .tpl-btn.active{background-color:rgba(33,113,219,0.2)!important;color:#141414!important}
+html[data-theme="light"] .pwa-install-banner{background-image:linear-gradient(135deg, #e1e4ec, #eceff4)!important;border-bottom:1px solid rgba(12,50,112,0.3)!important;box-shadow:0 4px 12px rgba(15,23,42,0.147)!important}
+html[data-theme="light"] .btn-pwa-install{color:#141414!important}
+html[data-theme="light"] .mobile-sheet-backdrop{background-color:rgba(15,23,42,0.325)!important}
+html[data-theme="light"] .mobile-sheet-dialog{background-color:#ededf0!important;box-shadow:0 -8px 30px rgba(15,23,42,0.252)!important}
+html[data-theme="light"] .mobile-sheet-handle{background-color:#a9adb6!important}
+html[data-theme="light"] .mobile-topbar-mode-toggle{background-color:#ffffff!important}
+html[data-theme="light"] .mobile-mode-btn.active{color:#141414!important;box-shadow:0 1px 4px rgba(100,116,139,0.16)!important}
+@media screen and (max-width: 900px){html[data-theme="light"] .mobile-fab-toggle{background-image:linear-gradient(135deg, #2171db, #1450b4)!important;color:#141414!important;box-shadow:0 6px 20px rgba(100,116,139,0.18), 0 2px 6px rgba(15,23,42,0.126)!important}
+html[data-theme="light"] .mobile-canvas-zoom-pill{background-color:rgba(243,243,245,0.94)!important;box-shadow:0 4px 14px rgba(15,23,42,0.21)!important}
+html[data-theme="light"] .mobile-bottom-nav{background-color:rgba(243,243,245,0.96)!important}
+}
+html[data-theme="light"] .btn-google-auth-top{background-color:#000000!important;color:#7a8085!important;border:1px solid #1f2125!important;box-shadow:0 1px 3px rgba(15,23,42,0.076)!important}
+html[data-theme="light"] .btn-google-auth-top:hover{background-color:#050607!important;box-shadow:0 2px 6px rgba(15,23,42,0.105)!important;border-color:#05142b!important}
+html[data-theme="light"] .history-card-item{background:var(--g-bg-input, #f4f5f6)!important;border:1px solid var(--g-border, #bec3cc)!important}
+html[data-theme="light"] .history-card-item:hover{border-color:var(--g-blue, #2171db)!important;box-shadow:0 2px 8px rgba(15,23,42,0.126)!important}
+html[data-theme="light"] .history-empty-slot{border:1.5px dashed var(--g-border, #bec3cc)!important;color:var(--g-text-tertiary, #757a7e)!important;background-color:rgba(15,23,42,0.013)!important}
+html[data-theme="light"] .pdf-drop-overlay{background-color:rgba(255,255,255,0.92)!important;border:4px dashed var(--g-blue, #2171db)!important;color:#141414!important}
+html[data-theme="light"] .terms-suggestions-panel{background:var(--g-bg-surface-elevated, #edeef1)!important;border:1px solid var(--g-border, #bec3cc)!important}
+html[data-theme="light"] .terms-cat-title{color:var(--g-blue-light, #0c3270)!important}
+html[data-theme="light"] .terms-chip{background-color:rgba(15,23,42,0.036)!important;border:1px solid var(--g-border, #bec3cc)!important;color:var(--g-text-secondary, #393d42)!important}
+html[data-theme="light"] .terms-chip:hover{background-color:rgba(20,80,180,0.12)!important;border-color:var(--g-blue, #2171db)!important;color:#141414!important}
+html[data-theme="light"] .terms-chip.active{background-color:rgba(20,80,180,0.22)!important;border-color:#0c3270!important;color:#141414!important;box-shadow:0 0 8px rgba(100,116,139,0.12)!important}
+html[data-theme="light"] .terms-chip .chip-check{color:#3e8451!important}
+html[data-theme="light"] .profile-mgmt-card{background-color:rgba(15,23,42,0.027)!important;border:1.5px solid var(--g-border, #bec3cc)!important}
+html[data-theme="light"] .profile-mgmt-card:hover{border-color:var(--g-blue, #2171db)!important;background-color:rgba(15,23,42,0.045)!important;box-shadow:0 6px 20px rgba(15,23,42,0.126)!important}
+html[data-theme="light"] .profile-mgmt-card.active{border-color:#1450b4!important;background-color:rgba(20,80,180,0.08)!important;box-shadow:0 0 14px rgba(100,116,139,0.1)!important}
+html[data-theme="light"] .profile-mgmt-card.locked-card{border-color:#771b13!important;background-color:rgba(193,43,30,0.05)!important}
+html[data-theme="light"] .history-hub-card{background-color:rgba(15,23,42,0.023)!important;border:1px solid var(--g-border, #bec3cc)!important}
+html[data-theme="light"] .history-hub-card:hover{border-color:var(--g-blue, #2171db)!important;background-color:rgba(15,23,42,0.041)!important;box-shadow:0 4px 16px rgba(15,23,42,0.105)!important}
+html[data-theme="light"] .history-card-preview-bar{background-image:linear-gradient(90deg, #1450b4 0%, #61c17b 50%, #eeb510 100%)!important}
+html[data-theme="light"] .logo-size-pill-group{background-color:rgba(15,23,42,0.045)!important;border:1px solid var(--g-border, #bec3cc)!important}
+html[data-theme="light"] .logo-size-btn{color:var(--g-text-secondary, #393d42)!important}
+html[data-theme="light"] .logo-size-btn.active,html[data-theme="light"] .logo-size-btn:hover{background:var(--g-blue, #2171db)!important;color:#141414!important}
+html[data-theme="light"] .isx-overlay{background-color:rgba(15,23,42,0.35)!important}
+html[data-theme="light"] .isx-box{background-color:#e9eaee!important;border:1px solid #afb4c0!important;color:#1b1e22!important}
+html[data-theme="light"] .isx-card{background-color:#dfe2e6!important;border:1px solid #afb4c0!important;color:#1b1e22!important}
+html[data-theme="light"] .isx-card:hover{border-color:#1450b4!important;background-color:rgba(20,80,180,0.15)!important}
+html[data-theme="light"] .isx-industry{background-color:rgba(20,80,180,0.08)!important;border:1px solid rgba(20,80,180,0.3)!important}
+html[data-theme="light"]{--g-bg-base:#f5f5f6!important;--g-bg-surface:#ffffff!important;--g-bg-surface-elevated:#f4f4f5!important;--g-bg-input:#ffffff!important;--g-border:#d8d8dc!important;--g-border-hover:#bfbfc4!important;--g-border-focus:#55555e!important;--g-blue:#171717!important;--g-blue-hover:#18181b!important;--g-blue-light:#27272b!important;--g-blue-subtle:rgba(15,23,42,0.054)!important;--g-green:#259d51!important;--g-amber:#9f7023!important;--g-red:#870e0e!important;--g-text-primary:#171717!important;--g-text-secondary:#5d5d65!important;--g-text-tertiary:#7b7b84!important}
+html[data-theme="light"] ::-webkit-scrollbar-thumb{background-color:#e1e1e4!important}
+html[data-theme="light"] ::-webkit-scrollbar-thumb:hover{background-color:#bebec4!important}
+html[data-theme="light"] .app-topbar{background-color:rgba(245,245,246,0.82)!important}
+html[data-theme="light"] .app-brand-title{color:#171717!important}
+html[data-theme="light"] .page-nav-chip.active{background-color:#050505!important;color:#75758a!important}
+html[data-theme="light"] .btn-zoom-circle:hover{background-color:#efeff1!important;color:#141414!important}
+html[data-theme="light"] .btn-app-secondary:hover,html[data-theme="light"] .btn-google-auth-top:hover{background-color:#f4f4f5!important}
+html[data-theme="light"] .btn-google-primary{background-color:#050505!important;color:#75758a!important;border:1px solid #050505!important}
+html[data-theme="light"] .btn-google-primary:hover{background-color:#18181b!important}
+html[data-theme="light"] .btn-google-primary svg{fill:#75758a!important}
+html[data-theme="light"] .tab-icon-btn:hover{background-color:#f4f4f5!important;color:#171717!important}
+html[data-theme="light"] .tab-icon-btn.active{background-color:#efeff1!important;color:#171717!important}
+html[data-theme="light"] .tab-tooltip{background-color:#050505!important;color:#75758a!important}
+html[data-theme="light"] .panel-card-title{color:#171717!important}
+html[data-theme="light"] .input-app,html[data-theme="light"] select.input-app,html[data-theme="light"] textarea.input-app{color:#171717!important}
+html[data-theme="light"] .input-app:focus{border-color:#55555e!important;box-shadow:0 0 0 3px rgba(100,116,139,0.028)!important}
+html[data-theme="light"] .chip-btn:hover,html[data-theme="light"] .terms-chip:hover{border-color:#a5a5ac!important;color:#171717!important;background-color:#ffffff!important}
+html[data-theme="light"] .terms-chip.active,html[data-theme="light"] .chip-btn.selected{background-color:#050505!important;color:#75758a!important;border-color:#050505!important}
+html[data-theme="light"] .service-tag{background-color:#f4f4f5!important;color:#171717!important}
+html[data-theme="light"] [style*="66,133,244"],html[data-theme="light"] [style*="66, 133, 244"]{background-color:rgba(15,23,42,0.027)!important}
+html[data-theme="light"] [style*="#8ab4f8"],html[data-theme="light"] [style*="#4285f4;"]{color:#27272b!important}
+html[data-theme="light"] .terms-cat-title{color:#171717!important}
+html[data-theme="light"] .canvas-scroll-stage{background-image:radial-gradient(circle at 1px 1px,#efeff1 1px,transparent 0)!important}
+html[data-theme="light"] .app-modal-backdrop{background-color:rgba(245,245,246,0.7)!important}
+html[data-theme="light"] .app-modal-dialog,html[data-theme="light"] .isx-box,html[data-theme="light"] .google-account-popover{background-color:#ffffff!important;box-shadow:0 40px 100px -20px rgba(15,23,42,0.357)!important;color:#171717!important}
+html[data-theme="light"] [style*="#1e2128"]{background-color:#ffffff!important}
+html[data-theme="light"] #toastContainer>*{background-color:#050505!important;color:#75758a!important;box-shadow:0 12px 40px rgba(15,23,42,0.21)!important}
+html[data-theme="light"] .tpl-btn:hover{border-color:#a5a5ac!important;color:#171717!important}
+html[data-theme="light"] .tpl-btn.active{border-color:#050505!important;color:#171717!important;background-color:#f4f4f5!important}
+html[data-theme="light"] .isx-card:hover{border-color:#050505!important;background-color:#f4f4f5!important}
+html[data-theme="light"] .isx-card b{color:#171717!important}
+html[data-theme="light"] .isx-industry b{color:#171717!important}
+html[data-theme="light"] .isx-seg button:hover{border-color:#a5a5ac!important;color:#171717!important}
+html[data-theme="light"] .isx-seg button.on{color:#141414!important}
+html[data-theme="light"] .isx-st-pending.on{background-color:#bababf!important}
+html[data-theme="light"] .isx-st-paid.on{background-color:#89e0a9!important}
+html[data-theme="light"] .isx-st-partial.on{background-color:#e7975a!important}
+html[data-theme="light"] .isx-st-overdue.on{background-color:#d55454!important}
+html[data-theme="light"] .isx-st-due.on{background-color:#e3794d!important}
+html[data-theme="light"] .isx-st-draft.on{background-color:#a5a5ac!important}
+html[data-theme="light"] .isx-st-void.on{background-color:#e6e6e7!important}
+html[data-theme="light"] .isx-st-refunded.on{background-color:#6d2fce!important}
+html[data-theme="light"] .isx-toast{background-color:#f3f3f4!important;color:#171717!important;border:1px solid #ccccd0!important;box-shadow:0 18px 50px -10px rgba(15,23,42,0.294)!important}
+html[data-theme="light"] .isx-t-success .isx-toast-ic{background-color:#69dc93!important;color:#141414!important}
+html[data-theme="light"] .isx-t-error .isx-toast-ic{background-color:#d02c2c!important;color:#141414!important}
+html[data-theme="light"] .isx-t-warning .isx-toast-ic{background-color:#e69639!important;color:#141414!important}
+html[data-theme="light"] .isx-t-info .isx-toast-ic{background-color:#bababf!important;color:#141414!important}
+html[data-theme="light"] .isx-t-error{border-color:#d98989!important}
+html[data-theme="light"] .isx-t-success{border-color:#b2e5c6!important}
+html[data-theme="light"] #isxGate{background-color:rgba(245,245,246,0.92)!important}
+html[data-theme="light"] .isx-gate h2,html[data-theme="light"] .isx-auth h2{color:#171717!important}
+html[data-theme="light"] .isx-legal{background-color:#ffffff!important}
+html[data-theme="light"] .isx-legal h3{color:#171717!important}
+html[data-theme="light"] .isx-legal h4{color:#171717!important}
+html[data-theme="light"] .isx-legal b{color:#1f1f23!important}
+html[data-theme="light"] .isx-check input{accent-color:#171717!important}
+html[data-theme="light"] .isx-gate-err{color:#870e0e!important}
+html[data-theme="light"] #isxGate.review{background-color:rgba(245,245,246,0.7)!important}
+html[data-theme="light"] .isx-x:hover{color:#171717!important}
+html[data-theme="light"] .isx-gbtn{background-color:#050505!important;color:#75758a!important}
+html[data-theme="light"] .isx-gbtn:hover{background-color:#18181b!important}
+html[data-theme="light"] .isx-fine a{color:#27272b!important}
+html[data-theme="light"] #popoverUserName{color:#171717!important}
+html[data-theme="light"] .isx-danger{color:#870e0e!important}
+html[data-theme="light"] .isx-local b{color:#171717!important}
+html[data-theme="light"] .isx-local em{color:#171717!important}
+html[data-theme="light"] .isx-dot{background-color:#86868d!important}
+html[data-theme="light"] .isx-d-paid{background-color:#49ce7a!important}
+html[data-theme="light"] .isx-d-partial{background-color:#e89a16!important}
+html[data-theme="light"] .isx-d-overdue{background-color:#b21919!important}
+html[data-theme="light"] .isx-d-due{background-color:#b95b0e!important}
+html[data-theme="light"] .isx-d-refunded{background-color:#3b119b!important}
+html[data-theme="light"] .canvas-clickable:hover{outline:1.5px dashed rgba(30,86,208,0.85)!important}
+html[data-theme="light"] .isx-q-h span{color:#7a7a85!important}
+html[data-theme="light"] .isx-chip{background-color:#f4f4f5!important;color:#171717!important}
+html[data-theme="light"] .isx-chip button:hover{color:#870e0e!important}
+html[data-theme="light"] .isx-late-row{border:1.5px solid var(--tp,#ffffff)!important;background:var(--ts,#000000)!important;color:var(--tk,#808080)!important}
+html[data-theme="light"] .isx-late-row>:nth-child(n+3){border-top:1px solid var(--tp,#ffffff)!important}
+html[data-theme="light"] .isx-hist{background-color:#ffffff!important;box-shadow:-30px 0 60px -30px rgba(15,23,42,0.294)!important}
+html[data-theme="light"] .isx-hhead b{color:#171717!important}
+html[data-theme="light"] .isx-hrow:hover{background-color:#f4f4f5!important}
+html[data-theme="light"] .isx-hrow.cur{border-color:#bababf!important}
+html[data-theme="light"] .isx-hmain b{color:#171717!important}
+html[data-theme="light"] .isx-hact button{color:#1f1f23!important}
+html[data-theme="light"] .isx-hact button:hover{border-color:#86868d!important}
+html[data-theme="light"] .isx-hact button.warn{background-color:#d98989!important;border-color:#d98989!important;color:#141414!important}
+html[data-theme="light"] .isx-undo button{color:#1f1f23!important}
+html[data-theme="light"] .isx-undo button:hover:not(:disabled){background-color:#efeff1!important}
+html[data-theme="light"] .isx-fmt{background-color:#f3f3f4!important;border:1px solid #ccccd0!important;box-shadow:0 18px 50px -10px rgba(15,23,42,0.315)!important}
+html[data-theme="light"] .isx-fmt button{color:#171717!important}
+html[data-theme="light"] .isx-fmt button:hover{background-color:#e1e1e4!important}
+html[data-theme="light"] .isx-fmt select{background-color:#ffffff!important;color:#171717!important;border:1px solid #ccccd0!important}
+html[data-theme="light"] .isx-fmt .sep{background-color:#dddde0!important}
+html[data-theme="light"] .isx-rte-box{background-color:#ffffff!important;box-shadow:0 40px 100px -20px rgba(15,23,42,0.357)!important}
+html[data-theme="light"] .isx-rte-head h2{color:#171717!important}
+html[data-theme="light"] .isx-rte{background-color:#000000!important;color:#808080!important}
+html[data-theme="light"] .isx-rte h4{color:#808080!important}
+html[data-theme="light"] .isx-termsbar b{color:#171717!important}
+html[data-theme="light"] .isx-datebtn{color:#555d6d!important}
+html[data-theme="light"] .isx-datebtn:hover{background-color:#efeff1!important;color:#171717!important}
+html[data-theme="light"] #isxCal{background-color:#ffffff!important;border:1px solid #d4d4d9!important;box-shadow:0 30px 70px -18px rgba(15,23,42,0.357)!important;color:#171717!important}
+html[data-theme="light"] .isx-cal-t{color:#5d5d65!important}
+html[data-theme="light"] .isx-cal-t b{color:#171717!important}
+html[data-theme="light"] .isx-cal-h button{color:#27272b!important}
+html[data-theme="light"] .isx-cal-h button:hover{background-color:#efeff1!important}
+html[data-theme="light"] .isx-cal-w{color:#7b7b84!important}
+html[data-theme="light"] .isx-cal-d{color:#1f1f23!important}
+html[data-theme="light"] .isx-cal-d.wk{color:#555e6d!important}
+html[data-theme="light"] .isx-cal-d:hover{background-color:#ececee!important}
+html[data-theme="light"] .isx-cal-d.today{box-shadow:inset 0 0 0 1.5px rgba(100,116,139,0.3)!important;color:#141414!important}
+html[data-theme="light"] .isx-cal-d.sel{background-color:#050505!important;color:#75758a!important}
+html[data-theme="light"] .isx-cal-f{border-top:1px solid #d4d4d9!important;color:#7b7b84!important}
+html[data-theme="light"] .isx-cal-f button{border:1px solid #ccccd0!important;color:#1f1f23!important}
+html[data-theme="light"] .isx-cal-f button:hover{border-color:#86868d!important}
+html[data-theme="light"] .isx-cal-f button.primary{background-color:#050505!important;color:#75758a!important;border-color:#050505!important}
+html[data-theme="light"] #isxSplash{background-color:#f5f5f6!important}
+html[data-theme="light"] #isxBusy{background-color:rgba(245,245,246,0.55)!important}
+html[data-theme="light"] .isx-busy-card{background-color:#ffffff!important;box-shadow:0 40px 100px -20px rgba(15,23,42,0.357)!important}
+html[data-theme="light"] .isx-busy-card span{color:#27272b!important}
+html[data-theme="light"] .app-brand-title>span:first-child{background-image:linear-gradient(100deg,#10151c 0%,#495669 25%,#1c2637 50%,#51637e 75%,#10151c 100%)!important}
+html[data-theme="light"] .app-brand-title>span:first-child::after{border:1px solid rgba(81,99,126,0.5)!important;-webkit-text-fill-color:#4f5e73!important;color:#4f5e73!important}
+html[data-theme="light"] #isxSplash.out{background-image:radial-gradient(circle at 50% 50%,transparent var(--r),#f5f5f6 calc(var(--r) + 2px))!important}
+html[data-theme="light"] #isxSplash.out{background-color:#f5f5f6!important}
+@media(max-width:900px){html[data-theme="light"]{--m-bg:#f5f5f6!important;--m-line:#d8d8dc!important;--m-card:#ffffff!important}
+html[data-theme="light"] .app-topbar{background-color:rgba(245,245,246,0.9)!important}
+html[data-theme="light"] .isx-undo button:active:not(:disabled){background-color:#efeff1!important}
+html[data-theme="light"] #btnInvoiceHistoryHeader .m-hist-ico{stroke:#1f1f23!important}
+html[data-theme="light"] #btnInvoiceHistoryHeader:active{background-color:#efeff1!important}
+html[data-theme="light"] #googleUserProfileBadge{background-color:#f5f5f6!important;box-shadow:0 0 0 1.5px rgba(15,23,42,0.38)!important}
+html[data-theme="light"] .tab-icon-btn{background-color:#ffffff!important;color:#5d5d65!important}
+html[data-theme="light"] .tab-icon-btn.active{background-color:#050505!important;color:#75758a!important;border-color:#050505!important}
+html[data-theme="light"] #sidebarGlobalProfileSelect{background-color:#ffffff!important}
+html[data-theme="light"] #sidebarBtnSaveProfile{background-color:#f3f3f5!important;color:#1f1f23!important;border:1px solid #cdcdd2!important}
+html[data-theme="light"] .panel-card{background-color:#ffffff!important}
+html[data-theme="light"] .app-canvas-pane{background-color:#f5f5f6!important}
+html[data-theme="light"] .mobile-canvas-zoom-pill{background-color:rgba(255,255,255,0.92)!important}
+html[data-theme="light"] .mobile-bottom-nav{background-color:rgba(255,255,255,0.94)!important}
+html[data-theme="light"] .mobile-nav-item{color:#787881!important}
+html[data-theme="light"] .mobile-nav-item.active{color:#171717!important}
+html[data-theme="light"] .mobile-nav-item.active::before{background-color:#39485e!important;box-shadow:0 0 12px rgba(100,116,139,0.3)!important}
+html[data-theme="light"] .mobile-nav-item.cta{color:#1f1f23!important}
+html[data-theme="light"] .mobile-nav-item.cta .ci{background-color:#050505!important;color:#75758a!important;box-shadow:0 10px 26px -6px rgba(100,116,139,0.22),0 0 0 5px var(--m-bg)!important}
+html[data-theme="light"] .mobile-sheet-backdrop{background-color:rgba(15,23,42,0.2)!important}
+html[data-theme="light"] .mobile-sheet-dialog,html[data-theme="light"] #isxMore{background-color:#ffffff!important;box-shadow:0 -24px 60px -10px rgba(15,23,42,0.294)!important}
+html[data-theme="light"] .mobile-sheet-handle{background-color:#c5c5cb!important}
+html[data-theme="light"] .mobile-sheet-title button{background-color:#f0f0f2!important}
+html[data-theme="light"] #mobilePagesSheetDialog .tpl-btn{background-color:#f5f5f7!important}
+html[data-theme="light"] #mobilePagesSheetDialog .tpl-btn.active{background-color:#ececef!important;border-color:#050505!important}
+html[data-theme="light"] #mobilePagesSheetDialog span[style*="Select Design Theme"],html[data-theme="light"] #mobilePagesSheetDialog div>span:first-child[style*="font-size:11.5px"]{color:#787881!important}
+html[data-theme="light"] .mobile-sheet-page-btn{background-color:#f5f5f7!important}
+html[data-theme="light"] .mobile-sheet-page-btn.active{border-color:#b3b9c3!important;background-color:#edeef1!important}
+html[data-theme="light"] #isxMoreBd{background-color:rgba(15,23,42,0.225)!important}
+html[data-theme="light"] #isxMore{color:#171717!important}
+html[data-theme="light"] .m-row{border-bottom:1px solid #e0e0e5!important;color:#171717!important}
+html[data-theme="light"] .m-row:active{background-color:#f4f4f6!important}
+html[data-theme="light"] .m-row i{background-color:#f3f3f5!important;border:1px solid #d5d5da!important;color:#1b2535!important}
+html[data-theme="light"] .m-row small{color:#787881!important}
+html[data-theme="light"] .m-row .chev{color:#7a7a85!important}
+html[data-theme="light"] .m-row.danger{color:#771b13!important}
+html[data-theme="light"] .m-row.danger i{color:#771b13!important}
+html[data-theme="light"] .isx-hist{background-color:#ffffff!important}
+html[data-theme="light"] button:focus-visible{outline:2px solid #51637e!important}
+html[data-theme="light"] #toastContainer>.isx-toast{box-shadow:0 8px 24px -8px rgba(15,23,42,0.294)!important}
+html[data-theme="light"] #draftRecoveryBanner{border-color:#c1c7d1!important;background-color:#f5f5f7!important}
+html[data-theme="light"] .sidebar-nav-header{background-color:rgba(255,255,255,0.92)!important;border:1px solid #cfcfd4!important;box-shadow:0 16px 40px -12px rgba(15,23,42,0.357)!important}
+html[data-theme="light"] .tab-icon-btn{color:#5d5d65!important}
+html[data-theme="light"] .sidebar-nav-header{background-color:#ffffff!important}
+html[data-theme="light"] .tab-icon-btn.active{color:#75758a!important}
+html[data-theme="light"] .m-ind{background-color:#050505!important;box-shadow:0 4px 12px -4px rgba(100,116,139,0.22)!important}
+html[data-theme="light"] .m-ind.lift{box-shadow:0 12px 28px -6px rgba(100,116,139,0.3)!important}
+html[data-theme="light"] .tab-icons-rail.scrub .tab-icon-btn.active:not(.under){color:#5d5d65!important}
+html[data-theme="light"] .tab-icon-btn.under{color:#75758a!important}
+html[data-theme="light"] #mSecHead small{color:#787881!important}
+html[data-theme="light"] .mprof{background-color:#ffffff!important;color:#171717!important}
+html[data-theme="light"] .mprof:active{background-color:#f0f0f2!important}
+html[data-theme="light"] .mprof .cv{stroke:#5d5d65!important}
+html[data-theme="light"] .prow .ck{stroke:#368b52!important}
+html[data-theme="light"] .mobile-sheet-title .m-x,html[data-theme="light"] .m-x{background-color:#dedee2!important;color:#171717!important}
+html[data-theme="light"] .m-x:active{background-color:#b9b9c1!important}
+html[data-theme="light"] #mPtr{background-color:#f3f3f4!important;border:1px solid #cdcdd2!important;box-shadow:0 10px 26px -6px rgba(15,23,42,0.336)!important}
+html[data-theme="light"] #mPtr{background-color:rgba(255,255,255,0.94)!important;box-shadow:0 12px 30px -8px rgba(15,23,42,0.357),0 0 24px -4px rgba(100,116,139,0.14)!important}
+}
+@media(max-width:900px){html[data-theme="light"] .sidebar-nav-header{background-color:#ffffff!important}
+html[data-theme="light"] .m-ind{box-shadow:0 3px 10px -4px rgba(100,116,139,0.2)!important}
+html[data-theme="light"] .isx-undo{background-color:rgba(255,255,255,0.96)!important;border:1px solid #cfcfd4!important;box-shadow:0 12px 30px -8px rgba(15,23,42,0.357)!important}
+}
+@media(max-width:900px){html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.active:not(.under){color:#5d5d65!important}
+html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#75758a!important}
+}
+html[data-theme="light"] .pwa-install-banner{border:1px solid #cdcdd2!important;background-color:#ffffff!important;color:#171717!important;box-shadow:0 18px 50px -12px rgba(15,23,42,0.357)!important}
+html[data-theme="light"] .pwa-install-banner strong{color:#141414!important}
+html[data-theme="light"] .btn-pwa-install{background-color:#050505!important;color:#75758a!important}
+html[data-theme="light"] .btn-pwa-install:hover,html[data-theme="light"] .btn-pwa-install:active{background-color:#18181b!important;color:#75758a!important}
+html[data-theme="light"] .btn-pwa-dismiss{background-color:#e0e0e4!important;color:#171717!important}
+html[data-theme="light"] .m-steps li{border-bottom:1px solid #e0e0e5!important;color:#1f1f23!important}
+html[data-theme="light"] .m-steps li::before{background-color:#e0e0e4!important;color:#141414!important}
+html[data-theme="light"] .m-steps b{color:#141414!important}
+html[data-theme="light"] .m-note{color:#5d5d65!important}
+@media(min-width:901px){html[data-theme="light"] .tab-icon-btn.active,html[data-theme="light"] .tab-icon-btn.active:hover{color:#75758a!important}
+html[data-theme="light"] .m-ind{background-color:#050505!important;box-shadow:0 4px 14px -4px rgba(100,116,139,0.22)!important}
+}
+@media(min-width:901px){html[data-theme="light"] .tab-icons-rail{background-color:#ffffff!important}
+html[data-theme="light"] .tab-icon-btn:not(.active):hover{background-color:#efeff1!important;color:#171717!important}
+html[data-theme="light"] .tab-icon-btn.active{color:#75758a!important}
+}
+@media(min-width:901px){html[data-theme="light"] .m-ind.lift{box-shadow:0 10px 26px -6px rgba(100,116,139,0.3)!important}
+html[data-theme="light"] .tab-icons-rail.scrub .tab-icon-btn.active:not(.under){color:#5d5d65!important}
+html[data-theme="light"] .tab-icons-rail.scrub .tab-icon-btn.under{color:#75758a!important}
+}
+@media(min-width:901px){html[data-theme="light"] #dThemeBtn{background-color:rgba(255,255,255,0.92)!important;color:#171717!important;box-shadow:0 8px 24px -10px rgba(15,23,42,0.294)!important}
+html[data-theme="light"] #dThemeBtn:hover{background-color:#f0f0f2!important;border-color:#bebec4!important}
+html[data-theme="light"] #dThemeBtn.on{border-color:#51637e!important}
+html[data-theme="light"] #dThemeBtn small{color:#787881!important}
+html[data-theme="light"] #dThemeBtn .dcv{stroke:#5d5d65!important}
+html[data-theme="light"] #dTheme{background-color:#ffffff!important;box-shadow:0 30px 80px -20px rgba(15,23,42,0.378)!important}
+}
+@media(min-width:901px){html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.active:not(.under){color:#5d5d65!important}
+html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#75758a!important}
+}
+@media(min-width:901px){html[data-theme="light"] .tab-icons-rail .tab-icon-btn:focus-visible{outline:2px solid #51637e!important}
+html[data-theme="light"] #googleUserProfileBadge{background-color:#f5f5f6!important;box-shadow:0 0 0 1.5px rgba(15,23,42,0.38)!important}
+}
+html[data-theme="light"] .isx-tax{border:1px solid #d8d8dc!important;background-color:#ffffff!important}
+html[data-theme="light"] .isx-tax-head b{color:#171717!important}
+html[data-theme="light"] .isx-tax-head small{color:#5d5d65!important}
+html[data-theme="light"] .isx-sw i{background-color:#e0e0e4!important}
+html[data-theme="light"] .isx-sw i::after{background-color:#050505!important;box-shadow:0 2px 6px rgba(15,23,42,0.168)!important}
+html[data-theme="light"] .isx-sw input:checked+i{background-color:#51637e!important}
+html[data-theme="light"] .isx-tax-body{border-top:1px solid #dddde2!important}
+html[data-theme="light"] .isx-seg2{background-color:#ffffff!important;border:1px solid #d8d8dc!important}
+html[data-theme="light"] .isx-seg2 button{color:#5d5d65!important}
+html[data-theme="light"] .isx-seg2 button small{color:#7b7b84!important}
+html[data-theme="light"] .isx-seg2 button.on{background-color:#050505!important;color:#75758a!important}
+html[data-theme="light"] .isx-seg2 button.on small{color:#7a7a85!important}
+html[data-theme="light"] .isx-tax-sum{background-color:#ffffff!important;border:1px solid #d8d8dc!important}
+html[data-theme="light"] .isx-tax-sum .r{color:#5d5d65!important;border-bottom:1px solid #dfdfe4!important}
+html[data-theme="light"] .isx-tax-sum .r b{color:#171717!important}
+html[data-theme="light"] .isx-tax-sum .t{color:#171717!important}
+html[data-theme="light"] .isx-tax-note{color:#787881!important}
+html[data-theme="light"] .field-label .opt{color:#7b7b84!important}
+html[data-theme="light"] .isx-fcard{border:1px solid #d4d4d9!important;background-color:#ffffff!important;color:#19191b!important}
+html[data-theme="light"] .isx-fcard:hover{border-color:#babac1!important}
+html[data-theme="light"] .isx-fcard small{color:#7b7b84!important}
+html[data-theme="light"] .isx-fcard.on{border-color:#51637e!important;background-color:#f0f2f4!important;box-shadow:0 0 0 3px rgba(100,116,139,0.072)!important}
+html[data-theme="light"] .isx-flabel small{color:#7b7b84!important}
+html[data-theme="light"] .isx-th{border:1px solid #d4d4d9!important;background-color:#ffffff!important;color:#5d5d65!important}
+html[data-theme="light"] .isx-th.on{border-color:#51637e!important;color:#171717!important;box-shadow:0 0 0 3px rgba(100,116,139,0.08)!important}
+html[data-theme="light"] .isx-appear-note{color:#787881!important}
+/* LIGHT-GEN END */
+/* hand-tuned light overrides (appended AFTER the generated block; not auto-mapped) */
+html[data-theme="light"] .app-canvas-pane,html[data-theme="light"] .canvas-scroll-stage{background-color:#e8eaee!important;background-image:radial-gradient(rgba(15,23,42,.11) 1px,transparent 1.2px)!important;background-size:20px 20px!important}
+html[data-theme="light"] .pv{background-color:#e8eaee!important;background-image:radial-gradient(rgba(15,23,42,.11) 1px,transparent 1.2px)!important}
+html[data-theme="light"] #dThemeBtn,html[data-theme="light"] .mobile-canvas-zoom-pill{box-shadow:0 8px 24px -10px rgba(15,23,42,.25)!important}
+html[data-theme="light"] .page-wrapper-card .page-index-pill{background:rgba(255,255,255,.92)!important;color:#52525b!important;border-color:#d4d4d8!important}
+html[data-theme="light"] ::selection{background:rgba(59,92,150,.25)}
+html[data-theme="light"] .isx-sw i::after{box-shadow:0 2px 5px rgba(15,23,42,.3)}
+
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-</head>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Alex+Brush&family=Arizonia&family=Clicker+Script&family=Cookie&family=Great+Vibes&family=Herr+Von+Muellerhoff&family=Homemade+Apple&family=Italianno&family=Kaushan+Script&family=La+Belle+Aurore&family=Marck+Script&family=Mr+Dafoe&family=Mrs+Saint+Delafield&family=Pacifico&family=Parisienne&family=Reenie+Beanie&family=Rouge+Script&family=Sacramento&family=Satisfy&family=Tangerine&family=Yellowtail&family=Zeyada&display=swap" rel="stylesheet" id="isxSigFonts"></head>
 <body><div id="isxSplash"><div class="isx-zw"><div class="isx-logo-spin"></div></div></div>
 
   <!-- ==========================================================================
@@ -12059,6 +12505,418 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   </div>
 
 <script>
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label/.test(prop) && !/bg|surface|input|card|panel/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label/.test(prop) && !/bg|surface|input|card|panel/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label/.test(prop) && !/bg|surface|input|card|panel/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label/.test(prop) && !/bg|surface|input|card|panel/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
 // ===== INVOICE STUDIO UPGRADE (real Google auth, gated PDF, themes, professions) =====
 (function () {
   'use strict';
@@ -12567,6 +13425,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     placeStamp(el, page);
   }
   var origUP = updatePreview;
+  window.isxRefreshStamp = refreshStamp;
   window.updatePreview = updatePreview = function () { var r = origUP.apply(this, arguments); try { refreshStamp(); } catch (e) {} return r; };
   var origCap = captureCurrentInvoiceState;
   window.captureCurrentInvoiceState = captureCurrentInvoiceState = function () { var s = origCap.apply(this, arguments); try { s.stampNote = ($('isxStampNote') || {}).value || ''; s.isxLocal = true; s.exportedAt = new Date().toISOString(); s.statusKey = curStatus(); } catch (e) {} return s; };
@@ -13973,7 +14832,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
 
   function swipeTabs() {
     BODY = document.querySelector('.sidebar-scroll-body'); if (!BODY) return;
-    var INTERACTIVE = 'input,textarea,select,button,a,label,[contenteditable],.isx-fmt,[type=range],.m-row,summary';
+    var INTERACTIVE = 'canvas,input,textarea,select,button,a,label,[contenteditable],.isx-fmt,[type=range],.m-row,summary,.isx-fgrid';
     /* shared by touch (phones) and mouse (desktop): one gesture = one page, never locks */
     function gStart(x, y, ign) {
       if (anim) { /* grab the animation exactly where it is */ }
@@ -14005,7 +14864,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     /* touch */
     BODY.addEventListener('touchstart', function (e) {
       if (!isMob() || e.touches.length !== 1) { D = null; return; }
-      var t = e.touches[0]; gStart(t.clientX, t.clientY, !!e.target.closest('[contenteditable],.isx-fmt,[type=range]') || hasHScroll(e.target, BODY));
+      var t = e.touches[0]; gStart(t.clientX, t.clientY, !!e.target.closest('canvas,[contenteditable],.isx-fmt,[type=range],.isx-fgrid') || hasHScroll(e.target, BODY));
     }, { passive: true });
     BODY.addEventListener('touchmove', function (e) { if (D && !D.mouse) gMove(e.touches[0].clientX, e.touches[0].clientY, performance.now(), e); }, { passive: false });
     BODY.addEventListener('touchend', function () { if (D && !D.mouse) gEnd(false); }, { passive: true });
@@ -14073,7 +14932,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     }
     function attach(el) {
       if (!el) return; var y0 = 0, x0 = 0, pull = 0, on = false;
-      el.addEventListener('touchstart', function (e) { on = isMob() && !busy && e.touches.length === 1 && el.scrollTop <= 0 && !e.target.closest('[contenteditable]'); y0 = e.touches[0].clientY; x0 = e.touches[0].clientX; pull = 0; }, { passive: true });
+      el.addEventListener('touchstart', function (e) { on = isMob() && !busy && e.touches.length === 1 && el.scrollTop <= 0 && !e.target.closest('canvas,[contenteditable]'); y0 = e.touches[0].clientY; x0 = e.touches[0].clientX; pull = 0; }, { passive: true });
       el.addEventListener('touchmove', function (e) {
         if (!on) return; var dy = e.touches[0].clientY - y0, dx = e.touches[0].clientX - x0;
         if (el.scrollTop > 0 || dy <= 0 || Math.abs(dx) > dy) { if (pull) { pull = 0; show(0); } return; }
@@ -14272,6 +15131,270 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     window.isxMobile = { openMore: openMore, openDesign: openDesign, closeAll: closeAll, dbg: function () { return { anim: anim, T: T, base: base, sp: SP, nearest: nearest, d: !!D, idx: idxOf() }; } };
   }
   safe(init)();
+})();
+
+
+// ===== FEATURES: e-sign fonts, currency & tax, single-page fit, light/dark theme =====
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var isMob = function () { return window.matchMedia('(max-width:900px)').matches; };
+  var safe = function (fn) { return function () { try { return fn.apply(this, arguments); } catch (e) { if (window.console) console.warn('[feat]', e); } }; };
+  var toast = function (m, t, d) { try { showToast(m, t || 'info', d); } catch (e) {} };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var round2 = function (n) { return Math.round((n + Number.EPSILON) * 100) / 100; };
+
+  /* ================= E-SIGN: font gallery + typed signature ================= */
+  var FONTS = ['Dancing Script', 'Great Vibes', 'Allura', 'Alex Brush', 'Sacramento', 'Parisienne', 'Pacifico', 'Satisfy', 'Mr Dafoe', 'Kaushan Script', 'Yellowtail', 'Cookie', 'Marck Script', 'Italianno', 'Rouge Script', 'Tangerine', 'Arizonia', 'Clicker Script', 'Herr Von Muellerhoff', 'Mrs Saint Delafield', 'Caveat', 'Homemade Apple', 'Reenie Beanie', 'La Belle Aurore', 'Zeyada'];
+  var fval = function (n) { return "'" + n + "', cursive"; };
+  function sigName() { var t = $('inpTypeEsignName'), c = $('inpCreatorName'); return ((t && t.value.trim()) || (c && c.value.trim()) || 'Your Name'); }
+  function esignInit() {
+    var sel = $('selectEsignFont'), box = $('boxEsignType'); if (!sel || !box || $('isxFontGrid')) return;
+    sel.innerHTML = FONTS.map(function (n) { return '<option value="' + esc(fval(n)) + '">' + n + '</option>'; }).join('');
+    var cur = sel.getAttribute('data-v') || fval(FONTS[0]); sel.value = cur;
+    var grp = sel.closest('.form-field-group'), lab = grp && grp.querySelector('.field-label');
+    if (lab) lab.innerHTML = '<span class="isx-flabel" style="width:100%">Signature style<small>' + FONTS.length + ' cursive fonts</small></span>';
+    sel.style.display = 'none';
+    var grid = document.createElement('div'); grid.id = 'isxFontGrid'; grid.className = 'isx-fgrid'; grid.setAttribute('role', 'listbox');
+    grid.innerHTML = FONTS.map(function (n) { return '<button type="button" role="option" class="isx-fcard" data-f="' + esc(fval(n)) + '" style="font-family:' + esc(fval(n)) + '"><span class="fn"></span><small>' + n + '</small></button>'; }).join('');
+    grp.appendChild(grid);
+    grid.addEventListener('click', function (e) { var b = e.target.closest('.isx-fcard'); if (!b) return; sel.value = b.getAttribute('data-f'); sel.dispatchEvent(new Event('change', { bubbles: true })); mark(); applyType(true); });
+    function mark() { grid.querySelectorAll('.isx-fcard').forEach(function (c) { c.classList.toggle('on', c.getAttribute('data-f') === sel.value); }); }
+    function samples() { var n = sigName(); grid.querySelectorAll('.fn').forEach(function (s) { if (s.textContent !== n) s.textContent = n; }); }
+    ['inpTypeEsignName', 'inpCreatorName'].forEach(function (id) { var e = $(id); if (e) e.addEventListener('input', samples); });
+    sel.addEventListener('change', mark); samples(); mark(); setInterval(function () { samples(); if (sel.value && !grid.querySelector('.isx-fcard.on')) mark(); }, 900);
+    box.addEventListener('click', function (e) { if (e.target.closest('#btnApplyEsignType')) { e.stopPropagation(); applyType(false); } }, true);
+  }
+  function applyType(quiet) {
+    var sel = $('selectEsignFont'); if (!sel) return; var name = sigName(), font = sel.value || fval(FONTS[0]);
+    var go = function () {
+      var W = 960, H = 288, c = document.createElement('canvas'); c.width = W; c.height = H; var x = c.getContext('2d');
+      var col = (typeof esignPenColor !== 'undefined' && esignPenColor) || '#111827'; x.fillStyle = col; x.textAlign = 'center'; x.textBaseline = 'middle';
+      var size = 170; x.font = size + 'px ' + font; while (x.measureText(name).width > W * .9 && size > 36) { size -= 4; x.font = size + 'px ' + font; }
+      x.fillText(name, W / 2, H / 2 + size * .04);
+      currentEsignDataUrl = c.toDataURL('image/png'); updatePreview(); if (!quiet) toast('Signature added to the invoice.', 'success');
+    };
+    try { document.fonts.load('60px ' + font, name).then(go, go); } catch (e) { go(); }
+  }
+
+  /* ================= CURRENCY + TAX ================= */
+  var CUR = {
+    INR: { sym: '₹', loc: 'en-IN', name: 'Rupee', words: 'Rupees', sub: 'Paise' }, USD: { sym: '$', loc: 'en-US', name: 'Dollar', words: 'US Dollars', sub: 'Cents' },
+    GBP: { sym: '£', loc: 'en-GB', name: 'Pound', words: 'Pounds', sub: 'Pence' }, EUR: { sym: '€', loc: 'en-IE', name: 'Euro', words: 'Euros', sub: 'Cents' },
+    AED: { sym: 'AED ', loc: 'en-US', name: 'Dirham', words: 'UAE Dirhams', sub: 'Fils' }, AUD: { sym: 'A$', loc: 'en-AU', name: 'Australian Dollar', words: 'Australian Dollars', sub: 'Cents' },
+    CAD: { sym: 'C$', loc: 'en-CA', name: 'Canadian Dollar', words: 'Canadian Dollars', sub: 'Cents' }, SGD: { sym: 'S$', loc: 'en-SG', name: 'Singapore Dollar', words: 'Singapore Dollars', sub: 'Cents' },
+    SAR: { sym: 'SAR ', loc: 'en-US', name: 'Riyal', words: 'Saudi Riyals', sub: 'Halalas' }, ZAR: { sym: 'R', loc: 'en-ZA', name: 'Rand', words: 'South African Rand', sub: 'Cents' },
+    JPY: { sym: '¥', loc: 'ja-JP', name: 'Yen', words: 'Japanese Yen', sub: '', dec: 0 }, CHF: { sym: 'CHF ', loc: 'de-CH', name: 'Swiss Franc', words: 'Swiss Francs', sub: 'Rappen' }
+  };
+  var C_OPT = { INR: '₹ Rupee (INR)', USD: '$ Dollar (USD)', GBP: '£ Pound (GBP)', EUR: '€ Euro (EUR)', AED: 'AED Dirham (UAE)', AUD: 'A$ Dollar (AUD)', CAD: 'C$ Dollar (CAD)', SGD: 'S$ Dollar (SGD)', SAR: 'SAR Riyal (Saudi)', ZAR: 'R Rand (ZAR)', JPY: '¥ Yen (JPY)', CHF: 'CHF Franc (CHF)' };
+  var REG = {
+    INR: { name: 'GST', types: [{ k: 'cgst', label: 'GST — CGST + SGST (same state)', split: ['CGST', 'SGST'] }, { k: 'igst', label: 'IGST (other state / export)', split: ['IGST'] }], rates: [0, .25, 3, 5, 12, 18, 28], def: 18, id: 'GSTIN', ph: 'e.g. 27ABCDE1234F1Z5' },
+    USD: { name: 'Sales tax', types: [{ k: 's', label: 'Sales tax', split: ['Sales tax'] }], rates: [0, 4, 5, 6, 7, 8, 8.875, 10], def: 8, id: 'Tax ID / EIN', ph: 'e.g. 12-3456789' },
+    GBP: { name: 'VAT', types: [{ k: 'v', label: 'VAT', split: ['VAT'] }], rates: [0, 5, 20], def: 20, id: 'VAT number', ph: 'e.g. GB123456789' },
+    EUR: { name: 'VAT', types: [{ k: 'v', label: 'VAT', split: ['VAT'] }], rates: [0, 5, 7, 10, 19, 20, 21, 23], def: 20, id: 'VAT number', ph: 'e.g. DE123456789' },
+    AED: { name: 'VAT', types: [{ k: 'v', label: 'VAT', split: ['VAT'] }], rates: [0, 5], def: 5, id: 'TRN', ph: 'e.g. 100123456700003' },
+    AUD: { name: 'GST', types: [{ k: 'g', label: 'GST', split: ['GST'] }], rates: [0, 10], def: 10, id: 'ABN', ph: 'e.g. 12 345 678 901' },
+    CAD: { name: 'GST/HST', types: [{ k: 'g', label: 'GST / HST', split: ['GST/HST'] }], rates: [0, 5, 13, 14, 15], def: 5, id: 'GST/HST number', ph: 'e.g. 123456789 RT0001' },
+    SGD: { name: 'GST', types: [{ k: 'g', label: 'GST', split: ['GST'] }], rates: [0, 9], def: 9, id: 'GST reg. no.', ph: 'e.g. M12345678X' },
+    SAR: { name: 'VAT', types: [{ k: 'v', label: 'VAT', split: ['VAT'] }], rates: [0, 15], def: 15, id: 'VAT number', ph: 'e.g. 300012345600003' },
+    ZAR: { name: 'VAT', types: [{ k: 'v', label: 'VAT', split: ['VAT'] }], rates: [0, 15], def: 15, id: 'VAT number', ph: 'e.g. 4123456789' },
+    JPY: { name: 'Consumption tax', types: [{ k: 'c', label: 'Consumption tax', split: ['Consumption tax'] }], rates: [0, 8, 10], def: 10, id: 'Invoice reg. no.', ph: 'e.g. T1234567890123' },
+    CHF: { name: 'VAT', types: [{ k: 'v', label: 'VAT', split: ['VAT'] }], rates: [0, 2.6, 3.8, 8.1], def: 8.1, id: 'UID / VAT no.', ph: 'e.g. CHE-123.456.789' }
+  };
+  var cur = function () { var s = $('selCurrency'); return s ? s.value : 'INR'; };
+  function money(n, c) {
+    c = c || cur(); var d = CUR[c] || CUR.INR, frac = d.dec === 0 ? false : Math.abs(n - Math.round(n)) > .004, dd = d.dec === 0 ? 0 : (frac ? 2 : 0);
+    var s = Number(n).toLocaleString(d.loc, { minimumFractionDigits: dd, maximumFractionDigits: dd }); return d.sym + s + (c === 'INR' ? '/-' : '');
+  }
+  function currencyInit() {
+    var sel = $('selCurrency'); if (sel && sel.options.length < 12) { var v = sel.value; sel.innerHTML = Object.keys(C_OPT).map(function (k) { return '<option value="' + k + '">' + C_OPT[k] + '</option>'; }).join(''); sel.value = CUR[v] ? v : 'INR'; }
+    var oSym = getCurrencySymbol, oFmt = formatCurrency, oWords = numberToCurrencyWords;
+    window.getCurrencySymbol = getCurrencySymbol = function (c) { return (CUR[c || 'INR'] || CUR.INR).sym; };
+    window.formatCurrency = formatCurrency = function (val, c) {
+      c = c || 'INR'; var d = CUR[c] || CUR.INR; if (!val || isNaN(val)) return d.sym + '00,000' + (c === 'INR' ? '/-' : ''); return money(Number(val), c);
+    };
+    window.numberToCurrencyWords = numberToCurrencyWords = function (num, c) {
+      c = c || 'INR'; if (isNaN(num) || num <= 0) return (CUR[c] || CUR.INR).words + ' Zero Only' + (c === 'INR' ? ' /-' : '');
+      var d = CUR[c] || CUR.INR, whole = Math.floor(num + 1e-9), cents = Math.round((num - whole) * 100), res;
+      if (c === 'INR' || c === 'USD' || c === 'GBP' || c === 'EUR') res = oWords(whole, c);
+      else res = (d.words + ' ' + oWords(whole, 'ZZZ')).replace(/\s+/g, ' ');
+      if (cents > 0 && d.sub) { var cw = oWords(cents, 'ZZZ').replace(/\s*Only\s*$/, '').trim(); res = res.replace(/\s+Only(\s*\/-)?\s*$/, '') + ' and ' + cw + ' ' + d.sub + ' Only' + (c === 'INR' ? ' /-' : ''); }
+      return res;
+    };
+  }
+
+  var T = { on: false, mode: 'excl', type: '', rate: null, custom: '', base: '', id: '' }, busy = false, origLabel = null;
+  function reg() { return REG[cur()] || REG.INR; }
+  function curRate() { var s = $('selTaxRate'); if (!s) return 0; if (s.value === 'custom') return Math.max(0, parseFloat($('inpTaxCustom').value) || 0); return parseFloat(s.value) || 0; }
+  function curType() { var r = reg(), s = $('selTaxType'); return r.types.filter(function (t) { return t.k === (s && s.value); })[0] || r.types[0]; }
+  function pct(n) { return (+n.toFixed(3)) + '%'; }
+  function calc() {
+    var r = curRate() / 100, base = Math.max(0, parseFloat(($('inpTaxBase') || {}).value) || 0), mode = T.mode, net, tax, total;
+    if (mode === 'excl') { net = round2(base); tax = round2(base * r); total = round2(net + tax); } else { total = round2(base); net = round2(total / (1 + r)); tax = round2(total - net); }
+    var ty = curType(), parts = [], rate = curRate();
+    if (ty.split.length === 2) { var h = round2(tax / 2); parts = [{ l: ty.split[0] + ' @ ' + pct(rate / 2), v: h }, { l: ty.split[1] + ' @ ' + pct(rate / 2), v: round2(tax - h) }]; }
+    else parts = [{ l: ty.split[0] + ' @ ' + pct(rate), v: tax }];
+    return { net: net, tax: tax, total: total, parts: parts, rate: rate, base: base };
+  }
+  function taxBox() {
+    if ($('isxTax')) return; var sel = $('selCurrency'); if (!sel) return; var row = sel.closest('.form-row-2col'); if (!row) return;
+    var el = document.createElement('div'); el.id = 'isxTax'; el.className = 'isx-tax';
+    el.innerHTML = '<div class="isx-tax-head"><div><b>Tax</b><small id="isxTaxSub">Add GST / VAT and show the breakdown on the invoice</small></div><label class="isx-sw" title="Add tax"><input type="checkbox" id="chkTaxOn" aria-label="Add tax"><i></i></label></div>' +
+      '<div class="isx-tax-body" id="isxTaxBody" hidden>' +
+      '<div class="form-row-2col"><div class="form-field-group"><label class="field-label" id="lblTaxType">Tax type</label><select id="selTaxType" class="input-app"></select></div><div class="form-field-group"><label class="field-label">Rate</label><select id="selTaxRate" class="input-app"></select></div></div>' +
+      '<div class="form-field-group" id="wrapTaxCustom" hidden><label class="field-label">Custom rate (%)</label><input type="number" id="inpTaxCustom" class="input-app" step="0.01" min="0" max="100" placeholder="e.g. 7.5"></div>' +
+      '<div class="isx-seg2" id="segTaxMode" role="radiogroup" aria-label="How tax applies"><button type="button" data-m="excl" class="on" role="radio"><b>Add tax on top</b><small>My amount is before tax</small></button><button type="button" data-m="incl" role="radio"><b>Tax included</b><small>My amount already has tax</small></button></div>' +
+      '<div class="form-field-group"><label class="field-label" id="lblTaxBase">Amount before tax</label><input type="number" id="inpTaxBase" class="input-app" placeholder="e.g. 50000" step="any" inputmode="decimal"></div>' +
+      '<div class="form-field-group"><label class="field-label" id="lblTaxId">Your tax ID <span class="opt">optional</span></label><input type="text" id="inpTaxId" class="input-app" autocomplete="off"></div>' +
+      '<div class="isx-tax-sum" id="isxTaxSum"></div><div class="isx-tax-note" id="isxTaxNote"></div></div>';
+    row.insertAdjacentElement('afterend', el);
+    $('chkTaxOn').addEventListener('change', function () { onToggle(); });
+    $('selTaxType').addEventListener('change', recompute); $('selTaxRate').addEventListener('change', function () { $('wrapTaxCustom').hidden = this.value !== 'custom'; recompute(); });
+    ['inpTaxCustom', 'inpTaxBase', 'inpTaxId'].forEach(function (id) { $(id).addEventListener('input', recompute); });
+    $('segTaxMode').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; setMode(b.getAttribute('data-m'), true); });
+    var tot = $('inpTotalNumeric'); if (tot) tot.addEventListener('input', function () { if (busy || !T.on) return; reverse(); });
+    sel.addEventListener('change', function () { fillRegime(true); recompute(); });
+    fillRegime(true);
+  }
+  function fillRegime(resetRate) {
+    var r = reg(), ts = $('selTaxType'), rs = $('selTaxRate'); if (!ts) return; var keepT = ts.value, keepR = rs.value;
+    ts.innerHTML = r.types.map(function (t) { return '<option value="' + t.k + '">' + esc(t.label) + '</option>'; }).join(''); if (r.types.some(function (t) { return t.k === keepT; })) ts.value = keepT;
+    rs.innerHTML = r.rates.map(function (v) { return '<option value="' + v + '">' + pct(v) + '</option>'; }).join('') + '<option value="custom">Custom…</option>';
+    rs.value = (!resetRate && Array.prototype.some.call(rs.options, function (o) { return o.value === keepR; })) ? keepR : String(r.def); $('wrapTaxCustom').hidden = rs.value !== 'custom';
+    $('lblTaxType').textContent = r.name + ' type'; var li = $('lblTaxId'); li.innerHTML = 'Your ' + esc(r.id) + ' <span class="opt">optional</span>'; $('inpTaxId').placeholder = r.ph;
+    $('isxTaxSub').textContent = 'Add ' + r.name + ' and show the breakdown on the invoice'; $('segTaxMode').parentNode.classList.toggle('is-single', r.types.length < 2);
+  }
+  function setMode(m, user) {
+    T.mode = m; document.querySelectorAll('#segTaxMode button').forEach(function (b) { var on = b.getAttribute('data-m') === m; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+    if (user) { /* keep the payable total stable when switching how the typed amount is read */ var tot = parseFloat(($('inpTotalNumeric') || {}).value) || 0; var r = curRate() / 100; $('inpTaxBase').value = tot ? String(m === 'excl' ? round2(tot / (1 + r)) : tot) : ''; }
+    recompute();
+  }
+  function onToggle() {
+    T.on = $('chkTaxOn').checked; $('isxTaxBody').hidden = !T.on;
+    if (T.on) { var tot = parseFloat(($('inpTotalNumeric') || {}).value) || 0; if (!parseFloat($('inpTaxBase').value)) $('inpTaxBase').value = tot ? String(tot) : ''; }
+    recompute();
+  }
+  function reverse() { /* the total was edited directly (e.g. on the invoice): derive the typed amount from it */
+    var tot = parseFloat($('inpTotalNumeric').value) || 0, r = curRate() / 100; $('inpTaxBase').value = tot ? String(T.mode === 'excl' ? round2(tot / (1 + r)) : tot) : ''; renderSummary(); try { updatePreview(); } catch (e) {}
+  }
+  function recompute() {
+    if (!$('isxTax')) return; T.on = $('chkTaxOn').checked; var r = reg();
+    $('lblTaxBase').textContent = (T.mode === 'excl' ? 'Amount before tax' : 'Amount including tax') + ' (' + getCurrencySymbol(cur()).trim() + ')';
+    if (T.on) {
+      var c = calc(), tot = $('inpTotalNumeric');
+      if (tot && round2(parseFloat(tot.value) || 0) !== c.total) { busy = true; tot.value = c.total ? String(c.total) : ''; tot.dispatchEvent(new Event('input', { bubbles: true })); busy = false; }
+    }
+    renderSummary(); try { updatePreview(); } catch (e) {}
+  }
+  function renderSummary() {
+    var box = $('isxTaxSum'), note = $('isxTaxNote'); if (!box) return; if (!T.on) { box.innerHTML = ''; return; } var c = calc(), r = reg(), cc = cur();
+    box.innerHTML = '<div class="r"><span>' + (T.mode === 'excl' ? 'Amount' : 'Amount excluding tax') + '</span><b>' + money(c.net, cc) + '</b></div>' +
+      c.parts.map(function (p) { return '<div class="r"><span>' + esc(p.l) + '</span><b>' + money(p.v, cc) + '</b></div>'; }).join('') +
+      '<div class="r t"><span>Total payable</span><b>' + money(c.total, cc) + '</b></div>';
+    note.textContent = T.mode === 'excl' ? 'Tax is added on top of your amount. The invoice total updates automatically.' : 'Your amount already contains ' + r.name + '. The invoice shows how much of it is tax.';
+  }
+  /* page-1 table rows + tax id in the details box */
+  function paintTax() {
+    var table = document.querySelector('#invoiceSheetPage1 .items-table'), tb = table && table.tBodies[0]; if (!tb) return;
+    tb.querySelectorAll('.isx-taxrow').forEach(function (r) { r.remove(); }); document.querySelectorAll('#invoiceSheetPage1 .isx-taxid-row').forEach(function (r) { r.remove(); });
+    var lab = $('previewTotalLabel'), a1 = $('previewAmount1'); if (lab && origLabel === null) origLabel = lab.textContent;
+    if (!T.on) { if (lab && origLabel !== null) lab.textContent = origLabel; if (a1) a1.contentEditable = 'true'; return; }
+    var c = calc(), r = reg(), cc = cur(), totalRow = tb.querySelector('.total-row'); if (!totalRow) return;
+    var mk = function (label, val, cls) { var tr = document.createElement('tr'); tr.className = 'isx-taxrow ' + (cls || ''); tr.innerHTML = '<td colspan="4" class="isx-tl">' + esc(label) + '</td><td class="col-amount">' + esc(val) + '</td>'; return tr; };
+    var rows = [mk(T.mode === 'excl' ? 'Subtotal (before tax)' : 'Amount excluding tax', money(c.net, cc), 'sub')].concat(c.parts.map(function (p) { return mk(p.l, money(p.v, cc)); }));
+    rows.forEach(function (tr) { tb.insertBefore(tr, totalRow); });
+    if (lab && origLabel !== null) lab.textContent = origLabel.replace(/\.\s*$/, '') + ' (' + (T.mode === 'excl' ? 'incl. ' : 'inclusive of ') + r.name + ')';
+    if (a1) { a1.textContent = money(c.net, cc); a1.contentEditable = 'false'; }
+    var tid = (($('inpTaxId') || {}).value || '').trim(); var pan = $('previewPanNo'), prow = pan && pan.closest('tr');
+    if (tid && prow) { var cl = prow.cloneNode(true); cl.className = (cl.className + ' isx-taxid-row').trim(); cl.querySelectorAll('[id]').forEach(function (n) { n.removeAttribute('id'); }); cl.querySelectorAll('[contenteditable]').forEach(function (n) { n.removeAttribute('contenteditable'); n.removeAttribute('data-bind-input'); n.removeAttribute('data-bind-tab'); n.classList.remove('canvas-editable'); });
+      var tds = cl.children; if (tds[0]) tds[0].textContent = r.id.replace(/\s*\/.*$/, '') + ' :'; if (tds[1]) { tds[1].textContent = tid; tds[1].classList.add('isx-tid'); } prow.insertAdjacentElement('afterend', cl); }
+  }
+  function taxState() { return { on: T.on, mode: T.mode, type: ($('selTaxType') || {}).value || '', rate: ($('selTaxRate') || {}).value || '', custom: ($('inpTaxCustom') || {}).value || '', base: ($('inpTaxBase') || {}).value || '', id: ($('inpTaxId') || {}).value || '', cur: cur() }; }
+  function taxApply(s) {
+    if (!s || !$('isxTax')) return; $('chkTaxOn').checked = !!s.on; fillRegime(false); if (s.type) $('selTaxType').value = s.type; if (s.rate) $('selTaxRate').value = s.rate; $('wrapTaxCustom').hidden = $('selTaxRate').value !== 'custom';
+    $('inpTaxCustom').value = s.custom || ''; $('inpTaxBase').value = s.base || ''; $('inpTaxId').value = s.id || ''; T.on = !!s.on; $('isxTaxBody').hidden = !T.on; setMode(s.mode || 'excl', false);
+  }
+  function stateHooks() {
+    if (typeof captureCurrentInvoiceState === 'function') { var oc = captureCurrentInvoiceState; window.captureCurrentInvoiceState = captureCurrentInvoiceState = function () { var s = oc.apply(this, arguments); try { if (s && typeof s === 'object') s.isxTax = taxState(); } catch (e) {} return s; }; }
+    if (typeof restoreInvoiceState === 'function') { var orr = restoreInvoiceState; window.restoreInvoiceState = restoreInvoiceState = function (st) { var r = orr.apply(this, arguments); try { taxApply(st && st.isxTax || { on: false }); } catch (e) {} return r; }; }
+  }
+
+  /* ================= SINGLE-PAGE FIT (dynamic, never clipped) ================= */
+  var fitBusy = false, fitQ = 0;
+  function need(grid) {
+    var h = 0, mount = grid.querySelector('#mountAcceptancePage1');
+    Array.prototype.forEach.call(grid.children, function (c) { var cs = getComputedStyle(c); if (cs.display === 'none') return; h += c.offsetHeight + (c === mount ? 14 : (parseFloat(cs.marginTop) || 0) + (parseFloat(cs.marginBottom) || 0)); });
+    return h;
+  }
+  function fit() {
+    var pg = $('invoiceSheetPage1'); if (!pg) return; var grid = pg.querySelector('.invoice-content-grid'); if (!grid) return; fitBusy = true;
+    try {
+      var wrap = grid.parentElement.classList.contains('fit-wrap') ? grid.parentElement : null;
+      pg.classList.remove('fit-1', 'fit-2'); if (wrap) { wrap.classList.remove('on'); wrap.style.removeProperty('--fz'); }
+      var ok = function () { return need(grid) <= grid.clientHeight + 1; };
+      if (ok()) return;
+      pg.classList.add('fit-1'); if (ok()) return;
+      pg.classList.add('fit-2'); if (ok()) return;
+      if (!wrap) { wrap = document.createElement('div'); wrap.className = 'fit-wrap'; grid.parentNode.insertBefore(wrap, grid); wrap.appendChild(grid); }
+      wrap.classList.add('on'); var lo = .62, hi = 1, best = lo;
+      for (var i = 0; i < 8; i++) { var mid = (lo + hi) / 2; wrap.style.setProperty('--fz', mid); if (ok()) { best = mid; lo = mid; } else hi = mid; }
+      wrap.style.setProperty('--fz', best);
+    } finally { fitBusy = false; }
+  }
+  function scheduleFit() { if (fitQ) return; fitQ = requestAnimationFrame(function () { fitQ = 0; safe(fit)(); try { if (window.isxRefreshStamp) isxRefreshStamp(); } catch (e) {} }); }
+  function fitInit() {
+    var origUP = updatePreview; window.updatePreview = updatePreview = function () { var r = origUP.apply(this, arguments); try { paintTax(); } catch (e) {} scheduleFit(); return r; };
+    if (typeof setInvoiceTemplate === 'function') { var ost = setInvoiceTemplate; window.setInvoiceTemplate = setInvoiceTemplate = function () { var r = ost.apply(this, arguments); setTimeout(scheduleFit, 60); return r; }; }
+    var pg = $('invoiceSheetPage1'); if (pg && window.MutationObserver) { var mo = new MutationObserver(function () { if (!fitBusy) scheduleFit(); }); mo.observe(pg, { childList: true, subtree: true, characterData: true }); }
+    window.addEventListener('load', scheduleFit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleFit);
+    document.addEventListener('load', function (e) { if (e.target && e.target.tagName === 'IMG') scheduleFit(); }, true);
+    window.isxFit = scheduleFit; scheduleFit();
+  }
+
+  /* ================= LIGHT / DARK THEME ================= */
+  var MODE_KEY = 'isx_theme_mode', lgOn = false, lgT = 0;
+  function getMode() { try { return localStorage.getItem(MODE_KEY) || 'dark'; } catch (e) { return 'dark'; } }
+  function effective(m) { return m === 'system' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : (m === 'light' ? 'light' : 'dark'); }
+  function mapStyle(txt) {
+    return txt.split(';').map(function (d) { var i = d.indexOf(':'); if (i < 0) return d; var p = d.slice(0, i).trim().toLowerCase(), v = d.slice(i + 1); if (!/(#[0-9a-f]{3,8}\b|rgba?\(|\bwhite\b|\bblack\b)/i.test(v)) return d;
+      if (!/^(color|background|background-color|background-image|border|border-[a-z-]+|outline|outline-color|box-shadow|text-shadow|fill|stroke)$/.test(p)) return d; return d.slice(0, i + 1) + ISXLM.map(v.replace(/!important/i, '').trim(), ISXLM.role(p)) + (/!important/i.test(v) ? ' !important' : ''); }).join(';');
+  }
+  function lighten(root) {
+    var list = (root || document).querySelectorAll('[style*="#"],[style*="rgb"],[style*="white"],[style*="black"]');
+    for (var i = 0; i < list.length; i++) { var el = list[i]; if (el.closest('#a4Stage,.a4-page,.isx-keepcolor,.pen-dot,.esign-canvas-container,.isx-th,.tpl-btn,.tpl-icon,.dsw')) continue; var cs = el.getAttribute('style'); if (el.__lgm === cs) continue; var m = mapStyle(cs); if (m !== cs) { el.__lgo = cs; el.__lgm = m; el.setAttribute('style', m); } }
+  }
+  function restoreInline() { document.querySelectorAll('[style]').forEach(function (el) { if (el.__lgm !== undefined) { if (el.getAttribute('style') === el.__lgm) el.setAttribute('style', el.__lgo); el.__lgm = undefined; } }); }
+  function startInline() { if (lgOn) { lighten(); return; } lgOn = true; lighten(); lgT = setInterval(function () { lighten(); }, 1200); document.addEventListener('click', lazy, true); document.addEventListener('input', lazy, true); }
+  function lazy() { clearTimeout(lazy.t); lazy.t = setTimeout(function () { if (lgOn) lighten(); }, 120); }
+  function stopInline() { if (!lgOn) return; lgOn = false; clearInterval(lgT); document.removeEventListener('click', lazy, true); document.removeEventListener('input', lazy, true); restoreInline(); }
+  function applyMode(m, save) {
+    var e = effective(m), d = document.documentElement; d.setAttribute('data-theme', e); d.setAttribute('data-theme-mode', m);
+    var meta = document.querySelector('meta[name=theme-color]'); if (meta) meta.setAttribute('content', e === 'light' ? '#f5f6f8' : '#09090b');
+    if (e === 'light') startInline(); else stopInline();
+    document.querySelectorAll('.isx-th').forEach(function (b) { var on = b.getAttribute('data-m') === m; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+    if (save) { try { localStorage.setItem(MODE_KEY, m); } catch (x) {} }
+  }
+  function themeInit() {
+    var host = $('tabProfile'); if (host && !$('isxAppear')) {
+      var card = document.createElement('div'); card.className = 'panel-card'; card.id = 'isxAppear';
+      card.innerHTML = '<div class="panel-card-header"><div class="panel-card-title">Appearance</div></div><div class="isx-appear" role="radiogroup" aria-label="Theme">' +
+        '<button type="button" class="isx-th" data-m="dark" role="radio"><span class="mk dk"></span>Dark</button><button type="button" class="isx-th" data-m="light" role="radio"><span class="mk lt"></span>Light</button><button type="button" class="isx-th" data-m="system" role="radio"><span class="mk au"></span>Match device</button></div>' +
+        '<div class="isx-appear-note">Dark is the default. Your invoices always keep their own design theme.</div>';
+      host.insertBefore(card, host.children[1] || null);
+      card.addEventListener('click', function (e) { var b = e.target.closest('.isx-th'); if (b) { applyMode(b.getAttribute('data-m'), true); try { if (navigator.vibrate) navigator.vibrate(8); } catch (x) {} } });
+    }
+    applyMode(getMode(), false);
+    if (window.matchMedia) { var mq = window.matchMedia('(prefers-color-scheme: light)'), h = function () { if (getMode() === 'system') applyMode('system', false); }; mq.addEventListener ? mq.addEventListener('change', h) : mq.addListener(h); }
+  }
+
+  /* ================= boot ================= */
+  function boot() {
+    safe(currencyInit)(); safe(taxBox)(); safe(esignInit)(); safe(stateHooks)(); safe(fitInit)(); safe(themeInit)();
+    ['selectEsignMode'].forEach(function (id) { var e = $(id); if (e) e.addEventListener('change', function () { setTimeout(esignInit, 50); }); });
+    setTimeout(function () { try { recompute(); } catch (e) {} scheduleFit(); }, 600);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 0); }); else setTimeout(boot, 0);
+  window.isxFeat = { taxState: taxState, taxApply: taxApply, calc: calc, money: money, applyMode: applyMode, fit: scheduleFit };
 })();
 </script>
 </body>
