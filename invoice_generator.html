@@ -4277,6 +4277,20 @@ body.isx-grab,body.isx-grab *{cursor:grabbing!important;user-select:none!importa
 .sidebar-scroll-body .panel-card :is(input,textarea){cursor:text}
 .sidebar-scroll-body .panel-card :is(button,select,a,label[for]){cursor:pointer}
 }
+
+/* ===== desktop: no dark hover box over the pill; carry the mobile fixes across ===== */
+@media(min-width:901px){
+.tab-icons-rail .tab-icon-btn.active,.tab-icons-rail .tab-icon-btn.active:hover,.tab-icons-rail .tab-icon-btn.under,.tab-icons-rail .tab-icon-btn.under:hover,
+body.isx-paging .tab-icons-rail .tab-icon-btn,body.isx-paging .tab-icons-rail .tab-icon-btn:hover,.tab-icons-rail.scrub .tab-icon-btn,.tab-icons-rail.scrub .tab-icon-btn:hover{background:transparent!important;box-shadow:none!important}
+.tab-icons-rail .tab-icon-btn:focus{outline:none!important;background:transparent}
+.tab-icons-rail .tab-icon-btn:focus-visible{outline:2px solid #7f93b0!important;outline-offset:-3px}
+.m-ind{transition:translate .5s cubic-bezier(.22,1.02,.36,1),width .3s cubic-bezier(.2,.9,.25,1),scale .25s cubic-bezier(.3,1.6,.5,1),box-shadow .2s}
+#dTheme{z-index:900}
+/* profile photo: clean circle, no border box */
+.isx-avatar-btn,#googleUserProfileBadge{width:36px!important;height:36px!important;aspect-ratio:1;flex:none;padding:0!important;border:0!important;border-radius:50%!important;overflow:hidden!important;background:#16161a!important;box-shadow:0 0 0 1.5px #2e2e36;line-height:0}
+.isx-avatar-btn:hover{box-shadow:0 0 0 1.5px #a1a1aa}
+.isx-avatar-btn img,#googleUserAvatarImg{display:block!important;width:100%!important;height:100%!important;border:0!important;border-radius:50%!important;object-fit:cover;aspect-ratio:1}
+}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
