@@ -4386,18 +4386,58 @@ tr.isx-taxid-row .isx-tid{font-weight:600}
 .fit-wrap:not(.on){display:contents}
 .fit-wrap.on{width:calc(100% / var(--fz,1));height:calc(100% / var(--fz,1));transform:scale(var(--fz,1));transform-origin:0 0}
 @media(max-width:900px){.isx-appear{grid-template-columns:repeat(3,1fr);gap:8px}.isx-th .mk{height:54px}.isx-fcard .fn{font-size:23px}.isx-tax-head{padding:13px 14px}.isx-tax-body{padding:2px 14px 14px}}
+.isx-fhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;min-height:28px}
+.isx-fhead .field-label{margin:0!important}
+.isx-sw-s{width:40px;height:24px}
+.isx-sw-s i::after{width:18px;height:18px;left:3px;top:3px}
+.isx-sw-s input:checked+i::after{transform:translateX(16px)}
+.form-field-group.is-off .input-app{opacity:.4}
+.form-field-group.is-off .field-label{opacity:.6}
+
+/* ---- UPI limit note (red, pinned, dismissible) ---- */
+.isx-upinote{display:flex;align-items:flex-start;gap:12px;margin:8px 12px 0;padding:12px 10px 12px 14px;border-radius:14px;background:#2b0e12;border:1px solid #8c2430;color:#fecdd3;font:500 12.5px/1.45 var(--g-font);flex:0 0 auto;box-shadow:0 10px 26px -14px rgba(239,68,68,.55)}
+.isx-upinote[hidden]{display:none!important}
+.isx-upinote .ic{flex:none;width:22px;height:22px;margin-top:1px;color:#fb7185}
+.isx-upinote .tx{flex:1;min-width:0}
+.isx-upinote b{display:block;color:#fff;font-weight:700;margin-bottom:2px;font-size:13px}
+.isx-upinote button{flex:none;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:#fff;font-size:20px;line-height:1;cursor:pointer;transition:background .15s,transform .15s cubic-bezier(.3,1.6,.5,1)}
+.isx-upinote button:hover{background:rgba(255,255,255,.18)}
+.isx-upinote button:active{transform:scale(.9)}
+.isx-upinote.in{animation:isxNoteIn .38s cubic-bezier(.3,1.35,.5,1)}
+@keyframes isxNoteIn{from{opacity:0;transform:translateY(-10px) scale(.98)}to{opacity:1;transform:none}}
+/* ---- logo circle background ---- */
+.isx-logo-wrap{display:contents}
+.isx-logo-wrap.on{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;align-self:flex-start;flex:none;margin-bottom:10px;background:var(--lbg,#fff);box-shadow:inset 0 0 0 1px rgba(15,23,42,.08)}
+.isx-logo-wrap.on>img{width:auto!important;height:auto!important;max-width:64%!important;max-height:64%!important;margin:0!important;object-fit:contain!important;object-position:center!important;align-self:center!important;margin:auto!important}
+.isx-lbg{margin-top:10px;padding:12px;border-radius:10px;border:1px solid var(--g-border);background:var(--g-bg-surface-elevated)}
+.isx-lbg-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.isx-lbg-head b{display:block;font:700 12.5px var(--g-font)}
+.isx-lbg-head small{display:block;font:500 11px/1.35 var(--g-font);color:#8b8b95;margin-top:2px}
+.isx-lbg-body{margin-top:12px}
+.isx-lsws{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.isx-lsw{width:32px;height:32px;border-radius:50%;border:2px solid transparent;box-shadow:0 0 0 1px rgba(128,128,140,.45);cursor:pointer;padding:0;transition:transform .15s cubic-bezier(.3,1.6,.5,1),box-shadow .15s}
+.isx-lsw:hover{transform:scale(1.08)}
+.isx-lsw.on{box-shadow:0 0 0 2px #7f93b0,0 0 0 4px rgba(127,147,176,.28)}
+.isx-lcustom{position:relative;width:auto;min-width:80px;height:32px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;padding:0 12px 0 34px;background:conic-gradient(#f43f5e,#f59e0b,#10b981,#3b82f6,#a855f7,#f43f5e);color:#fff;font:700 11px var(--g-font);overflow:hidden;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.isx-lcustom input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:0;padding:0}
+.isx-lcustom span{position:relative;pointer-events:none}
+.isx-lcustom::before{content:'';position:absolute;left:5px;top:5px;width:22px;height:22px;border-radius:50%;background:var(--lbgc,#fff);box-shadow:0 0 0 2px #fff}
+.isx-upinote{padding:10px 8px 10px 12px;gap:10px;font-size:12px;line-height:1.4}
+.isx-upinote b{font-size:12.5px;margin-bottom:1px}
+.isx-upinote .ic{width:20px;height:20px}
+.isx-upinote button{width:28px;height:28px}
 
 /* LIGHT-GEN START (auto-generated from the dark theme) */
 html[data-theme="light"]{color-scheme:light}
-html[data-theme="light"] .btn-google-auth-top{background-color:#000000!important;color:#7a8085!important;border:1px solid #1f2125!important;box-shadow:0 1px 3px rgba(15,23,42,0.076)!important}
-html[data-theme="light"] .btn-google-auth-top:hover{background-color:#050607!important;box-shadow:0 2px 6px rgba(15,23,42,0.105)!important;border-color:#05142b!important}
+html[data-theme="light"] .btn-google-auth-top{background-color:#4e648c!important;color:#bdc0c2!important;border:1px solid #1f2125!important;box-shadow:0 1px 3px rgba(15,23,42,0.076)!important}
+html[data-theme="light"] .btn-google-auth-top:hover{background-color:#4e648c!important;box-shadow:0 2px 6px rgba(15,23,42,0.105)!important;border-color:#05142b!important}
 html[data-theme="light"] .history-card-item{background:var(--g-bg-input, #f4f5f6)!important;border:1px solid var(--g-border, #bec3cc)!important}
 html[data-theme="light"] .history-card-item:hover{border-color:var(--g-blue, #2171db)!important;box-shadow:0 2px 8px rgba(15,23,42,0.126)!important}
 html[data-theme="light"] .history-empty-slot{border:1.5px dashed var(--g-border, #bec3cc)!important;color:var(--g-text-tertiary, #757a7e)!important;background-color:rgba(15,23,42,0.013)!important}
 html[data-theme="light"] .pdf-drop-overlay{background-color:rgba(255,255,255,0.92)!important;border:4px dashed var(--g-blue, #2171db)!important;color:#141414!important}
-html[data-theme="light"]{--g-bg-surface:#eff0f2!important;--g-bg-surface-elevated:#e2e4e8!important;--g-bg-input:#f4f5f6!important;--g-border:#bec3cc!important;--g-border-hover:#a1a7b3!important;--g-border-focus:#0c3270!important;--g-blue-hover:#5d93dc!important;--g-blue-light:#0c3270!important;--g-blue-subtle:rgba(12,50,112,0.12)!important;--g-green:#48b766!important;--g-amber:#efb610!important;--g-red:#a8251a!important;--g-text-secondary:#393d42!important;--g-text-tertiary:#757a7e!important}
+html[data-theme="light"]{--g-bg-surface:#eff0f2!important;--g-bg-surface-elevated:#e2e4e8!important;--g-bg-input:#f4f5f6!important;--g-border:#bec3cc!important;--g-border-hover:#a1a7b3!important;--g-border-focus:#0c3270!important;--g-blue-hover:#5d93dc!important;--g-blue-light:#0c3270!important;--g-blue-subtle:rgba(12,50,112,0.12)!important;--g-green:#61c17b!important;--g-amber:#efb610!important;--g-red:#a8251a!important;--g-text-secondary:#393d42!important;--g-text-tertiary:#757a7e!important}
 html[data-theme="light"] input[type=range]::-webkit-slider-thumb{box-shadow:0 1px 4px rgba(15,23,42,0.168)!important}
-html[data-theme="light"] input[type=range]::-webkit-slider-thumb:hover{background-color:#000000!important}
+html[data-theme="light"] input[type=range]::-webkit-slider-thumb:hover{background-color:#4e648c!important}
 html[data-theme="light"] ::-webkit-scrollbar-thumb{background-color:#b8bcc5!important}
 html[data-theme="light"] ::-webkit-scrollbar-thumb:hover{background-color:#959ba7!important}
 html[data-theme="light"] .app-topbar{background-color:#f3f3f5!important}
@@ -4426,18 +4466,9 @@ html[data-theme="light"] .app-modal-backdrop{background-color:rgba(15,23,42,0.32
 html[data-theme="light"] .app-modal-dialog{box-shadow:0 16px 40px rgba(15,23,42,0.252)!important}
 html[data-theme="light"] .app-canvas-pane{background-color:#ffffff!important}
 html[data-theme="light"] .page-index-pill{background-color:rgba(234,235,238,0.85)!important}
-html[data-theme="light"] .canvas-clickable:hover{outline:2px dashed #1e56d0!important}
-html[data-theme="light"] .bill-to-label{color:#808080!important}
-html[data-theme="light"] .bill-to-name{color:#808080!important}
-html[data-theme="light"] .bill-to-detail{color:#808080!important}
-html[data-theme="light"] .bill-to-email{color:#177be8!important}
-html[data-theme="light"] .bill-to-email.canvas-link{color:#177be8!important}
-html[data-theme="light"] .meta-label{color:#808080!important}
-html[data-theme="light"] .meta-value{color:#808080!important}
 html[data-theme="light"] #inpRegistrationText:focus{border-color:#0c3270!important;box-shadow:0 0 0 3px rgba(100,116,139,0.1)!important}
-html[data-theme="light"] .banking-header-title{color:#808080!important}
-html[data-theme="light"] .roles-badges-table td{background-color:rgba(164,175,190,0.08)!important;color:#808080!important}
 html[data-theme="light"] .template-picker-card{box-shadow:0 2px 6px rgba(15,23,42,0.105)!important}
+html[data-theme="light"] .tpl-active-badge{background-color:rgba(33,113,219,0.2)!important;border:1px solid rgba(33,113,219,0.4)!important}
 html[data-theme="light"] .tpl-btn{background-color:#ffffff!important}
 html[data-theme="light"] .tpl-btn:hover{background-color:#eeeff2!important}
 html[data-theme="light"] .tpl-btn.active{background-color:rgba(33,113,219,0.2)!important;color:#141414!important}
@@ -4452,8 +4483,8 @@ html[data-theme="light"] .mobile-mode-btn.active{color:#141414!important;box-sha
 html[data-theme="light"] .mobile-canvas-zoom-pill{background-color:rgba(243,243,245,0.94)!important;box-shadow:0 4px 14px rgba(15,23,42,0.21)!important}
 html[data-theme="light"] .mobile-bottom-nav{background-color:rgba(243,243,245,0.96)!important}
 }
-html[data-theme="light"] .btn-google-auth-top{background-color:#000000!important;color:#7a8085!important;border:1px solid #1f2125!important;box-shadow:0 1px 3px rgba(15,23,42,0.076)!important}
-html[data-theme="light"] .btn-google-auth-top:hover{background-color:#050607!important;box-shadow:0 2px 6px rgba(15,23,42,0.105)!important;border-color:#05142b!important}
+html[data-theme="light"] .btn-google-auth-top{background-color:#4e648c!important;color:#bdc0c2!important;border:1px solid #1f2125!important;box-shadow:0 1px 3px rgba(15,23,42,0.076)!important}
+html[data-theme="light"] .btn-google-auth-top:hover{background-color:#4e648c!important;box-shadow:0 2px 6px rgba(15,23,42,0.105)!important;border-color:#05142b!important}
 html[data-theme="light"] .history-card-item{background:var(--g-bg-input, #f4f5f6)!important;border:1px solid var(--g-border, #bec3cc)!important}
 html[data-theme="light"] .history-card-item:hover{border-color:var(--g-blue, #2171db)!important;box-shadow:0 2px 8px rgba(15,23,42,0.126)!important}
 html[data-theme="light"] .history-empty-slot{border:1.5px dashed var(--g-border, #bec3cc)!important;color:var(--g-text-tertiary, #757a7e)!important;background-color:rgba(15,23,42,0.013)!important}
@@ -4479,25 +4510,25 @@ html[data-theme="light"] .isx-box{background-color:#e9eaee!important;border:1px 
 html[data-theme="light"] .isx-card{background-color:#dfe2e6!important;border:1px solid #afb4c0!important;color:#1b1e22!important}
 html[data-theme="light"] .isx-card:hover{border-color:#1450b4!important;background-color:rgba(20,80,180,0.15)!important}
 html[data-theme="light"] .isx-industry{background-color:rgba(20,80,180,0.08)!important;border:1px solid rgba(20,80,180,0.3)!important}
-html[data-theme="light"]{--g-bg-base:#f5f5f6!important;--g-bg-surface:#ffffff!important;--g-bg-surface-elevated:#f4f4f5!important;--g-bg-input:#ffffff!important;--g-border:#d8d8dc!important;--g-border-hover:#bfbfc4!important;--g-border-focus:#55555e!important;--g-blue:#171717!important;--g-blue-hover:#18181b!important;--g-blue-light:#27272b!important;--g-blue-subtle:rgba(15,23,42,0.054)!important;--g-green:#259d51!important;--g-amber:#9f7023!important;--g-red:#870e0e!important;--g-text-primary:#171717!important;--g-text-secondary:#5d5d65!important;--g-text-tertiary:#7b7b84!important}
+html[data-theme="light"]{--g-bg-base:#f5f5f6!important;--g-bg-surface:#ffffff!important;--g-bg-surface-elevated:#f4f4f5!important;--g-bg-input:#ffffff!important;--g-border:#d8d8dc!important;--g-border-hover:#bfbfc4!important;--g-border-focus:#55555e!important;--g-blue:#171717!important;--g-blue-hover:#425478!important;--g-blue-light:#27272b!important;--g-blue-subtle:rgba(15,23,42,0.054)!important;--g-green:#259d51!important;--g-amber:#9f7023!important;--g-red:#870e0e!important;--g-text-primary:#171717!important;--g-text-secondary:#5d5d65!important;--g-text-tertiary:#86868d!important}
 html[data-theme="light"] ::-webkit-scrollbar-thumb{background-color:#e1e1e4!important}
 html[data-theme="light"] ::-webkit-scrollbar-thumb:hover{background-color:#bebec4!important}
 html[data-theme="light"] .app-topbar{background-color:rgba(245,245,246,0.82)!important}
 html[data-theme="light"] .app-brand-title{color:#171717!important}
-html[data-theme="light"] .page-nav-chip.active{background-color:#050505!important;color:#75758a!important}
+html[data-theme="light"] .page-nav-chip.active{background-color:#4e648c!important;color:#f7f7f8!important}
 html[data-theme="light"] .btn-zoom-circle:hover{background-color:#efeff1!important;color:#141414!important}
 html[data-theme="light"] .btn-app-secondary:hover,html[data-theme="light"] .btn-google-auth-top:hover{background-color:#f4f4f5!important}
-html[data-theme="light"] .btn-google-primary{background-color:#050505!important;color:#75758a!important;border:1px solid #050505!important}
-html[data-theme="light"] .btn-google-primary:hover{background-color:#18181b!important}
-html[data-theme="light"] .btn-google-primary svg{fill:#75758a!important}
+html[data-theme="light"] .btn-google-primary{background-color:#4e648c!important;color:#f7f7f8!important;border:1px solid #050505!important}
+html[data-theme="light"] .btn-google-primary:hover{background-color:#425478!important}
+html[data-theme="light"] .btn-google-primary svg{fill:#f7f7f8!important}
 html[data-theme="light"] .tab-icon-btn:hover{background-color:#f4f4f5!important;color:#171717!important}
 html[data-theme="light"] .tab-icon-btn.active{background-color:#efeff1!important;color:#171717!important}
-html[data-theme="light"] .tab-tooltip{background-color:#050505!important;color:#75758a!important}
+html[data-theme="light"] .tab-tooltip{background-color:#4e648c!important;color:#f7f7f8!important}
 html[data-theme="light"] .panel-card-title{color:#171717!important}
 html[data-theme="light"] .input-app,html[data-theme="light"] select.input-app,html[data-theme="light"] textarea.input-app{color:#171717!important}
 html[data-theme="light"] .input-app:focus{border-color:#55555e!important;box-shadow:0 0 0 3px rgba(100,116,139,0.028)!important}
 html[data-theme="light"] .chip-btn:hover,html[data-theme="light"] .terms-chip:hover{border-color:#a5a5ac!important;color:#171717!important;background-color:#ffffff!important}
-html[data-theme="light"] .terms-chip.active,html[data-theme="light"] .chip-btn.selected{background-color:#050505!important;color:#75758a!important;border-color:#050505!important}
+html[data-theme="light"] .terms-chip.active,html[data-theme="light"] .chip-btn.selected{background-color:#4e648c!important;color:#f7f7f8!important;border-color:#050505!important}
 html[data-theme="light"] .service-tag{background-color:#f4f4f5!important;color:#171717!important}
 html[data-theme="light"] [style*="66,133,244"],html[data-theme="light"] [style*="66, 133, 244"]{background-color:rgba(15,23,42,0.027)!important}
 html[data-theme="light"] [style*="#8ab4f8"],html[data-theme="light"] [style*="#4285f4;"]{color:#27272b!important}
@@ -4506,7 +4537,8 @@ html[data-theme="light"] .canvas-scroll-stage{background-image:radial-gradient(c
 html[data-theme="light"] .app-modal-backdrop{background-color:rgba(245,245,246,0.7)!important}
 html[data-theme="light"] .app-modal-dialog,html[data-theme="light"] .isx-box,html[data-theme="light"] .google-account-popover{background-color:#ffffff!important;box-shadow:0 40px 100px -20px rgba(15,23,42,0.357)!important;color:#171717!important}
 html[data-theme="light"] [style*="#1e2128"]{background-color:#ffffff!important}
-html[data-theme="light"] #toastContainer>*{background-color:#050505!important;color:#75758a!important;box-shadow:0 12px 40px rgba(15,23,42,0.21)!important}
+html[data-theme="light"] #toastContainer>*{background-color:#4e648c!important;color:#f7f7f8!important;box-shadow:0 12px 40px rgba(15,23,42,0.21)!important}
+html[data-theme="light"] .tpl-active-badge{background-color:#f4f4f5!important;color:#27272b!important}
 html[data-theme="light"] .tpl-btn:hover{border-color:#a5a5ac!important;color:#171717!important}
 html[data-theme="light"] .tpl-btn.active{border-color:#050505!important;color:#171717!important;background-color:#f4f4f5!important}
 html[data-theme="light"] .isx-card:hover{border-color:#050505!important;background-color:#f4f4f5!important}
@@ -4539,8 +4571,8 @@ html[data-theme="light"] .isx-check input{accent-color:#171717!important}
 html[data-theme="light"] .isx-gate-err{color:#870e0e!important}
 html[data-theme="light"] #isxGate.review{background-color:rgba(245,245,246,0.7)!important}
 html[data-theme="light"] .isx-x:hover{color:#171717!important}
-html[data-theme="light"] .isx-gbtn{background-color:#050505!important;color:#75758a!important}
-html[data-theme="light"] .isx-gbtn:hover{background-color:#18181b!important}
+html[data-theme="light"] .isx-gbtn{background-color:#4e648c!important;color:#f7f7f8!important}
+html[data-theme="light"] .isx-gbtn:hover{background-color:#425478!important}
 html[data-theme="light"] .isx-fine a{color:#27272b!important}
 html[data-theme="light"] #popoverUserName{color:#171717!important}
 html[data-theme="light"] .isx-danger{color:#870e0e!important}
@@ -4552,11 +4584,10 @@ html[data-theme="light"] .isx-d-partial{background-color:#e89a16!important}
 html[data-theme="light"] .isx-d-overdue{background-color:#b21919!important}
 html[data-theme="light"] .isx-d-due{background-color:#b95b0e!important}
 html[data-theme="light"] .isx-d-refunded{background-color:#3b119b!important}
-html[data-theme="light"] .canvas-clickable:hover{outline:1.5px dashed rgba(30,86,208,0.85)!important}
-html[data-theme="light"] .isx-q-h span{color:#7a7a85!important}
+html[data-theme="light"] .isx-q-h span{color:#a5a5ac!important}
 html[data-theme="light"] .isx-chip{background-color:#f4f4f5!important;color:#171717!important}
 html[data-theme="light"] .isx-chip button:hover{color:#870e0e!important}
-html[data-theme="light"] .isx-late-row{border:1.5px solid var(--tp,#ffffff)!important;background:var(--ts,#000000)!important;color:var(--tk,#808080)!important}
+html[data-theme="light"] .isx-late-row{border:1.5px solid var(--tp,#ffffff)!important;background:var(--ts,#4e648c)!important;color:var(--tk,#ffffff)!important}
 html[data-theme="light"] .isx-late-row>:nth-child(n+3){border-top:1px solid var(--tp,#ffffff)!important}
 html[data-theme="light"] .isx-hist{background-color:#ffffff!important;box-shadow:-30px 0 60px -30px rgba(15,23,42,0.294)!important}
 html[data-theme="light"] .isx-hhead b{color:#171717!important}
@@ -4575,9 +4606,10 @@ html[data-theme="light"] .isx-fmt select{background-color:#ffffff!important;colo
 html[data-theme="light"] .isx-fmt .sep{background-color:#dddde0!important}
 html[data-theme="light"] .isx-rte-box{background-color:#ffffff!important;box-shadow:0 40px 100px -20px rgba(15,23,42,0.357)!important}
 html[data-theme="light"] .isx-rte-head h2{color:#171717!important}
-html[data-theme="light"] .isx-rte{background-color:#000000!important;color:#808080!important}
-html[data-theme="light"] .isx-rte h4{color:#808080!important}
+html[data-theme="light"] .isx-rte{background-color:#4e648c!important;color:#f7f7f7!important}
+html[data-theme="light"] .isx-rte h4{color:#f7f7f7!important}
 html[data-theme="light"] .isx-termsbar b{color:#171717!important}
+html[data-theme="light"] #isxHQ{background-color:#ffffff!important}
 html[data-theme="light"] .isx-datebtn{color:#555d6d!important}
 html[data-theme="light"] .isx-datebtn:hover{background-color:#efeff1!important;color:#171717!important}
 html[data-theme="light"] #isxCal{background-color:#ffffff!important;border:1px solid #d4d4d9!important;box-shadow:0 30px 70px -18px rgba(15,23,42,0.357)!important;color:#171717!important}
@@ -4585,21 +4617,21 @@ html[data-theme="light"] .isx-cal-t{color:#5d5d65!important}
 html[data-theme="light"] .isx-cal-t b{color:#171717!important}
 html[data-theme="light"] .isx-cal-h button{color:#27272b!important}
 html[data-theme="light"] .isx-cal-h button:hover{background-color:#efeff1!important}
-html[data-theme="light"] .isx-cal-w{color:#7b7b84!important}
+html[data-theme="light"] .isx-cal-w{color:#86868d!important}
 html[data-theme="light"] .isx-cal-d{color:#1f1f23!important}
 html[data-theme="light"] .isx-cal-d.wk{color:#555e6d!important}
 html[data-theme="light"] .isx-cal-d:hover{background-color:#ececee!important}
 html[data-theme="light"] .isx-cal-d.today{box-shadow:inset 0 0 0 1.5px rgba(100,116,139,0.3)!important;color:#141414!important}
-html[data-theme="light"] .isx-cal-d.sel{background-color:#050505!important;color:#75758a!important}
-html[data-theme="light"] .isx-cal-f{border-top:1px solid #d4d4d9!important;color:#7b7b84!important}
+html[data-theme="light"] .isx-cal-d.sel{background-color:#4e648c!important;color:#f7f7f8!important}
+html[data-theme="light"] .isx-cal-f{border-top:1px solid #d4d4d9!important;color:#86868d!important}
 html[data-theme="light"] .isx-cal-f button{border:1px solid #ccccd0!important;color:#1f1f23!important}
 html[data-theme="light"] .isx-cal-f button:hover{border-color:#86868d!important}
-html[data-theme="light"] .isx-cal-f button.primary{background-color:#050505!important;color:#75758a!important;border-color:#050505!important}
+html[data-theme="light"] .isx-cal-f button.primary{background-color:#4e648c!important;color:#f7f7f8!important;border-color:#050505!important}
 html[data-theme="light"] #isxSplash{background-color:#f5f5f6!important}
 html[data-theme="light"] #isxBusy{background-color:rgba(245,245,246,0.55)!important}
 html[data-theme="light"] .isx-busy-card{background-color:#ffffff!important;box-shadow:0 40px 100px -20px rgba(15,23,42,0.357)!important}
 html[data-theme="light"] .isx-busy-card span{color:#27272b!important}
-html[data-theme="light"] .app-brand-title>span:first-child{background-image:linear-gradient(100deg,#10151c 0%,#495669 25%,#1c2637 50%,#51637e 75%,#10151c 100%)!important}
+html[data-theme="light"] .app-brand-title>span:first-child{background-image:linear-gradient(100deg,#425478 0%,#495669 25%,#1c2637 50%,#51637e 75%,#425478 100%)!important}
 html[data-theme="light"] .app-brand-title>span:first-child::after{border:1px solid rgba(81,99,126,0.5)!important;-webkit-text-fill-color:#4f5e73!important;color:#4f5e73!important}
 html[data-theme="light"] #isxSplash.out{background-image:radial-gradient(circle at 50% 50%,transparent var(--r),#f5f5f6 calc(var(--r) + 2px))!important}
 html[data-theme="light"] #isxSplash.out{background-color:#f5f5f6!important}
@@ -4610,7 +4642,7 @@ html[data-theme="light"] #btnInvoiceHistoryHeader .m-hist-ico{stroke:#1f1f23!imp
 html[data-theme="light"] #btnInvoiceHistoryHeader:active{background-color:#efeff1!important}
 html[data-theme="light"] #googleUserProfileBadge{background-color:#f5f5f6!important;box-shadow:0 0 0 1.5px rgba(15,23,42,0.38)!important}
 html[data-theme="light"] .tab-icon-btn{background-color:#ffffff!important;color:#5d5d65!important}
-html[data-theme="light"] .tab-icon-btn.active{background-color:#050505!important;color:#75758a!important;border-color:#050505!important}
+html[data-theme="light"] .tab-icon-btn.active{background-color:#4e648c!important;color:#f7f7f8!important;border-color:#050505!important}
 html[data-theme="light"] #sidebarGlobalProfileSelect{background-color:#ffffff!important}
 html[data-theme="light"] #sidebarBtnSaveProfile{background-color:#f3f3f5!important;color:#1f1f23!important;border:1px solid #cdcdd2!important}
 html[data-theme="light"] .panel-card{background-color:#ffffff!important}
@@ -4621,7 +4653,7 @@ html[data-theme="light"] .mobile-nav-item{color:#787881!important}
 html[data-theme="light"] .mobile-nav-item.active{color:#171717!important}
 html[data-theme="light"] .mobile-nav-item.active::before{background-color:#39485e!important;box-shadow:0 0 12px rgba(100,116,139,0.3)!important}
 html[data-theme="light"] .mobile-nav-item.cta{color:#1f1f23!important}
-html[data-theme="light"] .mobile-nav-item.cta .ci{background-color:#050505!important;color:#75758a!important;box-shadow:0 10px 26px -6px rgba(100,116,139,0.22),0 0 0 5px var(--m-bg)!important}
+html[data-theme="light"] .mobile-nav-item.cta .ci{background-color:#4e648c!important;color:#f7f7f8!important;box-shadow:0 10px 26px -6px rgba(100,116,139,0.22),0 0 0 5px var(--m-bg)!important}
 html[data-theme="light"] .mobile-sheet-backdrop{background-color:rgba(15,23,42,0.2)!important}
 html[data-theme="light"] .mobile-sheet-dialog,html[data-theme="light"] #isxMore{background-color:#ffffff!important;box-shadow:0 -24px 60px -10px rgba(15,23,42,0.294)!important}
 html[data-theme="light"] .mobile-sheet-handle{background-color:#c5c5cb!important}
@@ -4637,7 +4669,7 @@ html[data-theme="light"] .m-row{border-bottom:1px solid #e0e0e5!important;color:
 html[data-theme="light"] .m-row:active{background-color:#f4f4f6!important}
 html[data-theme="light"] .m-row i{background-color:#f3f3f5!important;border:1px solid #d5d5da!important;color:#1b2535!important}
 html[data-theme="light"] .m-row small{color:#787881!important}
-html[data-theme="light"] .m-row .chev{color:#7a7a85!important}
+html[data-theme="light"] .m-row .chev{color:#a2a2a9!important}
 html[data-theme="light"] .m-row.danger{color:#771b13!important}
 html[data-theme="light"] .m-row.danger i{color:#771b13!important}
 html[data-theme="light"] .isx-hist{background-color:#ffffff!important}
@@ -4647,11 +4679,11 @@ html[data-theme="light"] #draftRecoveryBanner{border-color:#c1c7d1!important;bac
 html[data-theme="light"] .sidebar-nav-header{background-color:rgba(255,255,255,0.92)!important;border:1px solid #cfcfd4!important;box-shadow:0 16px 40px -12px rgba(15,23,42,0.357)!important}
 html[data-theme="light"] .tab-icon-btn{color:#5d5d65!important}
 html[data-theme="light"] .sidebar-nav-header{background-color:#ffffff!important}
-html[data-theme="light"] .tab-icon-btn.active{color:#75758a!important}
-html[data-theme="light"] .m-ind{background-color:#050505!important;box-shadow:0 4px 12px -4px rgba(100,116,139,0.22)!important}
+html[data-theme="light"] .tab-icon-btn.active{color:#f7f7f8!important}
+html[data-theme="light"] .m-ind{background-color:#4e648c!important;box-shadow:0 4px 12px -4px rgba(100,116,139,0.22)!important}
 html[data-theme="light"] .m-ind.lift{box-shadow:0 12px 28px -6px rgba(100,116,139,0.3)!important}
 html[data-theme="light"] .tab-icons-rail.scrub .tab-icon-btn.active:not(.under){color:#5d5d65!important}
-html[data-theme="light"] .tab-icon-btn.under{color:#75758a!important}
+html[data-theme="light"] .tab-icon-btn.under{color:#f7f7f8!important}
 html[data-theme="light"] #mSecHead small{color:#787881!important}
 html[data-theme="light"] .mprof{background-color:#ffffff!important;color:#171717!important}
 html[data-theme="light"] .mprof:active{background-color:#f0f0f2!important}
@@ -4667,27 +4699,27 @@ html[data-theme="light"] .m-ind{box-shadow:0 3px 10px -4px rgba(100,116,139,0.2)
 html[data-theme="light"] .isx-undo{background-color:rgba(255,255,255,0.96)!important;border:1px solid #cfcfd4!important;box-shadow:0 12px 30px -8px rgba(15,23,42,0.357)!important}
 }
 @media(max-width:900px){html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.active:not(.under){color:#5d5d65!important}
-html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#75758a!important}
+html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#f7f7f8!important}
 }
 html[data-theme="light"] .pwa-install-banner{border:1px solid #cdcdd2!important;background-color:#ffffff!important;color:#171717!important;box-shadow:0 18px 50px -12px rgba(15,23,42,0.357)!important}
 html[data-theme="light"] .pwa-install-banner strong{color:#141414!important}
-html[data-theme="light"] .btn-pwa-install{background-color:#050505!important;color:#75758a!important}
-html[data-theme="light"] .btn-pwa-install:hover,html[data-theme="light"] .btn-pwa-install:active{background-color:#18181b!important;color:#75758a!important}
+html[data-theme="light"] .btn-pwa-install{background-color:#4e648c!important;color:#f7f7f8!important}
+html[data-theme="light"] .btn-pwa-install:hover,html[data-theme="light"] .btn-pwa-install:active{background-color:#425478!important;color:#f7f7f8!important}
 html[data-theme="light"] .btn-pwa-dismiss{background-color:#e0e0e4!important;color:#171717!important}
 html[data-theme="light"] .m-steps li{border-bottom:1px solid #e0e0e5!important;color:#1f1f23!important}
 html[data-theme="light"] .m-steps li::before{background-color:#e0e0e4!important;color:#141414!important}
 html[data-theme="light"] .m-steps b{color:#141414!important}
 html[data-theme="light"] .m-note{color:#5d5d65!important}
-@media(min-width:901px){html[data-theme="light"] .tab-icon-btn.active,html[data-theme="light"] .tab-icon-btn.active:hover{color:#75758a!important}
-html[data-theme="light"] .m-ind{background-color:#050505!important;box-shadow:0 4px 14px -4px rgba(100,116,139,0.22)!important}
+@media(min-width:901px){html[data-theme="light"] .tab-icon-btn.active,html[data-theme="light"] .tab-icon-btn.active:hover{color:#f7f7f8!important}
+html[data-theme="light"] .m-ind{background-color:#4e648c!important;box-shadow:0 4px 14px -4px rgba(100,116,139,0.22)!important}
 }
 @media(min-width:901px){html[data-theme="light"] .tab-icons-rail{background-color:#ffffff!important}
 html[data-theme="light"] .tab-icon-btn:not(.active):hover{background-color:#efeff1!important;color:#171717!important}
-html[data-theme="light"] .tab-icon-btn.active{color:#75758a!important}
+html[data-theme="light"] .tab-icon-btn.active{color:#f7f7f8!important}
 }
 @media(min-width:901px){html[data-theme="light"] .m-ind.lift{box-shadow:0 10px 26px -6px rgba(100,116,139,0.3)!important}
 html[data-theme="light"] .tab-icons-rail.scrub .tab-icon-btn.active:not(.under){color:#5d5d65!important}
-html[data-theme="light"] .tab-icons-rail.scrub .tab-icon-btn.under{color:#75758a!important}
+html[data-theme="light"] .tab-icons-rail.scrub .tab-icon-btn.under{color:#f7f7f8!important}
 }
 @media(min-width:901px){html[data-theme="light"] #dThemeBtn{background-color:rgba(255,255,255,0.92)!important;color:#171717!important;box-shadow:0 8px 24px -10px rgba(15,23,42,0.294)!important}
 html[data-theme="light"] #dThemeBtn:hover{background-color:#f0f0f2!important;border-color:#bebec4!important}
@@ -4697,7 +4729,7 @@ html[data-theme="light"] #dThemeBtn .dcv{stroke:#5d5d65!important}
 html[data-theme="light"] #dTheme{background-color:#ffffff!important;box-shadow:0 30px 80px -20px rgba(15,23,42,0.378)!important}
 }
 @media(min-width:901px){html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.active:not(.under){color:#5d5d65!important}
-html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#75758a!important}
+html[data-theme="light"] body.isx-paging .tab-icons-rail .tab-icon-btn.under{color:#f7f7f8!important}
 }
 @media(min-width:901px){html[data-theme="light"] .tab-icons-rail .tab-icon-btn:focus-visible{outline:2px solid #51637e!important}
 html[data-theme="light"] #googleUserProfileBadge{background-color:#f5f5f6!important;box-shadow:0 0 0 1.5px rgba(15,23,42,0.38)!important}
@@ -4706,28 +4738,41 @@ html[data-theme="light"] .isx-tax{border:1px solid #d8d8dc!important;background-
 html[data-theme="light"] .isx-tax-head b{color:#171717!important}
 html[data-theme="light"] .isx-tax-head small{color:#5d5d65!important}
 html[data-theme="light"] .isx-sw i{background-color:#e0e0e4!important}
-html[data-theme="light"] .isx-sw i::after{background-color:#050505!important;box-shadow:0 2px 6px rgba(15,23,42,0.168)!important}
+html[data-theme="light"] .isx-sw i::after{background-color:#4e648c!important;box-shadow:0 2px 6px rgba(15,23,42,0.168)!important}
 html[data-theme="light"] .isx-sw input:checked+i{background-color:#51637e!important}
 html[data-theme="light"] .isx-tax-body{border-top:1px solid #dddde2!important}
 html[data-theme="light"] .isx-seg2{background-color:#ffffff!important;border:1px solid #d8d8dc!important}
 html[data-theme="light"] .isx-seg2 button{color:#5d5d65!important}
-html[data-theme="light"] .isx-seg2 button small{color:#7b7b84!important}
-html[data-theme="light"] .isx-seg2 button.on{background-color:#050505!important;color:#75758a!important}
-html[data-theme="light"] .isx-seg2 button.on small{color:#7a7a85!important}
+html[data-theme="light"] .isx-seg2 button small{color:#86868d!important}
+html[data-theme="light"] .isx-seg2 button.on{background-color:#4e648c!important;color:#f7f7f8!important}
+html[data-theme="light"] .isx-seg2 button.on small{color:#a5a5ac!important}
 html[data-theme="light"] .isx-tax-sum{background-color:#ffffff!important;border:1px solid #d8d8dc!important}
 html[data-theme="light"] .isx-tax-sum .r{color:#5d5d65!important;border-bottom:1px solid #dfdfe4!important}
 html[data-theme="light"] .isx-tax-sum .r b{color:#171717!important}
 html[data-theme="light"] .isx-tax-sum .t{color:#171717!important}
 html[data-theme="light"] .isx-tax-note{color:#787881!important}
-html[data-theme="light"] .field-label .opt{color:#7b7b84!important}
+html[data-theme="light"] .field-label .opt{color:#86868d!important}
 html[data-theme="light"] .isx-fcard{border:1px solid #d4d4d9!important;background-color:#ffffff!important;color:#19191b!important}
 html[data-theme="light"] .isx-fcard:hover{border-color:#babac1!important}
-html[data-theme="light"] .isx-fcard small{color:#7b7b84!important}
+html[data-theme="light"] .isx-fcard small{color:#86868d!important}
 html[data-theme="light"] .isx-fcard.on{border-color:#51637e!important;background-color:#f0f2f4!important;box-shadow:0 0 0 3px rgba(100,116,139,0.072)!important}
-html[data-theme="light"] .isx-flabel small{color:#7b7b84!important}
+html[data-theme="light"] .isx-fcard.on::after{background-color:#51637e!important}
+html[data-theme="light"] .isx-flabel small{color:#86868d!important}
 html[data-theme="light"] .isx-th{border:1px solid #d4d4d9!important;background-color:#ffffff!important;color:#5d5d65!important}
 html[data-theme="light"] .isx-th.on{border-color:#51637e!important;color:#171717!important;box-shadow:0 0 0 3px rgba(100,116,139,0.08)!important}
+html[data-theme="light"] .isx-th.on::after{background-color:#51637e!important}
 html[data-theme="light"] .isx-appear-note{color:#787881!important}
+html[data-theme="light"] .isx-upinote{background-color:#f7ebed!important;border:1px solid #d27c86!important;color:#3e040c!important;box-shadow:0 10px 26px -14px rgba(100,116,139,0.22)!important}
+html[data-theme="light"] .isx-upinote .ic{color:#870b1d!important}
+html[data-theme="light"] .isx-upinote b{color:#141414!important}
+html[data-theme="light"] .isx-upinote button{background-color:rgba(15,23,42,0.09)!important;color:#141414!important}
+html[data-theme="light"] .isx-upinote button:hover{background-color:rgba(15,23,42,0.162)!important}
+html[data-theme="light"] .isx-logo-wrap.on{background:var(--lbg,#4e648c)!important;box-shadow:inset 0 0 0 1px rgba(15,23,42,0.034)!important}
+html[data-theme="light"] .isx-lbg-head small{color:#5d5d65!important}
+html[data-theme="light"] .isx-lsw{box-shadow:0 0 0 1px rgba(100,116,139,0.18)!important}
+html[data-theme="light"] .isx-lsw.on{box-shadow:0 0 0 2px rgba(100,116,139,0.3),0 0 0 4px rgba(100,116,139,0.112)!important}
+html[data-theme="light"] .isx-lcustom{background-image:conic-gradient(#b71430,#e89a16,#55e0b2,#1252bb,#5b10a2,#b71430)!important;color:#141414!important;text-shadow:0 1px 2px rgba(15,23,42,0.21)!important}
+html[data-theme="light"] .isx-lcustom::before{background:var(--lbgc,#4e648c)!important;box-shadow:0 0 0 2px rgba(100,116,139,0.3)!important}
 /* LIGHT-GEN END */
 /* hand-tuned light overrides (appended AFTER the generated block; not auto-mapped) */
 html[data-theme="light"] .app-canvas-pane,html[data-theme="light"] .canvas-scroll-stage{background-color:#e8eaee!important;background-image:radial-gradient(rgba(15,23,42,.11) 1px,transparent 1.2px)!important;background-size:20px 20px!important}
@@ -12917,6 +12962,600 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
 
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .5) l2 = Math.min(l2, .5); if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+/* Shared dark->light colour mapper. Used at build time (lightgen.cjs) and at runtime (inline styles). */
+(function (root) {
+  'use strict';
+  var NAMED = { white: [255, 255, 255, 1], black: [0, 0, 0, 1] };
+  function hex2rgb(h) {
+    h = h.replace('#', ''); if (h.length === 3 || h.length === 4) h = h.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(h.slice(0, 6), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255, h.length === 8 ? parseInt(h.slice(6), 16) / 255 : 1];
+  }
+  function rgb2hsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) { var d = mx - mn; s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h /= 6; }
+    return [h, s, l];
+  }
+  function hsl2rgb(h, s, l) {
+    function f(p, q, t) { if (t < 0) t += 1; if (t > 1) t -= 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; }
+    if (!s) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    return [Math.round(f(p, q, h + 1 / 3) * 255), Math.round(f(p, q, h) * 255), Math.round(f(p, q, h - 1 / 3) * 255)];
+  }
+  function out(r, g, b, a) { return a >= .995 ? '#' + [r, g, b].map(function (v) { return ('0' + Math.max(0, Math.min(255, v)).toString(16)).slice(-2); }).join('') : 'rgba(' + r + ',' + g + ',' + b + ',' + (+a.toFixed(3)) + ')'; }
+  /* role: 'bg' | 'text' | 'border' | 'shadow' */
+  function mapRGBA(r, g, b, a, role) {
+    if (role === 'shadow') { var hs = rgb2hsl(r, g, b); return hs[2] < .45 ? out(15, 23, 42, Math.min(a * .42, .38)) : out(100, 116, 139, Math.min(a * .4, .3)); }
+    if (role === 'bg' && r === 0 && g === 0 && b === 0 && a < .995) return out(15, 23, 42, a * .5); /* scrims stay dark and soft */
+    if (role === 'bg' && r === 255 && g === 255 && b === 255 && a < .3) return out(15, 23, 42, a * .9); /* faint white tints become faint dark tints */
+    var h = rgb2hsl(r, g, b), l2 = 1 - h[2], s2 = h[1] * (h[2] < .5 ? .82 : .9);
+    /* bright "primary" fills (white pills / buttons in the dark UI) become the brand slate accent, never near-black */
+    if (role === 'bg' && h[2] >= .86 && a >= .9) { return h[2] >= .95 ? out(78, 100, 140, a) : out(66, 84, 120, a); }
+    if (role === 'bg' && h[2] < .2) { var L = h[2]; l2 = L <= .045 ? .962 : L <= .085 ? 1 : .97 - (L - .085) * .9; if (L <= .085) s2 = Math.min(s2, .25); } /* page = soft grey, cards/inputs/sheets = white, hovers = a touch darker */
+    if (role === 'text') { if (l2 > .3 && l2 < .46) l2 = .38; if (l2 < .12) l2 = .08 + l2 * .5; if (h[2] < .12) l2 = Math.max(l2, .97); /* dark label on a bright fill -> white label on the accent fill */ }
+    if (role === 'border') { if (a < .995 && h[2] > .85) { return out(15, 23, 42, Math.min(a * 1.4, .45)); } }
+    var c = hsl2rgb(h[0], s2, l2); return out(c[0], c[1], c[2], a);
+  }
+  var COLOR_RE = /#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b|rgba?\(\s*[^)]+\)|hsla?\(\s*[^)]+\)|\b(?:white|black)\b/g;
+  function parseTok(t) {
+    t = t.trim(); if (t[0] === '#') { return hex2rgb(t); } var lo = t.toLowerCase(); if (NAMED[lo]) return NAMED[lo].slice();
+    var m = /^(rgba?)\(\s*([^)]+)\)$/i.exec(t); if (m) { var p = m[2].split(/[\s,\/]+/).filter(Boolean); if (p.length < 3) return null; var v = p.slice(0, 3).map(function (x) { return x.indexOf('%') > -1 ? Math.round(parseFloat(x) * 2.55) : parseFloat(x); }); var a = p[3] !== undefined ? (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3])) : 1; if (v.some(isNaN) || isNaN(a)) return null; return [v[0], v[1], v[2], a]; }
+    return null; /* hsl(): left alone */
+  }
+  function mapValue(val, role) {
+    if (/var\(--[^)]*\)\s*$/.test(val) && !COLOR_RE.test(val)) { COLOR_RE.lastIndex = 0; return val; } COLOR_RE.lastIndex = 0;
+    return val.replace(COLOR_RE, function (tok) { var c = parseTok(tok); if (!c) return tok; return mapRGBA(c[0], c[1], c[2], c[3], role); });
+  }
+  function roleOf(prop) {
+    if (prop.slice(0, 2) === '--') { if (/shadow/.test(prop)) return 'shadow'; if (/border|line|divider|outline|stroke/.test(prop)) return 'border'; if (/text|-fg|ink|muted|color|label|green|red|amber|yellow|blue|accent/.test(prop) && !/bg|surface|input|card|panel|subtle|hover/.test(prop)) return 'text'; return 'bg'; }
+    if (/shadow/.test(prop)) return 'shadow';
+    if (/^(color|fill|stroke|caret-color|text-decoration-color|-webkit-text-fill-color|column-rule-color|accent-color)$/.test(prop)) return 'text';
+    if (/^(border|outline)/.test(prop)) return 'border';
+    return 'bg'; /* background*, --custom props */
+  }
+  var P = { map: mapValue, role: roleOf, rgba: mapRGBA };
+  if (typeof module !== 'undefined' && module.exports) module.exports = P; else root.ISXLM = P;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
 // ===== INVOICE STUDIO UPGRADE (real Google auth, gated PDF, themes, professions) =====
 (function () {
   'use strict';
@@ -15266,7 +15905,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   }
   function setMode(m, user) {
     T.mode = m; document.querySelectorAll('#segTaxMode button').forEach(function (b) { var on = b.getAttribute('data-m') === m; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
-    if (user) { /* keep the payable total stable when switching how the typed amount is read */ var tot = parseFloat(($('inpTotalNumeric') || {}).value) || 0; var r = curRate() / 100; $('inpTaxBase').value = tot ? String(m === 'excl' ? round2(tot / (1 + r)) : tot) : ''; }
+    /* the number you typed always stays as typed: "tax included" => it IS the final amount; "on top" => it is the amount before tax */
     recompute();
   }
   function onToggle() {
@@ -15279,7 +15918,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   }
   function recompute() {
     if (!$('isxTax')) return; T.on = $('chkTaxOn').checked; var r = reg();
-    $('lblTaxBase').textContent = (T.mode === 'excl' ? 'Amount before tax' : 'Amount including tax') + ' (' + getCurrencySymbol(cur()).trim() + ')';
+    $('lblTaxBase').textContent = (T.mode === 'excl' ? 'Amount before tax' : 'Final amount, tax included') + ' (' + getCurrencySymbol(cur()).trim() + ')';
     if (T.on) {
       var c = calc(), tot = $('inpTotalNumeric');
       if (tot && round2(parseFloat(tot.value) || 0) !== c.total) { busy = true; tot.value = c.total ? String(c.total) : ''; tot.dispatchEvent(new Event('input', { bubbles: true })); busy = false; }
@@ -15291,7 +15930,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     box.innerHTML = '<div class="r"><span>' + (T.mode === 'excl' ? 'Amount' : 'Amount excluding tax') + '</span><b>' + money(c.net, cc) + '</b></div>' +
       c.parts.map(function (p) { return '<div class="r"><span>' + esc(p.l) + '</span><b>' + money(p.v, cc) + '</b></div>'; }).join('') +
       '<div class="r t"><span>Total payable</span><b>' + money(c.total, cc) + '</b></div>';
-    note.textContent = T.mode === 'excl' ? 'Tax is added on top of your amount. The invoice total updates automatically.' : 'Your amount already contains ' + r.name + '. The invoice shows how much of it is tax.';
+    note.textContent = T.mode === 'excl' ? 'Tax is added on top of your amount. The invoice total updates automatically.' : 'This is the final amount your client pays — no ' + r.name + ' is added on top. The invoice shows how much of it is tax.';
   }
   /* page-1 table rows + tax id in the details box */
   function paintTax() {
@@ -15309,14 +15948,71 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
     if (tid && prow) { var cl = prow.cloneNode(true); cl.className = (cl.className + ' isx-taxid-row').trim(); cl.querySelectorAll('[id]').forEach(function (n) { n.removeAttribute('id'); }); cl.querySelectorAll('[contenteditable]').forEach(function (n) { n.removeAttribute('contenteditable'); n.removeAttribute('data-bind-input'); n.removeAttribute('data-bind-tab'); n.classList.remove('canvas-editable'); });
       var tds = cl.children; if (tds[0]) tds[0].textContent = r.id.replace(/\s*\/.*$/, '') + ' :'; if (tds[1]) { tds[1].textContent = tid; tds[1].classList.add('isx-tid'); } prow.insertAdjacentElement('afterend', cl); }
   }
+  /* ---- UPI ID: switch to show / hide it on the invoice ---- */
+  function upiInit() {
+    var inp = $('inpBankUpi'); if (!inp || $('chkShowUpi')) return; var grp = inp.closest('.form-field-group'), lab = grp && grp.querySelector('.field-label'); if (!lab) return;
+    var head = document.createElement('div'); head.className = 'isx-fhead'; lab.parentNode.insertBefore(head, lab); head.appendChild(lab);
+    head.insertAdjacentHTML('beforeend', '<label class="isx-sw isx-sw-s" title="Show UPI ID on the invoice"><input type="checkbox" id="chkShowUpi" checked aria-label="Show UPI ID on the invoice"><i></i></label>');
+    var c = $('chkShowUpi'); c.addEventListener('change', function () { grp.classList.toggle('is-off', !c.checked); try { updatePreview(); } catch (e) {} });
+  }
+  function paintUpi() {
+    var c = $('chkShowUpi'), cell = $('previewBankUpi'), row = cell && cell.closest('tr'); if (!c || !row) return; row.style.display = c.checked ? '' : 'none';
+  }
+  /* ---- UPI per-transaction limit: red pinned note the user can close ---- */
+  var UPI_LIMIT = 100000, upiDismissed = false;
+  function upiNoteInit() {
+    if ($('isxUpiNote')) return; var sb = document.querySelector('.app-sidebar'), scroll = document.querySelector('.sidebar-scroll-body'); if (!sb || !scroll) return;
+    var n = document.createElement('div'); n.id = 'isxUpiNote'; n.className = 'isx-upinote'; n.setAttribute('role', 'alert'); n.hidden = true;
+    n.innerHTML = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg><div class="tx"><b>Over the UPI limit (₹1,00,000)</b><span id="isxUpiNoteTx"></span></div><button type="button" aria-label="Dismiss this note" title="Dismiss">×</button>';
+    sb.insertBefore(n, scroll); n.querySelector('button').addEventListener('click', function () { upiDismissed = true; n.classList.remove('in'); n.hidden = true; });
+  }
+  function upiLimit() {
+    var n = $('isxUpiNote'); if (!n) return; var tot = parseFloat(($('inpTotalNumeric') || {}).value) || 0, adv = parseFloat(($('inpAdvanceNumeric') || {}).value) || 0, c = $('chkShowUpi');
+    var pays = adv > 0 && adv < tot ? [adv, tot - adv] : [tot], big = Math.max.apply(null, pays), over = cur() === 'INR' && big > UPI_LIMIT && (!c || c.checked);
+    if (!over) { upiDismissed = false; if (!n.hidden) { n.classList.remove('in'); n.hidden = true; } return; }
+    var tx = money(big, 'INR') + (pays.length === 2 ? ' (one payment)' : '') + ' can’t be paid via UPI. Ask your client to use NEFT or RTGS.';
+    $('isxUpiNoteTx').textContent = tx;
+    if (n.hidden && !upiDismissed) { n.hidden = false; n.classList.remove('in'); void n.offsetWidth; n.classList.add('in'); }
+  }
+  /* ---- logo: optional circular background in any colour; the logo shrinks to sit inside it ---- */
+  var LBG = { on: false, color: '#ffffff' }, LBG_KEY = 'isx_logo_bg';
+  function logoWrap() {
+    var img = $('previewLogo'); if (!img) return null; if (img.parentNode.classList && img.parentNode.classList.contains('isx-logo-wrap')) return img.parentNode;
+    var w = document.createElement('span'); w.className = 'isx-logo-wrap'; img.parentNode.insertBefore(w, img); w.appendChild(img); return w;
+  }
+  function paintLogo() {
+    var w = logoWrap(), img = $('previewLogo'); if (!w || !img) return; var size = (typeof currentLogoSize !== 'undefined' && currentLogoSize) || 50, hidden = img.style.display === 'none' || !img.getAttribute('src');
+    w.classList.toggle('on', !!LBG.on); w.style.setProperty('--lbg', LBG.color);
+    if (LBG.on) { w.style.width = w.style.height = size + 'px'; w.style.display = hidden ? 'none' : ''; } else { w.style.width = w.style.height = ''; w.style.display = ''; }
+    var sw = document.querySelectorAll('#isxLogoBg .isx-lsw[data-c]'); sw.forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-c').toLowerCase() === LBG.color.toLowerCase()); });
+    var ck = $('chkLogoCircle'); if (ck && ck.checked !== LBG.on) ck.checked = LBG.on; var body = $('isxLogoBgBody'); if (body) body.hidden = !LBG.on; var ci = $('inpLogoBgColor'); if (ci && ci.value.toLowerCase() !== LBG.color.toLowerCase()) ci.value = LBG.color; if (ci) ci.parentNode.style.setProperty('--lbgc', LBG.color);
+  }
+  function logoBgInit() {
+    var host = $('boxLogoSizingWrap'); if (!host || $('isxLogoBg')) return;
+    try { var s = JSON.parse(localStorage.getItem(LBG_KEY) || 'null'); if (s) LBG = { on: !!s.on, color: s.color || '#ffffff' }; } catch (e) {}
+    var COL = ['#ffffff', '#0f172a', '#4e648c', '#c9a24b', '#e11d48', '#10b981'];
+    var box = document.createElement('div'); box.id = 'isxLogoBg'; box.className = 'isx-lbg';
+    box.innerHTML = '<div class="isx-lbg-head"><div><b>Circle background</b><small>Puts your logo on a round colour badge</small></div><label class="isx-sw isx-sw-s"><input type="checkbox" id="chkLogoCircle" aria-label="Circle background behind the logo"><i></i></label></div>' +
+      '<div class="isx-lbg-body" id="isxLogoBgBody" hidden><div class="isx-lsws">' + COL.map(function (c) { return '<button type="button" class="isx-lsw" data-c="' + c + '" style="background:' + c + '" aria-label="Colour ' + c + '"></button>'; }).join('') +
+      '<label class="isx-lsw isx-lcustom" title="Custom colour"><input type="color" id="inpLogoBgColor" value="#ffffff" aria-label="Custom colour"><span>Custom</span></label></div></div>';
+    host.appendChild(box);
+    var set = function () { try { localStorage.setItem(LBG_KEY, JSON.stringify(LBG)); } catch (e) {} paintLogo(); try { updatePreview(); } catch (e) {} };
+    $('chkLogoCircle').addEventListener('change', function () { LBG.on = this.checked; set(); });
+    box.addEventListener('click', function (e) { var b = e.target.closest('.isx-lsw[data-c]'); if (b) { LBG.color = b.getAttribute('data-c'); LBG.on = true; set(); } });
+    $('inpLogoBgColor').addEventListener('input', function () { LBG.color = this.value; LBG.on = true; set(); });
+    var r = $('rngLogoSize'); if (r) r.addEventListener('input', function () { setTimeout(paintLogo, 0); });
+    if (typeof applyLogoSize === 'function') { var oa = applyLogoSize; window.applyLogoSize = applyLogoSize = function () { var x = oa.apply(this, arguments); try { paintLogo(); } catch (e) {} return x; }; }
+    var im = $('previewLogo'); if (im) im.addEventListener('load', paintLogo); logoWrap(); paintLogo();
+  }
+  function upiApply(on) { var c = $('chkShowUpi'); if (!c) return; c.checked = on !== false; var g = c.closest('.form-field-group'); if (g) g.classList.toggle('is-off', !c.checked); paintUpi(); }
   function taxState() { return { on: T.on, mode: T.mode, type: ($('selTaxType') || {}).value || '', rate: ($('selTaxRate') || {}).value || '', custom: ($('inpTaxCustom') || {}).value || '', base: ($('inpTaxBase') || {}).value || '', id: ($('inpTaxId') || {}).value || '', cur: cur() }; }
   function taxApply(s) {
     if (!s || !$('isxTax')) return; $('chkTaxOn').checked = !!s.on; fillRegime(false); if (s.type) $('selTaxType').value = s.type; if (s.rate) $('selTaxRate').value = s.rate; $('wrapTaxCustom').hidden = $('selTaxRate').value !== 'custom';
     $('inpTaxCustom').value = s.custom || ''; $('inpTaxBase').value = s.base || ''; $('inpTaxId').value = s.id || ''; T.on = !!s.on; $('isxTaxBody').hidden = !T.on; setMode(s.mode || 'excl', false);
   }
   function stateHooks() {
-    if (typeof captureCurrentInvoiceState === 'function') { var oc = captureCurrentInvoiceState; window.captureCurrentInvoiceState = captureCurrentInvoiceState = function () { var s = oc.apply(this, arguments); try { if (s && typeof s === 'object') s.isxTax = taxState(); } catch (e) {} return s; }; }
-    if (typeof restoreInvoiceState === 'function') { var orr = restoreInvoiceState; window.restoreInvoiceState = restoreInvoiceState = function (st) { var r = orr.apply(this, arguments); try { taxApply(st && st.isxTax || { on: false }); } catch (e) {} return r; }; }
+    if (typeof captureCurrentInvoiceState === 'function') { var oc = captureCurrentInvoiceState; window.captureCurrentInvoiceState = captureCurrentInvoiceState = function () { var s = oc.apply(this, arguments); try { if (s && typeof s === 'object') { s.isxTax = taxState(); s.isxShowUpi = !($('chkShowUpi') && !$('chkShowUpi').checked); s.isxLogoBg = { on: LBG.on, color: LBG.color }; } } catch (e) {} return s; }; }
+    if (typeof restoreInvoiceState === 'function') { var orr = restoreInvoiceState; window.restoreInvoiceState = restoreInvoiceState = function (st) { var r = orr.apply(this, arguments); try { taxApply(st && st.isxTax || { on: false }); upiApply(st ? st.isxShowUpi : true); if (st && st.isxLogoBg) { LBG = { on: !!st.isxLogoBg.on, color: st.isxLogoBg.color || '#ffffff' }; paintLogo(); } } catch (e) {} return r; }; }
   }
 
   /* ================= SINGLE-PAGE FIT (dynamic, never clipped) ================= */
@@ -15343,7 +16039,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   }
   function scheduleFit() { if (fitQ) return; fitQ = requestAnimationFrame(function () { fitQ = 0; safe(fit)(); try { if (window.isxRefreshStamp) isxRefreshStamp(); } catch (e) {} }); }
   function fitInit() {
-    var origUP = updatePreview; window.updatePreview = updatePreview = function () { var r = origUP.apply(this, arguments); try { paintTax(); } catch (e) {} scheduleFit(); return r; };
+    var origUP = updatePreview; window.updatePreview = updatePreview = function () { var r = origUP.apply(this, arguments); try { paintTax(); paintUpi(); upiLimit(); paintLogo(); } catch (e) {} scheduleFit(); return r; };
     if (typeof setInvoiceTemplate === 'function') { var ost = setInvoiceTemplate; window.setInvoiceTemplate = setInvoiceTemplate = function () { var r = ost.apply(this, arguments); setTimeout(scheduleFit, 60); return r; }; }
     var pg = $('invoiceSheetPage1'); if (pg && window.MutationObserver) { var mo = new MutationObserver(function () { if (!fitBusy) scheduleFit(); }); mo.observe(pg, { childList: true, subtree: true, characterData: true }); }
     window.addEventListener('load', scheduleFit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleFit);
@@ -15361,7 +16057,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
   }
   function lighten(root) {
     var list = (root || document).querySelectorAll('[style*="#"],[style*="rgb"],[style*="white"],[style*="black"]');
-    for (var i = 0; i < list.length; i++) { var el = list[i]; if (el.closest('#a4Stage,.a4-page,.isx-keepcolor,.pen-dot,.esign-canvas-container,.isx-th,.tpl-btn,.tpl-icon,.dsw')) continue; var cs = el.getAttribute('style'); if (el.__lgm === cs) continue; var m = mapStyle(cs); if (m !== cs) { el.__lgo = cs; el.__lgm = m; el.setAttribute('style', m); } }
+    for (var i = 0; i < list.length; i++) { var el = list[i]; if (el.closest('#a4Stage,.a4-page,.isx-keepcolor,.pen-dot,.esign-canvas-container,#sidebarLogoThumbBox,.isx-th,.tpl-btn,.tpl-icon,.dsw')) continue; var cs = el.getAttribute('style'); if (el.__lgm === cs) continue; var m = mapStyle(cs); if (m !== cs) { el.__lgo = cs; el.__lgm = m; el.setAttribute('style', m); } }
   }
   function restoreInline() { document.querySelectorAll('[style]').forEach(function (el) { if (el.__lgm !== undefined) { if (el.getAttribute('style') === el.__lgm) el.setAttribute('style', el.__lgo); el.__lgm = undefined; } }); }
   function startInline() { if (lgOn) { lighten(); return; } lgOn = true; lighten(); lgT = setInterval(function () { lighten(); }, 1200); document.addEventListener('click', lazy, true); document.addEventListener('input', lazy, true); }
@@ -15389,7 +16085,7 @@ ${ipBullets.map(b => '• ' + b).join('\n')}
 
   /* ================= boot ================= */
   function boot() {
-    safe(currencyInit)(); safe(taxBox)(); safe(esignInit)(); safe(stateHooks)(); safe(fitInit)(); safe(themeInit)();
+    safe(currencyInit)(); safe(taxBox)(); safe(upiInit)(); safe(upiNoteInit)(); safe(logoBgInit)(); safe(esignInit)(); safe(stateHooks)(); safe(fitInit)(); safe(themeInit)();
     ['selectEsignMode'].forEach(function (id) { var e = $(id); if (e) e.addEventListener('change', function () { setTimeout(esignInit, 50); }); });
     setTimeout(function () { try { recompute(); } catch (e) {} scheduleFit(); }, 600);
   }
