@@ -1,5 +1,5 @@
 // Shakeslip Service Worker for Offline PWA Capabilities
-const CACHE_NAME = 'invoice-studio-v2.0';
+const CACHE_NAME = 'shakeslip-v8.0-mobile';
 const STATIC_ASSETS = [
   './',
   './index.html',
